@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Management - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.sh/@google/generative-ai"
+        }
+    }
+    </script>
+
+    <style>
+        /* Rich CSS Styles from your Index Page */
+        :root {
+            --primary-color: #2ECC71; --primary-hover: #27ae60; --secondary-color: #16A085;
+            --heading-color: #2c3e50; --text-color: #34495e; --light-text: #7f8c8d;
+            --bg-color: #ffffff; --alt-bg-color: #f4f7f6; --border-color: #e0e0e0;
+            --white-color: #ffffff; --danger-color: #e74c3c;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 30px rgba(46, 204, 113, 0.15);
+            --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; --border-radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.7; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; color: var(--heading-color); }
+        .main-nav { gap: 2rem; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; }
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--card-shadow); }
+        .btn { display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 12px 28px; border-radius: 50px; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(46, 204, 113, 0.3); }
+        .btn-danger { background-color: var(--danger-color); color: var(--white-color); border: none; }
+        .btn-danger:hover { background-color: #c0392b; transform: translateY(-2px); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .input-with-voice { display: flex; align-items: center; gap: 0.5rem; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; flex-grow: 1; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2); }
+        .voice-btn { flex-shrink: 0; background-color: var(--light-text); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; cursor: pointer; transition: all 0.2s; }
+        .voice-btn:hover { background-color: var(--heading-color); }
+        .voice-btn.active { background-color: var(--danger-color); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); } 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); } }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h3 { font-size: 2.8rem; color: var(--heading-color); }
+        .section-header p { font-size: 1.15rem; color: var(--light-text); max-width: 700px; margin: auto; }
+        .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: flex-start; }
+        .loan-list .card, .ai-assistant .card { height: 100%; display: flex; flex-direction: column; }
+        h2 { font-size: 1.8rem; color: var(--heading-color); margin-top: 0; margin-bottom: 1.5rem; }
+        .loan-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--alt-bg-color); border-radius: 8px; margin-bottom: 1rem; }
+        #loanList { flex-grow: 1; }
+        .chat-container { flex-grow: 1; overflow-y: auto; background: var(--alt-bg-color); padding: 1rem; border-radius: 8px; display: flex; flex-direction: column; }
+        .chat-input-area { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .message { max-width: 80%; padding: 0.75rem 1rem; border-radius: 1.5rem; margin-bottom: 0.5rem; word-wrap: break-word; }
+        .user-message { background: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 0.5rem; }
+        .ai-message { background: var(--border-color); color: var(--heading-color); align-self: flex-start; border-bottom-left-radius: 0.5rem; }
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 3000; }
+        .toast { background-color: var(--heading-color); color: white; padding: 15px 25px; border-radius: 8px; margin-bottom: 1rem; opacity: 0; transform: translateX(100%); animation: slideIn 0.5s forwards; }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+        .language-selector select { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); font-weight: 500; cursor: pointer; }
+        
+        @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48C4.7 9.1 5.97 7.74 7.56 6.9c1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85s1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51-2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54s-1.11.82-.9 1.48c-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85s-1.25 1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="loan.html" class="active">Loan Manager</a>
+                <div class="language-selector">
+                    <select id="languageSwitcher">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                    </select>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container app-section">
+            <div class="section-header">
+                <h3 data-translate="title">Loan Management Portal</h3>
+                <p data-translate="subtitle">Track loans, get reminders, and receive expert financial advice from our AI.</p>
+            </div>
+
+            <div class="main-layout">
+                <div class="card">
+                    <h2 data-translate="manage-loans">Manage Your Loans</h2>
+                    <form id="loanForm">
+                        <div class="form-group"><label for="loanName" data-translate="loan-name-label">Loan Name / Purpose</label><div class="input-with-voice"><input type="text" id="loanName" placeholder="e.g., Tractor loan" required data-translate-placeholder="loan-name-placeholder"><button type="button" class="voice-btn" data-input-id="loanName"><i data-feather="mic"></i></button></div></div>
+                        <div class="form-group"><label for="loanAmount" data-translate="loan-amount-label">Loan Amount (₹)</label><div class="input-with-voice"><input type="number" id="loanAmount" placeholder="e.g., 50000" required data-translate-placeholder="loan-amount-placeholder"><button type="button" class="voice-btn" data-input-id="loanAmount"><i data-feather="mic"></i></button></div></div>
+                        <div class="form-group"><label for="dueDate" data-translate="due-date-label">Payment Due Date</label><input type="date" id="dueDate" required></div>
+                        <button type="submit" class="btn btn-primary w-full" style="width:100%" data-translate="save-loan-btn">Save Loan</button>
+                    </form>
+                    <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                        <h3 data-translate="scan-doc-heading" style="font-size: 1.2rem; text-align:center; margin-bottom: 1rem;">Scan Loan Document</h3>
+                        <div class="form-group"><input type="file" id="documentInput" accept="image/*" class="w-full"></div>
+                        <button id="scanButton" class="btn btn-secondary" style="width: 100%;" data-translate="scan-btn">Scan to Fill Form</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-8" style="display: flex; flex-direction: column;">
+                    <div class="card loan-list">
+                        <div style="display:flex; justify-content: space-between; align-items: center;">
+                            <h2 data-translate="my-loans">My Loans</h2>
+                            <button id="speakReminderBtn" class="btn btn-secondary btn-sm" data-translate="check-reminders-btn">Check Reminders</button>
+                        </div>
+                        <div id="loanList"><p id="no-loans-message" class="text-center text-gray-500 italic" data-translate="no-loans-message">No loans added yet.</p></div>
+                    </div>
+                    <div class="card ai-assistant">
+                        <h2 data-translate="ai-assistant">AI Financial Assistant</h2>
+                        <div id="chatMessages" class="chat-container"></div>
+                        <div class="chat-input-area">
+                            <input type="text" id="userInput" placeholder="Ask about loans..." class="flex-grow" data-translate-placeholder="user-input-placeholder">
+                            <button id="sendButton" class="btn btn-primary" data-translate="send-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main> 
+    <div id="toast-container"></div>
+    
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            const API_KEY = "AIzaSyAcuTYwM2Vsxu9AaeRaiOKFXuYFYhLFRsY"; // IMPORTANT: Replace with your actual Gemini API Key
+            const genAI = new GoogleGenerativeAI(API_KEY);
+
+            const translations = {
+                'en': {
+                    'title': 'Loan Management Portal',
+                    'subtitle': 'Track loans, get reminders, and receive expert financial advice from our AI.',
+                    'manage-loans': 'Manage Your Loans',
+                    'loan-name-label': 'Loan Name / Purpose',
+                    'loan-name-placeholder': 'e.g., Tractor loan',
+                    'loan-amount-label': 'Loan Amount (₹)',
+                    'loan-amount-placeholder': 'e.g., 50000',
+                    'due-date-label': 'Payment Due Date',
+                    'save-loan-btn': 'Save Loan',
+                    'scan-doc-heading': 'Scan Loan Document',
+                    'scan-btn': 'Scan to Fill Form',
+                    'my-loans': 'My Loans',
+                    'check-reminders-btn': 'Check Reminders',
+                    'no-loans-message': 'No loans added yet.',
+                    'ai-assistant': 'AI Financial Assistant',
+                    'user-input-placeholder': 'Ask about loans...',
+                    'send-btn': 'Send',
+                    'due-prefix': 'Due',
+                    'loan-saved-toast': 'Loan saved successfully!',
+                    'loan-deleted-toast': 'Loan deleted.',
+                    'delete-confirm': 'Are you sure you want to delete this loan?',
+                    'no-upcoming-loans': 'No loans due in the next 30 days.',
+                    'reminder-intro': 'Here are your upcoming loan reminders: ',
+                    'reminder-sentence': 'Your loan for {name} of {amount} rupees is due on {date}. ',
+                    'welcome-ai': "Hello! How can I help you with your farm finances today?",
+                    'scan-start': 'Scanning document with AI Vision...',
+                    'scan-success': 'Scan complete! Form fields have been populated.',
+                    'scan-error': 'Failed to extract details from the document.',
+                    'scan-no-file': 'Please select a document image to scan.',
+                    'form-incomplete': 'Please fill all required fields.'
+                },
+                'hi': {
+                    'title': 'ऋण प्रबंधन पोर्टल',
+                    'subtitle': 'ऋण ट्रैक करें, अनुस्मारक प्राप्त करें, और हमारे एआई से विशेषज्ञ वित्तीय सलाह प्राप्त करें।',
+                    'manage-loans': 'अपने ऋण प्रबंधित करें',
+                    'loan-name-label': 'ऋण का नाम / उद्देश्य',
+                    'loan-name-placeholder': 'उदा., ट्रैक्टर ऋण',
+                    'loan-amount-label': 'ऋण राशि (₹)',
+                    'loan-amount-placeholder': 'उदा., 50000',
+                    'due-date-label': 'भुगतान की अंतिम तिथि',
+                    'save-loan-btn': 'ऋण सहेजें',
+                    'scan-doc-heading': 'ऋण दस्तावेज़ स्कैन करें',
+                    'scan-btn': 'फ़ॉर्म भरने के लिए स्कैन करें',
+                    'my-loans': 'मेरे ऋण',
+                    'check-reminders-btn': 'रिमाइंडर जांचें',
+                    'no-loans-message': 'अभी तक कोई ऋण नहीं जोड़ा गया है।',
+                    'ai-assistant': 'एआई वित्तीय सहायक',
+                    'user-input-placeholder': 'ऋण के बारे में पूछें...',
+                    'send-btn': 'भेजें',
+                    'due-prefix': 'देय',
+                    'loan-saved-toast': 'ऋण सफलतापूर्वक सहेजा गया!',
+                    'loan-deleted-toast': 'ऋण हटा दिया गया।',
+                    'delete-confirm': 'क्या आप वाकई इस ऋण को हटाना चाहते हैं?',
+                    'no-upcoming-loans': 'अगले 30 दिनों में कोई ऋण देय नहीं है।',
+                    'reminder-intro': 'आपके आगामी ऋण अनुस्मारक यहां दिए गए हैं: ',
+                    'reminder-sentence': '{name} के लिए आपका {amount} रुपये का ऋण {date} को देय है। ',
+                    'welcome-ai': 'नमस्ते! मैं आज आपके खेत के वित्त में कैसे मदद कर सकता हूँ?',
+                    'scan-start': 'एआई विजन के साथ दस्तावेज़ स्कैन किया जा रहा है...',
+                    'scan-success': 'स्कैन पूरा हुआ! फ़ॉर्म फ़ील्ड भर दिए गए हैं।',
+                    'scan-error': 'दस्तावेज़ से विवरण निकालने में विफल।',
+                    'scan-no-file': 'कृपया स्कैन करने के लिए एक दस्तावेज़ छवि चुनें।',
+                    'form-incomplete': 'कृपया सभी आवश्यक फ़ील्ड भरें।'
+                },
+                'kn': {
+                    'title': 'ಸಾಲ ನಿರ್ವಹಣಾ ಪೋರ್ಟಲ್',
+                    'subtitle': 'ಸಾಲಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ, ಜ್ಞಾಪನೆಗಳನ್ನು ಪಡೆಯಿರಿ, ಮತ್ತು ನಮ್ಮ ಎಐ ನಿಂದ ತಜ್ಞ ಹಣಕಾಸು ಸಲಹೆ ಪಡೆಯಿರಿ.',
+                    'manage-loans': 'ನಿಮ್ಮ ಸಾಲಗಳನ್ನು ನಿರ್ವಹಿಸಿ',
+                    'loan-name-label': 'ಸಾಲದ ಹೆಸರು / ಉದ್ದೇಶ',
+                    'loan-name-placeholder': 'ಉದಾ., ಟ್ರಾಕ್ಟರ್ ಸಾಲ',
+                    'loan-amount-label': 'ಸಾಲದ ಮೊತ್ತ (₹)',
+                    'loan-amount-placeholder': 'ಉದಾ., 50000',
+                    'due-date-label': 'ಪಾವತಿ ಅಂತಿಮ ದಿನಾಂಕ',
+                    'save-loan-btn': 'ಸಾಲ ಉಳಿಸಿ',
+                    'scan-doc-heading': 'ಸಾಲದ ದಾಖಲೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ',
+                    'scan-btn': 'ಫಾರ್ಮ್ ತುಂಬಲು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ',
+                    'my-loans': 'ನನ್ನ ಸಾಲಗಳು',
+                    'check-reminders-btn': 'ಜ್ಞಾಪನೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ',
+                    'no-loans-message': 'ಯಾವುದೇ ಸಾಲಗಳನ್ನು ಇನ್ನೂ ಸೇರಿಸಲಾಗಿಲ್ಲ.',
+                    'ai-assistant': 'ಎಐ ಆರ್ಥಿಕ ಸಹಾಯಕ',
+                    'user-input-placeholder': 'ಸಾಲಗಳ ಬಗ್ಗೆ ಕೇಳಿ...',
+                    'send-btn': 'ಕಳುಹಿಸು',
+                    'due-prefix': 'ಬಾಕಿ',
+                    'loan-saved-toast': 'ಸಾಲವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದೆ!',
+                    'loan-deleted-toast': 'ಸಾಲವನ್ನು ಅಳಿಸಲಾಗಿದೆ.',
+                    'delete-confirm': 'ಈ ಸಾಲವನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?',
+                    'no-upcoming-loans': 'ಮುಂದಿನ 30 ದಿನಗಳಲ್ಲಿ ಯಾವುದೇ ಸಾಲಗಳು ಬಾಕಿ ಇಲ್ಲ.',
+                    'reminder-intro': 'ನಿಮ್ಮ ಮುಂಬರುವ ಸಾಲದ ಜ್ಞಾಪನೆಗಳು ಇಲ್ಲಿವೆ: ',
+                    'reminder-sentence': '{name} ಗಾಗಿ ನಿಮ್ಮ {amount} ರೂಪಾಯಿಗಳ ಸಾಲವು {date} ರಂದು ಬಾಕಿಯಿದೆ. ',
+                    'welcome-ai': 'ನಮಸ್ಕಾರ! ಇಂದು ನಿಮ್ಮ ಕೃಷಿ ಹಣಕಾಸಿನ ವಿಷಯದಲ್ಲಿ ನಾನು ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?',
+                    'scan-start': 'ಎಐ ವಿಷನ್ ಮೂಲಕ ಡಾಕ್ಯುಮೆಂಟ್ ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗುತ್ತಿದೆ...',
+                    'scan-success': 'ಸ್ಕ್ಯಾನ್ ಪೂರ್ಣಗೊಂಡಿದೆ! ಫಾರ್ಮ್ ಕ್ಷೇತ್ರಗಳನ್ನು ತುಂಬಲಾಗಿದೆ.',
+                    'scan-error': 'ಡಾಕ್ಯುಮೆಂಟ್‌ನಿಂದ ವಿವರಗಳನ್ನು ಹೊರತೆಗೆಯಲು ವಿಫಲವಾಗಿದೆ.',
+                    'scan-no-file': 'ಸ್ಕ್ಯಾನ್ ಮಾಡಲು ದಯವಿಟ್ಟು ಡಾಕ್ಯುಮೆಂಟ್ ಚಿತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
+                    'form-incomplete': 'ದಯವಿಟ್ಟು ಅಗತ್ಯವಿರುವ ಎಲ್ಲಾ ಕ್ಷೇತ್ರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ.'
+                }
+            };
+
+            const app = {
+                elements: {
+                    loanForm: document.getElementById('loanForm'),
+                    loanList: document.getElementById('loanList'),
+                    noLoansMessage: document.getElementById('no-loans-message'),
+                    scanButton: document.getElementById('scanButton'),
+                    documentInput: document.getElementById('documentInput'),
+                    chatMessages: document.getElementById('chatMessages'),
+                    userInput: document.getElementById('userInput'),
+                    sendButton: document.getElementById('sendButton'),
+                    speakReminderBtn: document.getElementById('speakReminderBtn'),
+                    languageSwitcher: document.getElementById('languageSwitcher'),
+                },
+                state: {
+                    loans: [],
+                    currentLanguage: 'en',
+                },
+
+                init() {
+                    this.state.loans = JSON.parse(localStorage.getItem('agriConnectLoans')) || [];
+                    this.state.currentLanguage = localStorage.getItem('agriConnectLanguage') || 'en';
+                    this.elements.languageSwitcher.value = this.state.currentLanguage;
+                    this.setLanguage(this.state.currentLanguage);
+                    
+                    this.bindEvents();
+                    this.renderLoans();
+                    this.addWelcomeMessage();
+                },
+                
+                getTranslation(key) {
+                    return translations[this.state.currentLanguage][key] || key;
+                },
+
+                setLanguage(lang) {
+                    this.state.currentLanguage = lang;
+                    localStorage.setItem('agriConnectLanguage', lang);
+                    
+                    document.querySelectorAll('[data-translate]').forEach(el => {
+                        const key = el.getAttribute('data-translate');
+                        el.textContent = this.getTranslation(key);
+                    });
+                    
+                    document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+                        const key = el.getAttribute('data-translate-placeholder');
+                        el.placeholder = this.getTranslation(key);
+                    });
+                },
+
+                bindEvents() {
+                    this.elements.loanForm.addEventListener('submit', this.addLoan.bind(this));
+                    this.elements.sendButton.addEventListener('click', this.sendMessageToAI.bind(this));
+                    this.elements.userInput.addEventListener('keypress', e => { if (e.key === 'Enter') this.sendMessageToAI(); });
+                    this.elements.loanList.addEventListener('click', e => { if (e.target.closest('.delete-btn')) this.deleteLoan(e.target.closest('.delete-btn').dataset.id); });
+                    this.elements.scanButton.addEventListener('click', this.scanDocument.bind(this));
+                    this.elements.speakReminderBtn.addEventListener('click', this.speakReminders.bind(this));
+                    this.elements.languageSwitcher.addEventListener('change', (e) => this.setLanguage(e.target.value));
+                    this.setupVoiceRecognition();
+                },
+
+                saveLoans() { localStorage.setItem('agriConnectLoans', JSON.stringify(this.state.loans)); },
+
+                renderLoans() {
+                    this.elements.loanList.innerHTML = '';
+                    if (this.state.loans.length === 0) {
+                        this.elements.noLoansMessage.style.display = 'block';
+                        this.elements.noLoansMessage.textContent = this.getTranslation('no-loans-message');
+                        return;
+                    }
+                    this.elements.noLoansMessage.style.display = 'none';
+                    this.state.loans.forEach(loan => {
+                        const dueDate = new Date(loan.dueDate);
+                        // Using a consistent format for simplicity across languages
+                        const formattedDate = `${dueDate.getDate().toString().padStart(2, '0')}/${(dueDate.getMonth() + 1).toString().padStart(2, '0')}/${dueDate.getFullYear()}`;
+                        
+                        this.elements.loanList.innerHTML += `
+                            <div class="loan-item">
+                                <div>
+                                    <p class="font-semibold text-lg text-gray-900">${loan.name}</p>
+                                    <p class="text-gray-600">₹${loan.amount.toLocaleString('en-IN')}</p>
+                                    <p class="text-sm text-gray-500">${this.getTranslation('due-prefix')}: ${formattedDate}</p>
+                                </div>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="${loan.id}"><i data-feather="trash-2" style="width:16px;height:16px;"></i></button>
+                            </div>`;
+                    });
+                    feather.replace();
+                },
+
+                addLoan(e) {
+                    e.preventDefault();
+                    const newLoan = {
+                        id: Date.now(),
+                        name: document.getElementById('loanName').value,
+                        amount: parseFloat(document.getElementById('loanAmount').value),
+                        dueDate: document.getElementById('dueDate').value
+                    };
+                    if (!newLoan.name || !newLoan.amount || !newLoan.dueDate) {
+                        alert(this.getTranslation('form-incomplete'));
+                        return;
+                    }
+                    
+                    this.state.loans.push(newLoan);
+                    this.saveLoans();
+                    this.renderLoans();
+                    this.elements.loanForm.reset();
+                    this.showToast(this.getTranslation('loan-saved-toast'));
+                },
+
+                deleteLoan(loanId) {
+                    if (confirm(this.getTranslation('delete-confirm'))) {
+                        this.state.loans = this.state.loans.filter(loan => loan.id != loanId);
+                        this.saveLoans();
+                        this.renderLoans();
+                        this.showToast(this.getTranslation('loan-deleted-toast'));
+                    }
+                },
+
+                addChatMessage(message, sender) {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${sender === 'user' ? 'user-message' : 'ai-message'}`;
+                    messageDiv.textContent = message;
+                    this.elements.chatMessages.appendChild(messageDiv);
+                    this.elements.chatMessages.scrollTop = this.elements.chatMessages.scrollHeight;
+                },
+
+                addWelcomeMessage() { this.addChatMessage(this.getTranslation('welcome-ai'), 'ai'); },
+
+                async sendMessageToAI() {
+                    const message = this.elements.userInput.value.trim();
+                    if (!message) return;
+                    this.addChatMessage(message, 'user');
+                    this.elements.userInput.value = '';
+
+                    try {
+                        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+                        const langName = this.state.currentLanguage === 'hi' ? 'Hindi' : (this.state.currentLanguage === 'kn' ? 'Kannada' : 'English');
+                        const systemInstruction = `You are a helpful and knowledgeable financial advisor for farmers in India. Provide advice on loans, government schemes (like PM-Kisan, KCC), and financial planning. Keep responses concise and easy to understand. ALWAYS respond in ${langName}.`;
+                        
+                        const result = await model.generateContent({ contents: [{ parts: [{ text: message }] }], systemInstruction });
+                        this.addChatMessage(result.response.text(), 'ai');
+                    } catch (error) {
+                        console.error("Error with AI chat:", error);
+                        this.addChatMessage("Sorry, I am unable to connect to the AI assistant. Please check your network connection and API key.", 'ai');
+                    }
+                },
+                
+                async scanDocument() {
+                    const file = this.elements.documentInput.files[0];
+                    if (!file) {
+                        alert(this.getTranslation('scan-no-file'));
+                        return;
+                    }
+                    
+                    this.showToast(this.getTranslation('scan-start'));
+                    
+                    const reader = new FileReader();
+                    reader.onloadend = async () => {
+                        const base64Data = reader.result.split(',')[1];
+                        const imagePart = { inlineData: { mimeType: file.type, data: base64Data } };
+                        const prompt = "From the document image, extract the 'loan name' or purpose, 'loan amount' as a number, and 'due date' in YYYY-MM-DD format. If a value isn't found, return null for that key. Return ONLY a valid JSON object with keys 'loanName', 'loanAmount', and 'dueDate'.";
+
+                        try {
+                            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+                            const result = await model.generateContent([prompt, imagePart]);
+                            const jsonString = result.response.text().replace(/```json|```/g, "").trim();
+                            const data = JSON.parse(jsonString);
+
+                            if(data.loanName) document.getElementById('loanName').value = data.loanName;
+                            if(data.loanAmount) document.getElementById('loanAmount').value = data.loanAmount;
+                            if(data.dueDate) document.getElementById('dueDate').value = data.dueDate;
+                            this.showToast(this.getTranslation('scan-success'));
+                        } catch(err) {
+                            console.error("Scan Error:", err);
+                            this.showToast(this.getTranslation('scan-error'), 'error');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                },
+
+                speakReminders() {
+                    const upcoming = this.state.loans.filter(loan => {
+                        const dueDate = new Date(loan.dueDate);
+                        const diffDays = (dueDate - new Date()) / (1000 * 60 * 60 * 24);
+                        return diffDays >= 0 && diffDays <= 30; // Include today
+                    });
+                    
+                    if (upcoming.length === 0) {
+                        alert(this.getTranslation('no-upcoming-loans'));
+                        return;
+                    }
+                    
+                    let reminderText = this.getTranslation('reminder-intro');
+                    upcoming.forEach(loan => {
+                        const dueDate = new Date(loan.dueDate);
+                        const formattedDate = new Intl.DateTimeFormat(this.getLangCodeForSpeech(), { day: 'numeric', month: 'long', year: 'numeric' }).format(dueDate);
+                        reminderText += this.getTranslation('reminder-sentence')
+                            .replace('{name}', loan.name)
+                            .replace('{amount}', loan.amount.toLocaleString('en-IN'))
+                            .replace('{date}', formattedDate);
+                    });
+                    
+                    const utterance = new SpeechSynthesisUtterance(reminderText);
+                    utterance.lang = this.getLangCodeForSpeech();
+                    speechSynthesis.speak(utterance);
+                },
+                
+                getLangCodeForSpeech() {
+                    const langMap = { 'en': 'en-GB', 'hi': 'hi-IN', 'kn': 'kn-IN' };
+                    return langMap[this.state.currentLanguage] || 'en-GB';
+                },
+
+                setupVoiceRecognition() {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    if (!SpeechRecognition) {
+                        console.warn("Speech Recognition not supported in this browser.");
+                        return;
+                    }
+
+                    document.querySelectorAll('.voice-btn').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const recognition = new SpeechRecognition();
+                            recognition.lang = this.getLangCodeForSpeech();
+                            const targetInput = document.getElementById(button.dataset.inputId);
+
+                            recognition.onstart = () => button.classList.add('active');
+                            recognition.onend = () => button.classList.remove('active');
+                            recognition.onerror = (e) => console.error('Speech Recognition Error:', e.error);
+                            recognition.onresult = e => { targetInput.value = e.results[0][0].transcript; };
+                            
+                            recognition.start();
+                        });
+                    });
+                },
+
+                showToast(message, type = 'success') {
+                    const container = document.getElementById('toast-container') || document.createElement('div');
+                    if (!container.id) { container.id = 'toast-container'; document.body.appendChild(container); }
+                    const toast = document.createElement('div');
+                    toast.className = 'toast';
+                    if (type === 'error') toast.style.backgroundColor = 'var(--danger-color)';
+                    toast.textContent = message;
+                    container.appendChild(toast);
+                    setTimeout(() => toast.remove(), 3000);
+                }
+            };
+
+            // Before initializing the app, check if the API key is set
+            if (API_KEY === "YOUR_API_KEY") {
+                alert("Please replace 'YOUR_API_KEY' with your actual Google AI Gemini API key in the script section.");
+                return;
+            }
+
+            app.init();
+        });
+    </script>
+</body>
+</html>

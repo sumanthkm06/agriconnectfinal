@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Crop Diagnosis - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.sh/@google/generative-ai"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #2ECC71; --primary-hover: #27ae60; --secondary-color: #16A085;
+            --heading-color: #2c3e50; --text-color: #34495e; --light-text: #7f8c8d;
+            --bg-color: #ffffff; --alt-bg-color: #f4f7f6; --border-color: #e0e0e0;
+            --white-color: #ffffff; --danger-color: #e74c3c;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; --border-radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.7; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+        .section-header { text-align: center; margin-bottom: 2rem; }
+        .section-header h3 { font-size: 2.5rem; color: var(--heading-color); }
+        .section-header p { font-size: 1.1rem; color: var(--light-text); max-width: 600px; margin: 0 auto; }
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; color: var(--heading-color); }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; }
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--card-shadow); }
+        .btn { display: inline-block; padding: 12px 28px; border-radius: 50px; border: 2px solid transparent; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:not(:disabled):hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(46, 204, 113, 0.3); }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border-color: var(--border-color); }
+        .btn-secondary:hover { background-color: var(--alt-bg-color); }
+        .diagnosis-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: flex-start; }
+        .upload-card, .result-card { height: 100%; }
+        .image-drop-zone { border: 2px dashed var(--border-color); border-radius: var(--border-radius); padding: 2rem; text-align: center; cursor: pointer; transition: all var(--transition-speed); height: 350px; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: var(--alt-bg-color); }
+        .image-drop-zone:hover, .image-drop-zone.dragover { border-color: var(--primary-color); background-color: #e8f5e9; }
+        .image-drop-zone .upload-icon { color: var(--primary-color); margin-bottom: 1rem; }
+        .upload-options { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
+        #camera-view, #preview-view { display: none; }
+        #camera-stream, #image-preview { width: 100%; height: 350px; object-fit: cover; border-radius: var(--border-radius); background: #eee; }
+        .result-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; color: var(--light-text); }
+        .result-placeholder .icon { color: var(--primary-color); margin-bottom: 1rem; }
+        .loader-container { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 1rem; font-weight: 600; color: var(--heading-color); }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .result-content h4 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .result-content h5 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; color: var(--secondary-color); }
+        .result-content ul { list-style-position: inside; padding-left: 0; }
+        .result-content li { margin-bottom: 0.5rem; }
+        .status-tag { padding: 5px 15px; border-radius: 20px; font-weight: 600; color: white; display: inline-block; margin-bottom: 1rem; }
+        .status-healthy { background-color: var(--primary-color); }
+        .status-infected { background-color: var(--danger-color); }
+        .status-unknown { background-color: var(--light-text); }
+        .result-actions { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1rem; }
+        @media (max-width: 900px) { .diagnosis-layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    
+    <header class="app-header">
+       <div class="container">
+            <a href="index.html" class="logo"><h1>AgriConnect</h1></a>
+            <nav class="main-nav"><a href="#">AI Tools</a></nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>AI Crop Disease Diagnosis</h3>
+                    <p>Instantly identify plant diseases. Upload a clear photo of an affected leaf to get started.</p>
+                </div>
+
+                <div class="diagnosis-layout">
+                    <div class="card upload-card">
+                        <div id="initial-upload-view">
+                            <input type="file" id="crop-image-input" style="display: none;" accept="image/*">
+                            <div id="image-drop-zone" class="image-drop-zone">
+                                <div id="upload-prompt">
+                                    <i data-feather="upload-cloud" class="upload-icon" style="width: 60px; height: 60px;"></i>
+                                    <p style="font-size: 1.1rem; font-weight: 600;">Click to Upload or Drag & Drop</p>
+                                    <span>PNG or JPG supported</span>
+                                </div>
+                            </div>
+                            <div class="upload-options">
+                                <label for="crop-image-input" class="btn btn-secondary">Choose File</label>
+                                <button id="open-camera-btn" class="btn btn-secondary">Open Camera</button>
+                            </div>
+                        </div>
+
+                        <div id="camera-view">
+                            <video id="camera-stream" playsinline autoplay></video>
+                            <button id="capture-btn" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Capture Photo</button>
+                        </div>
+
+                        <div id="preview-view">
+                            <img id="image-preview" src="#" alt="Image Preview">
+                            <div class="upload-options">
+                                <button id="re-upload-btn" class="btn btn-secondary">Change Image</button>
+                                <button id="analyze-btn" class="btn btn-primary" disabled>Analyze Plant</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card result-card">
+                        <div id="result-placeholder" class="result-placeholder">
+                            <i data-feather="sidebar" class="icon" style="width: 60px; height: 60px;"></i>
+                            <h4>Analysis Report</h4>
+                            <p>Your crop diagnosis will appear here.</p>
+                        </div>
+                        <div id="loader-container" class="loader-container">
+                            <div class="loader"></div>
+                            <p>AI is analyzing your image... Please wait.</p>
+                        </div>
+                        <div id="result-content" style="display: none;">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            const API_KEY = "AIzaSyCeil1RRuySImAxPOO6bxh31VDRXms4JSc";
+            const genAI = new GoogleGenerativeAI(API_KEY);
+
+            const diagnosisApp = {
+                elements: {
+                    initialView: document.getElementById('initial-upload-view'),
+                    cameraView: document.getElementById('camera-view'),
+                    previewView: document.getElementById('preview-view'),
+                    imageInput: document.getElementById('crop-image-input'),
+                    dropZone: document.getElementById('image-drop-zone'),
+                    openCameraBtn: document.getElementById('open-camera-btn'),
+                    cameraStream: document.getElementById('camera-stream'),
+                    captureBtn: document.getElementById('capture-btn'),
+                    imagePreview: document.getElementById('image-preview'),
+                    reUploadBtn: document.getElementById('re-upload-btn'),
+                    analyzeBtn: document.getElementById('analyze-btn'),
+                    resultPlaceholder: document.getElementById('result-placeholder'),
+                    loader: document.getElementById('loader-container'),
+                    resultContent: document.getElementById('result-content'),
+                },
+                state: {
+                    imageFile: null,
+                    stream: null
+                },
+
+                init() {
+                    this.bindEvents();
+                },
+
+                bindEvents() {
+                    this.elements.dropZone.addEventListener('click', () => this.elements.imageInput.click());
+                    this.elements.imageInput.addEventListener('change', this.handleFileSelect.bind(this));
+                    this.elements.dropZone.addEventListener('dragover', this.handleDragOver.bind(this));
+                    this.elements.dropZone.addEventListener('dragleave', this.handleDragLeave.bind(this));
+                    this.elements.dropZone.addEventListener('drop', this.handleDrop.bind(this));
+                    this.elements.openCameraBtn.addEventListener('click', this.startCamera.bind(this));
+                    this.elements.captureBtn.addEventListener('click', this.capturePhoto.bind(this));
+                    this.elements.reUploadBtn.addEventListener('click', this.reset.bind(this));
+                    this.elements.analyzeBtn.addEventListener('click', this.analyzeImage.bind(this));
+                },
+
+                showView(viewToShow) {
+                    ['initialView', 'cameraView', 'previewView'].forEach(view => {
+                        this.elements[view].style.display = (view === viewToShow) ? 'block' : 'none';
+                    });
+                },
+
+                handleFileSelect(event) {
+                    const file = event.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        this.state.imageFile = file;
+                        this.elements.imagePreview.src = URL.createObjectURL(file);
+                        this.elements.analyzeBtn.disabled = false;
+                        this.showView('previewView');
+                    }
+                },
+
+                handleDragOver(event) {
+                    event.preventDefault();
+                    this.elements.dropZone.classList.add('dragover');
+                },
+
+                handleDragLeave(event) {
+                    event.preventDefault();
+                    this.elements.dropZone.classList.remove('dragover');
+                },
+
+                handleDrop(event) {
+                    event.preventDefault();
+                    this.elements.dropZone.classList.remove('dragover');
+                    const file = event.dataTransfer.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                         // Manually trigger the file select handler
+                        this.elements.imageInput.files = event.dataTransfer.files;
+                        const changeEvent = new Event('change');
+                        this.elements.imageInput.dispatchEvent(changeEvent);
+                    }
+                },
+                
+                async startCamera() {
+                    try {
+                        this.state.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                        this.elements.cameraStream.srcObject = this.state.stream;
+                        this.showView('cameraView');
+                    } catch (err) {
+                        alert("Could not access the camera. Please ensure you have given permission.");
+                        console.error("Camera Error:", err);
+                    }
+                },
+
+                capturePhoto() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = this.elements.cameraStream.videoWidth;
+                    canvas.height = this.elements.cameraStream.videoHeight;
+                    canvas.getContext('2d').drawImage(this.elements.cameraStream, 0, 0);
+                    canvas.toBlob(blob => {
+                        this.state.imageFile = new File([blob], "capture.jpg", { type: "image/jpeg" });
+                        this.elements.imagePreview.src = URL.createObjectURL(this.state.imageFile);
+                        this.elements.analyzeBtn.disabled = false;
+                        this.showView('previewView');
+                        this.stopCamera();
+                    }, 'image/jpeg');
+                },
+
+                stopCamera() {
+                    if (this.state.stream) {
+                        this.state.stream.getTracks().forEach(track => track.stop());
+                        this.state.stream = null;
+                    }
+                },
+
+                reset() {
+                    this.state.imageFile = null;
+                    this.elements.imageInput.value = '';
+                    this.elements.analyzeBtn.disabled = true;
+                    this.elements.resultContent.style.display = 'none';
+                    this.elements.resultPlaceholder.style.display = 'flex';
+                    this.showView('initialView');
+                    this.stopCamera();
+                },
+
+                async analyzeImage() {
+                    if (!this.state.imageFile) {
+                        alert("Please select an image first.");
+                        return;
+                    }
+                    this.elements.loader.style.display = 'flex';
+                    this.elements.resultPlaceholder.style.display = 'none';
+                    this.elements.resultContent.style.display = 'none';
+
+                    try {
+                        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+                        const prompt = "Analyze this image of a plant leaf. Identify any disease you see. Provide the disease name, a brief description, and a bulleted list of actionable treatment steps for a farmer in India. If the plant looks healthy, state that clearly. Structure your response exactly like this: STATUS: [Healthy/Infected] | DISEASE: [Disease Name/None] | DESCRIPTION: [Brief one-sentence description.] | TREATMENTS: [Bulleted list of treatments]";
+                        
+                        const imageBase64 = await this.fileToGenerativePart(this.state.imageFile);
+                        
+                        const result = await model.generateContent([prompt, imageBase64]);
+                        const response = await result.response;
+                        const text = response.text();
+                        
+                        this.displayResult(text);
+
+                    } catch (error) {
+                        console.error("API Error:", error);
+                        this.elements.resultContent.innerHTML = `<p style="color:var(--danger-color);"><strong>Analysis Failed!</strong><br>Could not get a response from the AI. Please check your API key or try again later.</p>`;
+                        this.elements.resultContent.style.display = 'block';
+                    } finally {
+                        this.elements.loader.style.display = 'none';
+                    }
+                },
+
+                displayResult(text) {
+                    const parts = text.split('|').reduce((acc, part) => {
+                        const [key, ...value] = part.split(':');
+                        if (key && value) {
+                            acc[key.trim().toUpperCase()] = value.join(':').trim();
+                        }
+                        return acc;
+                    }, {});
+
+                    let statusClass = 'status-unknown';
+                    if (parts.STATUS?.toLowerCase() === 'healthy') statusClass = 'status-healthy';
+                    if (parts.STATUS?.toLowerCase() === 'infected') statusClass = 'status-infected';
+
+                    const treatmentsHtml = (parts.TREATMENTS || 'No specific treatments recommended.')
+                        .split('* ')
+                        .filter(item => item.trim() !== '')
+                        .map(item => `<li>${item.trim()}</li>`)
+                        .join('');
+
+                    this.elements.resultContent.innerHTML = `
+                        <h4>Analysis Report</h4>
+                        <span class="status-tag ${statusClass}">${parts.STATUS || 'Unknown'}</span>
+                        <h5>Disease:</h5>
+                        <p>${parts.DISEASE || 'Not identified.'}</p>
+                        <h5>Description:</h5>
+                        <p>${parts.DESCRIPTION || 'No description available.'}</p>
+                        <h5>Recommended Treatment:</h5>
+                        <ul>${treatmentsHtml}</ul>
+                    `;
+                    this.elements.resultContent.style.display = 'block';
+                    feather.replace();
+                },
+
+                async fileToGenerativePart(file) {
+                    const base64EncodedDataPromise = new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                        reader.readAsDataURL(file);
+                    });
+                    return {
+                        inlineData: { data: await base64EncodedDataPromise, mimeType: file.type },
+                    };
+                }
+            };
+
+            diagnosisApp.init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect - Your Complete Farming Partner</title>
+    
+     <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ 
+    <!-- Feather Icons for lightweight icons -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <!-- Inline SVG Logo for AgriConnect -->
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21-1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1 data-translate-key="app_title">AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="prices.html" data-translate-key="nav_marketplace">Marketplace</a>
+                <a href="farmlog.html" data-translate-key="nav_farmlog">Farm Log</a>
+                <a href="tools.html" data-translate-key="nav_tools">AI Tools</a>
+                <a href="knowledge-hub.html" data-translate-key="nav_knowledge">Knowledge Hub</a>
+                <a href="hire-labour.html" data-translate-key="nav_labour">Labour</a>
+                <a href="insurance.html" data-translate-key="nav_insurance">Insurence</a>
+                <a href="digilocker.html" data-translate-key="nav_digi">DigiLocker</a>
+                
+                <img src="https://placehold.co/40x40/E8F5E9/2c3e50?text=U" alt="Profile" id="profile-nav-pic" title="View Profile">
+            </nav>
+            <button class="mobile-menu-btn" aria-label="Open navigation menu">
+                <i data-feather="menu"></i>
+            </button>
+        </div>
+            <select id="language-selector" style="padding: 5px; border-radius: 5px; border: 1px solid var(--border-color); font-weight: 600;">
+                <option value="en">English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            </select>
+        </nav>
+        <button class="mobile-menu-btn" aria-label="Open navigation menu">
+            <i data-feather="menu"></i>
+        </button>
+    </div>
+
+    </header>
+
+    <main>
+ 
+        <section class="hero-section">
+            <div class="container reveal">
+                <h2 id="welcome-message" data-translate-key="hero_title">Harvesting a Better Tomorrow, Today.</h2>
+                <p data-translate-key="hero_subtitle">Welcome to AgriConnect, the digital backbone for India's farmers. Real-time data, a thriving marketplace, and intelligent tools to boost your yield and income.</p>
+                <div class="hero-buttons">
+                    <a href="#features" class="btn btn-primary" data-translate-key="hero_btn_explore">Explore All Tools</a>
+                    <a href="sell.html" class="btn btn-secondary" data-translate-key="hero_btn_sell">List Your Crop</a>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="quick-stats-bar alt-bg">
+            <div class="container reveal">
+                <div class="stat-item" id="weather-stat">
+                    <i data-feather="sun"></i>
+                    <div>
+                        <strong data-translate-key="stats_weather_location">Bannikuppe Weather</strong>
+                        <span id="weather-data">Loading...</span>
+                    </div>
+                </div>
+                <div class="stat-item" id="price-stat">
+                    <i data-feather="trending-up"></i>
+                    <div>
+                        <strong data-translate-key="stats_price_crop">Today's Wheat Price</strong>
+                        <span id="price-data">Loading...</span>
+                    </div>
+                </div>
+                <div class="stat-item" id="tasks-stat">
+                    <i data-feather="check-square"></i>
+                    <div>
+                        <strong data-translate-key="stats_tasks_title">Pending Tasks</strong>
+                        <a href="farmlog.html" id="tasks-data">Loading tasks...</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+ 
+        <section class="price-ticker-section">
+            <div class="price-ticker-container">
+                <div class="price-ticker-tape" id="price-ticker-tape">
+                    <!-- Prices will be dynamically inserted here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="app-section">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h3 data-translate-key="features_title">One Platform, Every Farming Solution</h3>
+                    <p data-translate-key="features_subtitle">From seed to market, AgriConnect provides the tools you need to thrive in modern agriculture.</p>
+                </div>
+                <div class="card-grid">
+
+                    <!-- Card: AI Tools Hub -->
+                    <div class="feature-card">
+                        <div class="icon"><i data-feather="cpu"></i></div>
+                        <h4 data-translate-key="feature_card_ai_tools_title">AI Tools Hub</h4>
+                        <p data-translate-key="feature_card_ai_tools_desc">Your central hub for all our intelligent assistants, from diagnosis to price forecasting.</p>
+                        <a href="tools.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Explore AI</a>
+                    </div>
+
+                    <!-- Card: Marketplace -->
+                    <div class="feature-card">
+                        <div class="icon"><i data-feather="shopping-cart"></i></div>
+                        <h4 data-translate-key="feature_card_marketplace_title">Marketplace</h4>
+                        <p data-translate-key="feature_card_marketplace_desc">Buy and sell crops directly from farmers and verified suppliers across the nation.</p>
+                        <a href="buy.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Visit Market</a>
+                    </div>
+                    <!-- Hire Labour Card -->
+                        <div class="feature-card">
+                            <div class="icon">
+                                <i data-feather="users"></i>
+                            </div>
+                            <h4>Hire Labour</h4>
+                            <p>Quickly find and hire skilled agricultural labourers, or list yourself for work opportunities.</p>
+                            <a href="hire-labour.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Hire Now</a>
+                        </div>
+
+                    <!-- Card: Farm Log & Tasks -->
+                    <div class="feature-card">
+                        <div class="icon"><i data-feather="clipboard"></i></div>
+                        <h4 data-translate-key="feature_card_farmlog_title">Farm Log & Tasks</h4>
+                        <p data-translate-key="feature_card_farmlog_desc">Track your crop yields, costs, and manage your daily tasks with our integrated logbook.</p>
+                        <a href="farmlog.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Open Log</a>
+                    </div>
+
+                    <!-- Card: Mandi Prices -->
+                    <div class="feature-card">
+                        <div class="icon"><i data-feather="dollar-sign"></i></div>
+                        <h4 data-translate-key="feature_card_prices_title">Live Mandi Prices</h4>
+                        <p data-translate-key="feature_card_prices_desc">Access real-time crop prices from thousands of markets with our interactive dashboard.</p>
+                        <a href="prices.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Check Prices</a>
+                    </div>
+
+                    <!-- Card: Knowledge Hub -->
+                    <div class="feature-card">
+                        <div class="icon"><i data-feather="book-open"></i></div>
+                        <h4 data-translate-key="feature_card_knowledge_title">Knowledge Hub</h4>
+                        <p data-translate-key="feature_card_knowledge_desc">Watch expert video tutorials, farmer-made reels, and attend live educational sessions.</p>
+                        <a href="knowledge-hub.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Start Learning</a>
+                    </div>
+
+                    <!-- Card: Community Forum -->
+                    <div class="feature-card">
+                    <div class="icon"><i data-feather="users"></i></div>
+                    <h4 data-translate-key="feature_card_community_title">Community Forum</h4>
+                    <p data-translate-key="feature_card_community_desc">Connect with other farmers, ask questions, and share your experiences and success stories.</p>
+                    <a href="https://chat.whatsapp.com/FDRP9nvvieYFiJhSXYFixW" target="_blank" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">
+                        Join Discussion
+                    </a>
+                    </div>
+
+
+                    <!-- Card: Crop Insurance -->
+                    <div class="feature-card">
+                        <div class="icon"><i data-feather="shield"></i></div>
+                        <h4 data-translate-key="feature_card_insurance_title">Crop Insurance</h4>
+                        <p data-translate-key="feature_card_insurance_desc">Secure your harvest with tailored insurance plans. Get AI advice and file claims easily.</p>
+                        <a href="insurance.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Get a Quote</a>
+                    </div>
+
+                    <!-- Card: Digital Locker -->
+                    <div class="feature-card">
+                        <div class="icon"><i data-feather="lock"></i></div>
+                        <h4 data-translate-key="feature_card_digilocker_title">Digital Locker</h4>
+                        <p data-translate-key="feature_card_digilocker_desc">Securely store and get AI summaries of your important documents like land records.</p>
+                        <a href="digilocker.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Open Locker</a>
+                    </div>
+                    
+
+            
+
+            <!-- Agricultural Tool Rental Card -->
+            <div class="feature-card">
+                <div class="icon">
+                    <i data-feather="tool"></i>
+                </div>
+                <h4>Agricultural Tool Rental</h4>
+                <p>Easily rent agricultural tools for your needs or list your own tools to earn income.</p>
+                <a href="rent-tools.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Find Tools</a>
+            </div>
+
+            <!-- Farm Shop Card -->
+            <div class="feature-card">
+                <div class="icon">
+                    <i data-feather="shopping-bag"></i>
+                </div>
+                <h4>Farm Shop</h4>
+                <p>Purchase high-quality seeds, fertilizers, and other essential farming supplies directly from trusted suppliers.</p>
+                <a href="shop.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Shop Now</a>
+            </div>
+
+           
+
+            <!-- Market Prices & AI Forecasts Card -->
+            <div class="feature-card">
+                <div class="icon">
+                    <i data-feather="trending-up"></i>
+                </div>
+                <h4>Market Prices & AI Forecasts</h4>
+                <p>Stay ahead with real-time market prices for your crops. Our advanced AI algorithms provide accurate price forecasts.</p>
+                <a href="prices.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">View Forecasts</a>
+            </div>
+
+            <!-- Loan Management Portal Card -->
+            <div class="feature-card">
+                <div class="icon">
+                    <i data-feather="credit-card"></i>
+                </div>
+                <h4>Loan Management Portal</h4>
+                <p>Manage your agricultural loans with ease. Apply for new loans, track your repayment schedule, and get personalized financial advice.</p>
+                <a href="loan.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Manage Loans</a>
+            </div>
+             <!-- Farmer Support & Helpline Card -->
+            <div class="feature-card">
+                <div class="icon">
+                    <i data-feather="phone-call"></i>
+                </div>
+                <h4>Farmer Support & Helpline</h4>
+                <p>Get instant support from our agricultural experts. Our helpline is available 24/7 to answer your questions and provide guidance.</p>
+                <a href="support.html" class="btn btn-secondary btn-full" data-translate-key="feature_card_button">Call Helpline</a>
+            </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="app-section alt-bg">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h3 data-translate-key="how_it_works_title">Your Farming Cycle, Upgraded</h3>
+                    <p data-translate-key="how_it_works_subtitle">Follow these steps to maximize your farm's potential with AgriConnect.</p>
+                </div>
+                <div class="how-it-works-grid">
+                    <div class="step">
+                        <div class="step-icon"><i data-feather="aperture"></i></div>
+                        <div class="step-number">1</div>
+                        <h4 data-translate-key="step1_title">Diagnose & Plan</h4>
+                        <p data-translate-key="step1_desc">Use AI tools to diagnose crop issues early and generate a personalized farming plan for the season.</p>
+                    </div>
+                    <div class="step-arrow">&rarr;</div>
+                    <div class="step">
+                        <div class="step-icon"><i data-feather="shopping-bag"></i></div>
+                        <div class="step-number">2</div>
+                        <h4 data-translate-key="step2_title">Buy Quality Inputs</h4>
+                        <p data-translate-key="step2_desc">Purchase certified seeds, fertilizers, and equipment from our trusted Agri-Shop marketplace.</p>
+                    </div>
+                     <div class="step-arrow">&rarr;</div>
+                    <div class="step">
+                        <div class="step-icon"><i data-feather="bar-chart-2"></i></div>
+                        <div class="step-number">3</div>
+                        <h4 data-translate-key="step3_title">Track Your Progress</h4>
+                        <p data-translate-key="step3_desc">Log your activities, costs, and yields in the Farm Log. Use the dashboard to monitor performance.</p>
+                    </div>
+                     <div class="step-arrow">&rarr;</div>
+                    <div class="step">
+                        <div class="step-icon"><i data-feather="truck"></i></div>
+                        <div class="step-number">4</div>
+                        <h4 data-translate-key="step4_title">Sell at the Best Price</h4>
+                        <p data-translate-key="step4_desc">Check live mandi prices, get AI forecasts, and list your produce for sale to verified buyers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="app-section">
+            <div class="container reveal">
+                 <div class="section-header">
+                    <h3 data-translate-key="preview_title">Latest from the Community & Hub</h3>
+                    <p data-translate-key="preview_subtitle">Stay updated with the latest tutorials, discussions, and upcoming events.</p>
+                </div>
+                <div class="content-preview-grid">
+                    <!-- Expert Tutorial Preview -->
+                    <div class="preview-card tutorial-preview">
+                        <a href="knowledge-hub.html" class="preview-image-link">
+                            <img src="https://img.youtube.com/vi/nNP4o1wE6Vo/hqdefault.jpg" alt="Tutorial Thumbnail">
+                            <div class="play-icon"><i data-feather="play"></i></div>
+                        </a>
+                        <div class="preview-info">
+                            <span class="preview-tag">Expert Tutorial</span>
+                            <h4>Modern Agricultural Practices</h4>
+                            <p>Learn about the latest innovations in farming to boost efficiency and sustainability.</p>
+                            <a href="knowledge-hub.html" class="preview-link" data-translate-key="preview_link_tutorials">Watch More Tutorials &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Live Session Preview -->
+                    <div class="preview-card session-preview">
+                        <a href="knowledge-hub.html" class="preview-image-link">
+                            <img src="images\Drip3.jpg" alt="Expert">
+                        </a>
+                         <div class="preview-info">
+                            <span class="preview-tag" style="background-color: var(--secondary-color);">Upcoming Live Session</span>
+                            <h4>Drip Irrigation Techniques</h4>
+                            <p>Join Dr. Ramesh Gupta to learn about water conservation. Sept 20, 4:00 PM.</p>
+                            <a href="knowledge-hub.html" class="preview-link" data-translate-key="preview_link_sessions">See All Sessions &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Community Post Preview -->
+                    <div class="preview-card community-preview">
+                        <div class="preview-info">
+                             <span class="preview-tag" style="background-color: #3498db;">From the Community</span>
+                             <div class="community-post">
+                                 <div class="post-author">
+                                     <img src="https://placehold.co/40x40/2c3e50/ffffff?text=R" alt="Ramesh K.">
+                                     <div>
+                                         <strong>Ramesh K.</strong>
+                                         <span>from Haryana</span>
+                                     </div>
+                                 </div>
+                                 <p class="post-text">"My wheat yield increased by 15% this year after using the AI Yield Analysis tool to adjust my fertilizer schedule. Has anyone else seen good results?"</p>
+                             </div>
+                           <a href="https://chat.whatsapp.com/FDRP9nvvieYFiJhSXYFixW" class="preview-link" data-translate-key="preview_link_community" target="_blank">Join the Conversation &rarr;</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="testimonial" class="app-section alt-bg">
+            <div class="container reveal">
+                <div class="testimonial-slider-container">
+                    <div class="testimonial-slide active">
+                        <blockquote data-translate-key="testimonial1_text">"AgriConnect is a game-changer. The AI diagnosis saved my tomato crop, and the live mandi prices helped me increase my profits by over 20% last season. It's a must-have for every Indian farmer."</blockquote>
+                        <cite>Ramesh Kumar, <span data-translate-key="testimonial1_author_location">Farmer from Hisar, Haryana</span></cite>
+                    </div>
+                    <div class="testimonial-slide">
+                        <blockquote data-translate-key="testimonial2_text">"The Farm Log is brilliant. For the first time, I have all my data in one place. The AI task suggestions remind me of important activities I used to forget. Highly recommended!"</blockquote>
+                        <cite>Sunita Devi, <span data-translate-key="testimonial2_author_location">Farmer from Nashik, Maharashtra</span></cite>
+                    </div>
+                    <div class="testimonial-slide">
+                        <blockquote data-translate-key="testimonial3_text">"I used the AI Price Forecaster before taking my ragi to the market and waited two more weeks as it suggested. I made an extra ₹8,000! This tool is pure magic."</blockquote>
+                        <cite>Ganesh Murthy, <span data-translate-key="testimonial3_author_location">Farmer from Mandya, Karnataka</span></cite>
+                    </div>
+                    <div class="testimonial-nav">
+                        <button class="nav-dot active"></button>
+                        <button class="nav-dot"></button>
+                        <button class="nav-dot"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- Profile Sidebar -->
+    <div id="profile-sidebar-overlay" class="sidebar-overlay"></div>
+    <div id="profile-sidebar" class="sidebar">
+        <button id="close-sidebar-btn" class="close-btn" aria-label="Close profile sidebar">&times;</button>
+        <iframe src="profile.html" title="User Profile and Settings"></iframe>
+    </div>
+
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col about-col">
+                    <a href="index.html" class="logo">
+                        <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                        <h4 style="color: white; font-size: 1.5rem;">AgriConnect</h4>
+                    </a>
+                    <p data-translate-key="footer_about_text">Empowering the heart of India. We are committed to bringing technology and profitability to every farmer.</p>
+                    <div class="social-icons">
+                         <a href="https://x.com/SAGARM2005?t=hI44DMoGWfNhKxbnb8RBCw&s=09" target="_blank" aria-label="Twitter"><i data-feather="twitter"></i></a>
+                         <a href="https://www.instagram.com/mr.saga_rix_?igsh=NHNxMnNsMTV4NW05" target="_blank" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                         <a href="https://wa.me/919019989269" target="_blank" aria-label="WhatsApp"><i data-feather="message-square"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5 data-translate-key="footer_tools_title">Our Tools</h5>
+                    <ul>
+                        <li><a href="prices.html" data-translate-key="nav_prices">Mandi Prices</a></li>
+                        <li><a href="buy.html" data-translate-key="nav_marketplace">Marketplace</a></li>
+                        <li><a href="tools.html" data-translate-key="nav_tools">AI Tools</a></li>
+                        <li><a href="insurance.html" data-translate-key="feature_card_insurance_title">Insurance</a></li>
+                        <li><a href="digilocker.html" data-translate-key="feature_card_digilocker_title">DigiLocker</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5 data-translate-key="footer_contact_title">Contact Info</h5>
+                     <ul style="list-style: none; padding: 0;">
+                        <li style="display: flex; align-items: start; gap: 10px;">
+                            <i data-feather="map-pin" style="width: 16px; margin-top: 5px;"></i>
+                            <span>Dayananda Sagar University, Harohalli, Ramnagara district, 562112</span>
+                        </li>
+                         <li style="display: flex; align-items: center; gap: 10px;">
+                            <i data-feather="phone" style="width: 16px;"></i>
+                            <a href="tel:9019989269">9019989269</a>
+                        </li>
+                         <li style="display: flex; align-items: center; gap: 10px;">
+                            <i data-feather="mail" style="width: 16px;"></i>
+                            <a href="mailto:eng23ds0029@dsu.edu.in">eng23ds0029@dsu.edu.in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AgriConnect. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script type="module">
+        // --- Feather Icons Initialization ---
+        feather.replace();
+
+        // --- All other scripts to run after DOM is loaded ---
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Intersection Observer for Scroll Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { 
+                threshold: 0.1 
+            });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            // --- Sidebar Functionality ---
+            const profilePic = document.getElementById('profile-nav-pic');
+            const sidebar = document.getElementById('profile-sidebar');
+            const overlay = document.getElementById('profile-sidebar-overlay');
+            const closeBtn = document.getElementById('close-sidebar-btn');
+
+            const openSidebar = () => {
+                sidebar.classList.add('open');
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden'; 
+            };
+            const closeSidebar = () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            };
+            if (profilePic && sidebar && overlay && closeBtn) {
+                profilePic.addEventListener('click', openSidebar);
+                closeBtn.addEventListener('click', closeSidebar);
+                overlay.addEventListener('click', closeSidebar);
+            }
+
+
+            // --- Hero Section Personalization ---
+            const welcomeMessage = document.getElementById('welcome-message');
+            try {
+                const user = JSON.parse(localStorage.getItem('agriUser'));
+                if (user && user.name) {
+                    welcomeMessage.textContent = `Welcome back, ${user.name}!`;
+                }
+            } catch (e) {
+                console.log("No user found, showing default welcome message.");
+            }
+
+            // --- Quick Stats Bar Logic ---
+            const statsBar = {
+                weatherEl: document.getElementById('weather-data'),
+                priceEl: document.getElementById('price-data'),
+                tasksEl: document.getElementById('tasks-data'),
+                
+                init() {
+                    this.updateWeather();
+                    this.updatePrice();
+                    this.updateTasks();
+                },
+                updateWeather() {
+                    // In a real app, this would be an API call. We'll simulate it.
+                    const weathers = ["28°C, Clear Skies", "30°C, Partly Cloudy", "26°C, Light Showers"];
+                    this.weatherEl.textContent = weathers[Math.floor(Math.random() * weathers.length)];
+                },
+                updatePrice() {
+                    // Simulate a live price fluctuation
+                    const basePrice = 2450;
+                    const randomChange = (Math.random() - 0.5) * 50;
+                    const livePrice = (basePrice + randomChange).toFixed(2);
+                    this.priceEl.textContent = `₹${livePrice} / Quintal`;
+                },
+                updateTasks() {
+                    try {
+                        const tasks = JSON.parse(localStorage.getItem('dailyTasks')) || [];
+                        const pendingTasks = tasks.filter(task => !task.completed).length;
+                        if (pendingTasks > 0) {
+                            this.tasksEl.textContent = `You have ${pendingTasks} task(s) today`;
+                        } else {
+                            this.tasksEl.textContent = `No pending tasks. Well done!`;
+                        }
+                    } catch (e) {
+                         this.tasksEl.textContent = `View your tasks`;
+                    }
+                }
+            };
+            statsBar.init();
+            
+            // --- Live Price Ticker Logic ---
+            const priceTicker = {
+                tape: document.getElementById('price-ticker-tape'),
+                data: [
+                    { name: 'WHEAT', price: 2478.10, change: 1.2 },
+                    { name: 'RICE', price: 3050.75, change: -0.8 },
+                    { name: 'RAGI', price: 3570.00, change: 2.1 },
+                    { name: 'COTTON', price: 7015.50, change: 0.5 },
+                    { name: 'SUGARCANE', price: 402.10, change: 1.5 },
+                    { name: 'MUSTARD', price: 5420.00, change: -0.5 },
+                    { name: 'SOYBEAN', price: 4380.25, change: 2.8 }
+                ],
+                init() {
+                    const content = this.data.map(item => this.createItemHTML(item)).join('');
+                    this.tape.innerHTML = content + content; // Duplicate for seamless scroll
+                },
+                createItemHTML(item) {
+                    const isPositive = item.change >= 0;
+                    return `
+                        <div class="ticker-item">
+                            <span class="ticker-name">${item.name}</span>
+                            <span class="ticker-price">₹${item.price.toFixed(2)}</span>
+                            <span class="ticker-change ${isPositive ? 'positive' : 'negative'}">
+                                ${isPositive ? '▲' : '▼'} ${Math.abs(item.change)}%
+                            </span>
+                        </div>
+                    `;
+                }
+            };
+            priceTicker.init();
+
+            // --- Testimonial Slider Logic ---
+            const testimonialSlider = {
+                slides: document.querySelectorAll('.testimonial-slide'),
+                dots: document.querySelectorAll('.testimonial-nav .nav-dot'),
+                currentIndex: 0,
+                init() {
+                    this.dots.forEach((dot, index) => {
+                        dot.addEventListener('click', () => this.showSlide(index));
+                    });
+                    setInterval(() => this.nextSlide(), 5000); // Auto-play
+                },
+                showSlide(index) {
+                    this.slides[this.currentIndex].classList.remove('active');
+                    this.dots[this.currentIndex].classList.remove('active');
+                    this.currentIndex = index;
+                    this.slides[this.currentIndex].classList.add('active');
+                    this.dots[this.currentIndex].classList.add('active');
+                },
+                nextSlide() {
+                    let nextIndex = (this.currentIndex + 1) % this.slides.length;
+                    this.showSlide(nextIndex);
+                }
+            };
+            testimonialSlider.init();
+        });
+    </script>
+    <!-- Add this script right before your closing </body> tag -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const translations = {
+                "en": {
+                    "app_title": "AgriConnect",
+                    "nav_home": "Home",
+                    "nav_prices": "Prices",
+                    "nav_marketplace": "Marketplace",
+                    "nav_farmlog": "Farm Log",
+                    "nav_tools": "AI Tools",
+                    "nav_knowledge": "Knowledge Hub",
+                    "nav_labour": "Labour",
+                    "nav_insurance": "Insurence",
+                    "nav_digi": "DigiLocker",
+                    // Add more keys for the rest of your page content here
+                    "main_heading": "Your Complete Farming Partner",
+                    "main_subheading": "Get real-time data, expert advice, and marketplace access to grow your farm."
+                },
+                "hi": {
+                    "app_title": "एग्रीकनेक्ट",
+                    "nav_home": "होम",
+                    "nav_prices": "कीमतें",
+                    "nav_marketplace": "बाजार",
+                    "nav_farmlog": "फार्म लॉग",
+                    "nav_tools": "एआई उपकरण",
+                    "nav_knowledge": "ज्ञान केंद्र",
+                    "nav_labour": "श्रम",
+                    "nav_insurance": "बीमा",
+                    "nav_digi": "डिजीलॉकर ",
+                    // Translations for page content
+                    "main_heading": "आपका संपूर्ण खेती पार्टनर",
+                    "main_subheading": "अपने खेत को बढ़ाने के लिए वास्तविक समय का डेटा, विशेषज्ञ सलाह और बाजार तक पहुंच प्राप्त करें।"
+                },
+                "kn": {
+                    "app_title": "ಅಗ್ರಿಕನೆಕ್ಟ್",
+                    "nav_home": "ಹೋಮ್",
+                    "nav_prices": "ಬೆಲೆಗಳು",
+                    "nav_marketplace": "ಮಾರುಕಟ್ಟೆ",
+                    "nav_farmlog": "ಫಾರ್ಮ್ ಲಾಗ್",
+                    "nav_tools": "ಎಐ ಪರಿಕರಗಳು",
+                    "nav_knowledge": "ಜ್ಞಾನ ಕೇಂದ್ರ",
+                    "nav_labour": "ಕಾರ್ಮಿಕ",
+                    "nav_insurance": "ವಿಮೆ",
+                    "nav_digi": "ಡಿಜಿಲಾಕರ್‌",
+                    // Translations for page content
+                    "main_heading": "ನಿಮ್ಮ ಸಂಪೂರ್ಣ ಕೃಷಿ ಪಾಲುದಾರ",
+                    "main_subheading": "ನಿಮ್ಮ ಫಾರ್ಮ್ ಅನ್ನು ಬೆಳೆಸಲು ನೈಜ-ಸಮಯದ ಡೇಟಾ, ತಜ್ಞರ ಸಲಹೆ ಮತ್ತು ಮಾರುಕಟ್ಟೆ ಪ್ರವೇಶವನ್ನು ಪಡೆಯಿರಿ."
+                }
+            };
+
+            const languageSelector = document.getElementById('language-selector');
+
+            function changeLanguage(lang) {
+                // Find all elements that need translation
+                document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.getAttribute('data-translate-key');
+                    // Get the translation from the object, or keep the original text if not found
+                    element.textContent = translations[lang][key] || element.textContent;
+                });
+                // Save the selected language to remember the user's choice
+                localStorage.setItem('selectedLanguage', lang);
+            }
+
+            // Event listener for when the user changes the language
+            languageSelector.addEventListener('change', (event) => {
+                changeLanguage(event.target.value);
+            });
+
+            // Check if a language was previously saved
+            const savedLanguage = localStorage.getItem('selectedLanguage');
+
+            if (savedLanguage) {
+                // If a language is saved, set the dropdown to that language and apply it
+                languageSelector.value = savedLanguage;
+                changeLanguage(savedLanguage);
+            } else {
+                // Otherwise, default to English
+                changeLanguage('en');
+            }
+        });
+    </script>
+
+
+    <!-- This is the only content needed. -->
+
+    <!-- Floating Chatbot Button -->
+    <button class="chatbot-button" id="chatbot-button">
+        <img src="images/chat.png"alt="AgriBot Mascot" class="chatbot-image">
+    </button>
+
+    <!-- Chatbot Modal -->
+    <div class="chat-modal-overlay" id="chat-modal">
+        <div class="chat-modal-content chat-background-image">
+            <button class="chat-modal-close" id="chat-modal-close">&times;</button>
+            <div class="chat-header">
+                <img src="images/logochat.jpg" alt="AgriBot Mascot" class="chat-header-image-small">
+                <div class="chat-header-text">
+                    <h1>KisanMitra</h1>
+                    <p>Your agricultural assistant</p>
+                </div>
+                <select id="language-select" class="language-select">
+                    <option value="hi">Hindi</option>
+                    <option value="en">English</option>
+                    <option value="kn">ಕನ್ನಡ</option>
+                </select>
+            </div>
+            <div class="chat-messages" id="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Ask your question..." autocomplete="off">
+                <button class="voice-btn" id="voice-button"><span class="material-icons">mic</span></button>
+                <button id="send-button"><span class="material-icons" style="font-size: 1.5rem;">send</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = "AIzaSyCeil1RRuySImAxPOO6bxh31VDRXms4JSc";
+        
+        const elements = {
+            chatMessages: document.getElementById('chat-messages'),
+            userInput: document.getElementById('user-input'),
+            sendButton: document.getElementById('send-button'),
+            chatbotButton: document.getElementById('chatbot-button'),
+            chatModal: document.getElementById('chat-modal'),
+            chatModalClose: document.getElementById('chat-modal-close'),
+            voiceButton: document.getElementById('voice-button'),
+            languageSelect: document.getElementById('language-select'),
+        };
+        
+        let recognition;
+        let currentLanguage = elements.languageSelect.value;
+        const chatHistory = [];
+        const initialMessages = {
+            'hi': 'नमस्ते, किसान भाई! मैं किसानमित्र हूँ, आपका खेतीबाड़ी सहायक। आपकी कैसे मदद कर सकता हूँ?',
+            'en': 'Hello, farmer friend! I am KisanMitra, your agricultural assistant. How can I help you today?',
+            'kn': 'ನಮಸ್ಕಾರ, ರೈತ ಮಿತ್ರ! ನಾನು ಕಿಸಾನ್ ಮಿತ್ರ, ನಿಮ್ಮ ಕೃಷಿ ಸಹಾಯಕ. ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?'
+        };
+        const systemPrompts = {
+            'hi': `आप एक विशेषज्ञ भारतीय किसान चैटबॉट हैं। आपका नाम किसानमित्र है। आपका अंदाज़ दोस्ताना और सहायक होना चाहिए। आपको भारतीय खेती की जानकारी, फसलें, मौसम और स्थानीय मुश्किलें पता होनी चाहिए। आपको पूरा जवाब हिन्दी में देना चाहिए। अपने जवाबों को संक्षिप्त और सीधा रखें।`,
+            'en': `You are an expert agriculture chatbot for farmers in India. Your name is KisanMitra. You must use a friendly and helpful tone. You understand Indian farming practices, crops, seasons, and local challenges. You must answer in English. Keep your responses concise and to the point.`,
+            'kn': `ನೀವು ಭಾರತೀಯ ರೈತರಿಗಾಗಿ ತಜ್ಞ ಕೃಷಿ ಚಾಟ್‌ಬಾಟ್. ನಿಮ್ಮ ಹೆಸರು ಕಿಸಾನ್ ಮಿತ್ರ. ನಿಮ್ಮ ಶೈಲಿ ಸ್ನೇಹಪರ ಮತ್ತು ಸಹಾಯಕವಾಗಿರಬೇಕು. ನಿಮಗೆ ಭಾರತೀಯ ಕೃಷಿ ಪದ್ಧತಿಗಳು, ಬೆಳೆಗಳು, ಹವಾಮಾನ ಮತ್ತು ಸ್ಥಳೀಯ ಸಮಸ್ಯೆಗಳ ಬಗ್ಗೆ ತಿಳಿದಿರಬೇಕು. ನೀವು ಪ್ರಶ್ನೆಗಳಿಗೆ ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಬೇಕು. ನಿಮ್ಮ ಉತ್ತರಗಳನ್ನು ಸಂಕ್ಷಿಪ್ತ ಮತ್ತು ನೇರವಾಗಿ ಇರಿಸಿ.`
+        };
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message-bubble', isUser ? 'message-user' : 'message-bot');
+            messageDiv.textContent = text;
+            elements.chatMessages.appendChild(messageDiv);
+            elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+        }
+
+        elements.chatbotButton.addEventListener('click', () => {
+            elements.chatModal.style.display = 'flex';
+            setTimeout(() => elements.chatModal.classList.add('active'), 10);
+        });
+        elements.chatModalClose.addEventListener('click', () => {
+            elements.chatModal.classList.remove('active');
+            setTimeout(() => elements.chatModal.style.display = 'none', 400);
+        });
+
+        elements.languageSelect.addEventListener('change', () => {
+            currentLanguage = elements.languageSelect.value;
+            chatHistory.length = 0;
+            elements.chatMessages.innerHTML = '';
+            addMessage(initialMessages[currentLanguage]);
+        });
+
+        async function sendMessage() {
+            const userText = elements.userInput.value.trim();
+            if (userText === '') return;
+
+            addMessage(userText, true);
+            chatHistory.push({ role: "user", parts: [{ text: userText }] });
+            elements.userInput.value = '';
+
+            const loadingMessage = document.createElement('div');
+            loadingMessage.classList.add('message-bubble', 'message-bot');
+            loadingMessage.innerHTML = '<div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>';
+            elements.chatMessages.appendChild(loadingMessage);
+            elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+                const payload = { contents: chatHistory, systemInstruction: { parts: [{ text: systemPrompts[currentLanguage] }] } };
+                
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                
+                const result = await response.json();
+                const botResponse = result?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't process that. Please try again.";
+
+                elements.chatMessages.removeChild(loadingMessage);
+                addMessage(botResponse);
+                chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
+
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                elements.chatMessages.removeChild(loadingMessage);
+                addMessage("Something went wrong. Please check your API key and try again.");
+            }
+        }
+
+        if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = false;
+            
+            recognition.onstart = () => { elements.voiceButton.classList.add('recording'); };
+            recognition.onend = () => { elements.voiceButton.classList.remove('recording'); };
+            recognition.onerror = (event) => console.error('Speech recognition error:', event.error);
+            recognition.onresult = (event) => {
+                elements.userInput.value = event.results[0][0].transcript;
+                sendMessage();
+            };
+            elements.voiceButton.addEventListener('click', () => recognition.start());
+            elements.languageSelect.addEventListener('change', () => { recognition.lang = `${elements.languageSelect.value}-IN`; });
+            recognition.lang = 'hi-IN';
+        } else {
+            console.warn('Speech recognition not supported.');
+            elements.voiceButton.style.display = 'none';
+        }
+
+        elements.sendButton.addEventListener('click', sendMessage);
+        elements.userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+        addMessage(initialMessages[currentLanguage]);
+    </script>
+
+</body>
+</html>

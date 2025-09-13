@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandi Prices & Forecasts - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Rich CSS Styles from your other document */
+        :root {
+            --primary-color: #2ECC71; --primary-hover: #27ae60; --secondary-color: #16A085;
+            --heading-color: #2c3e50; --text-color: #34495e; --light-text: #7f8c8d;
+            --bg-color: #ffffff; --alt-bg-color: #f4f7f6; --border-color: #e0e0e0;
+            --white-color: #ffffff; --danger-color: #e74c3c;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 30px rgba(46, 204, 113, 0.15);
+            --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; --border-radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.7; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; color: var(--heading-color); }
+        .main-nav { display: flex; justify-content: space-around; position: relative; gap: 2rem; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; position: relative; padding: 10px; }
+        .main-nav a.active::after { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background-color: var(--primary-color); transition: all 0.3s ease; }
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--card-shadow); }
+        .btn { display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 12px 28px; border-radius: 50px; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(46, 204, 113, 0.3); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2); }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h3 { font-size: 2.8rem; color: var(--heading-color); }
+        .section-header p { font-size: 1.15rem; color: var(--light-text); max-width: 700px; margin: auto; }
+        .ai-forecaster-card { background-image: linear-gradient(to right, #e0f2f1, #e8f5e9); border: 1px solid var(--primary-color); padding: 2.5rem; }
+        .ai-forecaster-card h4 { font-size: 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; color: var(--heading-color); }
+        .ai-forecaster-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; align-items: end; }
+        #ai-forecast-result { margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-color); border-radius: 8px; min-height: 100px; }
+        #ai-forecast-result strong { font-size: 1.5rem; color: var(--primary-color); }
+        .price-filters { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .price-filters .form-group { margin-bottom: 0; flex-grow: 1; min-width: 200px; }
+        .price-table-container { overflow-x: auto; }
+        .price-table { width: 100%; border-collapse: collapse; background: var(--bg-color); border-radius: var(--border-radius); overflow: hidden; }
+        .price-table th, .price-table td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        .price-table th { background-color: var(--alt-bg-color); font-weight: 600; color: var(--heading-color); }
+        .price-table tbody tr { cursor: pointer; transition: background-color 0.2s; }
+        .price-table tbody tr:hover { background-color: #e8f5e9; }
+        .price-table tbody tr:last-child td { border-bottom: none; }
+        .price-table td strong { color: var(--heading-color); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1010; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); background: white; padding: 2rem; border-radius: var(--border-radius); z-index: 1011; width: 90%; max-width: 700px; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+        .modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h4 { font-size: 1.5rem; color: var(--heading-color); margin:0; }
+        .close-btn { font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--light-text); line-height: 1; }
+        .loader-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: opacity 0.3s; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48C4.7 9.1 5.97 7.74 7.56 6.9c1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85s1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51-2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54s-1.11.82-.9 1.48c-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85s-1.25 1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="prices.html" class="active">Prices</a>
+                <a href="buy.html">Buy</a>
+                <a href="sell.html">Sell</a>
+                <a href="shop.html">Shop</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Market Prices & AI Forecasts</h3>
+                    <p>Get the latest Mandi prices from across India and use our AI to predict future market trends.</p>
+                </div>
+
+                <div class="card ai-forecaster-card">
+                    <h4><i data-feather="cpu"></i> AI Price Forecaster</h4>
+                    <form id="ai-forecaster-form" class="ai-forecaster-form">
+                        <div class="form-group">
+                            <label for="ai-crop">Enter Crop</label>
+                            <input type="text" id="ai-crop" placeholder="e.g., Rice, Wheat" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ai-state">Enter State</label>
+                            <input type="text" id="ai-state" placeholder="e.g., Karnataka, Punjab" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ai-period">Enter Forecast Period</label>
+                            <input type="text" id="ai-period" placeholder="e.g., the next 7 days" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Get Forecast</button>
+                    </form>
+                    <div id="ai-forecast-result">
+                        <p>Your AI-powered price forecast will appear here.</p>
+                    </div>
+                </div>
+
+                <h3 style="text-align: center; margin-top: 4rem; margin-bottom: 2rem; color: var(--heading-color); font-size: 2.2rem;">Today's Mandi Prices</h3>
+                <div class="card" style="padding: 2rem;">
+                    <div class="price-filters">
+                        <div class="form-group"><label for="filter-state">Filter by State</label><select id="filter-state"><option value="all">All States</option></select></div>
+                        <div class="form-group"><label for="filter-crop">Filter by Crop</label><select id="filter-crop"><option value="all">All Crops</option></select></div>
+                    </div>
+                    <div class="price-table-container">
+                        <table class="price-table">
+                            <thead>
+                                <tr><th>Crop</th><th>Variety</th><th>Mandi</th><th>State</th><th>Min Price (₹/q)</th><th>Max Price (₹/q)</th><th>Modal Price (₹/q)</th></tr>
+                            </thead>
+                            <tbody id="price-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                    <p id="no-results" style="text-align: center; padding: 2rem; display: none;">No results found for the selected filters.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-overlay" class="modal-overlay"></div>
+    <div id="price-trend-modal" class="modal">
+        <div class="modal-header">
+            <h4 id="chart-modal-title">Price Trend</h4>
+            <button class="close-btn" data-modal-close>&times;</button>
+        </div>
+        <div class="modal-body">
+            <canvas id="price-chart"></canvas>
+        </div>
+    </div>
+    
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            const elements = {
+                tableBody: document.getElementById('price-table-body'),
+                filterState: document.getElementById('filter-state'),
+                filterCrop: document.getElementById('filter-crop'),
+                noResults: document.getElementById('no-results'),
+                aiForm: document.getElementById('ai-forecaster-form'),
+                aiResult: document.getElementById('ai-forecast-result'),
+                modal: document.getElementById('price-trend-modal'),
+                modalOverlay: document.getElementById('modal-overlay'),
+                chartTitle: document.getElementById('chart-modal-title'),
+                chartCanvas: document.getElementById('price-chart'),
+            };
+
+           const priceData = [
+    // Karnataka
+    { crop: 'Rice', variety: 'Sona Masoori', mandi: 'Bengaluru', state: 'Karnataka', min: 2800, max: 3200, modal: 3000 },
+    { crop: 'Tomato', variety: 'Hybrid', mandi: 'Mysuru', state: 'Karnataka', min: 1200, max: 1500, modal: 1350 },
+    { crop: 'Wheat', variety: 'Lokwan', mandi: 'Hubli', state: 'Karnataka', min: 2100, max: 2300, modal: 2200 },
+    { crop: 'Cotton', variety: 'Long Staple', mandi: 'Raichur', state: 'Karnataka', min: 6800, max: 7200, modal: 7000 },
+    { crop: 'Onion', variety: 'Red', mandi: 'Chitradurga', state: 'Karnataka', min: 1500, max: 1800, modal: 1650 },
+    { crop: 'Sugarcane', variety: 'Co-86032', mandi: 'Mandya', state: 'Karnataka', min: 350, max: 450, modal: 400 },
+    { crop: 'Maize', variety: 'Hybrid', mandi: 'Davangere', state: 'Karnataka', min: 1600, max: 1850, modal: 1750 },
+    { crop: 'Groundnut', variety: 'Bold', mandi: 'Ballari', state: 'Karnataka', min: 4800, max: 5200, modal: 5000 },
+    { crop: 'Coffee', variety: 'Arabica', mandi: 'Chikmagalur', state: 'Karnataka', min: 15000, max: 16000, modal: 15500 },
+    { crop: 'Banana', variety: 'Yelakki', mandi: 'Kolar', state: 'Karnataka', min: 900, max: 1200, modal: 1050 },
+
+    // Punjab
+    { crop: 'Rice', variety: 'Basmati', mandi: 'Amritsar', state: 'Punjab', min: 3500, max: 4000, modal: 3800 },
+    { crop: 'Wheat', variety: 'HD-2967', mandi: 'Ludhiana', state: 'Punjab', min: 2250, max: 2450, modal: 2350 },
+    { crop: 'Cotton', variety: 'BT Cotton', mandi: 'Bhatinda', state: 'Punjab', min: 7000, max: 7400, modal: 7250 },
+    { crop: 'Maize', variety: 'Hybrid', mandi: 'Patiala', state: 'Punjab', min: 1600, max: 1900, modal: 1750 },
+    { crop: 'Potato', variety: 'Jyoti', mandi: 'Jalandhar', state: 'Punjab', min: 900, max: 1300, modal: 1100 },
+    { crop: 'Mustard', variety: 'Yellow', mandi: 'Sangrur', state: 'Punjab', min: 4600, max: 5000, modal: 4800 },
+    { crop: 'Onion', variety: 'White', mandi: 'Firozpur', state: 'Punjab', min: 1400, max: 1700, modal: 1550 },
+    { crop: 'Tomato', variety: 'Hybrid', mandi: 'Gurdaspur', state: 'Punjab', min: 1100, max: 1400, modal: 1250 },
+    { crop: 'Sugarcane', variety: 'Jaggery', mandi: 'Hoshiarpur', state: 'Punjab', min: 400, max: 500, modal: 450 },
+    { crop: 'Barley', variety: 'Two-row', mandi: 'Faridkot', state: 'Punjab', min: 1600, max: 1850, modal: 1700 },
+
+    // Maharashtra
+    { crop: 'Onion', variety: 'Red', mandi: 'Nashik', state: 'Maharashtra', min: 1500, max: 1800, modal: 1650 },
+    { crop: 'Tomato', variety: 'Desi', mandi: 'Pune', state: 'Maharashtra', min: 1000, max: 1300, modal: 1100 },
+    { crop: 'Sugarcane', variety: 'Jaggery', mandi: 'Kolhapur', state: 'Maharashtra', min: 350, max: 450, modal: 400 },
+    { crop: 'Grapes', variety: 'Thompson Seedless', mandi: 'Sangli', state: 'Maharashtra', min: 4000, max: 4800, modal: 4500 },
+    { crop: 'Pomegranate', variety: 'Bhagwa', mandi: 'Solapur', state: 'Maharashtra', min: 8000, max: 9500, modal: 8750 },
+    { crop: 'Cotton', variety: 'Long Staple', mandi: 'Nagpur', state: 'Maharashtra', min: 6800, max: 7300, modal: 7050 },
+    { crop: 'Soybean', variety: 'Yellow', mandi: 'Akola', state: 'Maharashtra', min: 4400, max: 4700, modal: 4550 },
+    { crop: 'Wheat', variety: 'Lokwan', mandi: 'Aurangabad', state: 'Maharashtra', min: 2100, max: 2400, modal: 2250 },
+    { crop: 'Rice', variety: 'Indrayani', mandi: 'Wardha', state: 'Maharashtra', min: 2800, max: 3200, modal: 3000 },
+    { crop: 'Banana', variety: 'Robusta', mandi: 'Jalgaon', state: 'Maharashtra', min: 700, max: 950, modal: 825 },
+
+    // Rajasthan
+    { crop: 'Mustard', variety: 'Yellow', mandi: 'Jaipur', state: 'Rajasthan', min: 4600, max: 5000, modal: 4800 },
+    { crop: 'Bajra', variety: 'Pearl Millet', mandi: 'Ajmer', state: 'Rajasthan', min: 1900, max: 2100, modal: 2000 },
+    { crop: 'Wheat', variety: 'Sharbati', mandi: 'Udaipur', state: 'Rajasthan', min: 2300, max: 2500, modal: 2400 },
+    { crop: 'Barley', variety: 'Six-row', mandi: 'Kota', state: 'Rajasthan', min: 1600, max: 1850, modal: 1700 },
+    { crop: 'Cotton', variety: 'BT Cotton', mandi: 'Alwar', state: 'Rajasthan', min: 7000, max: 7400, modal: 7200 },
+    { crop: 'Onion', variety: 'Red', mandi: 'Bikaner', state: 'Rajasthan', min: 1500, max: 1700, modal: 1600 },
+    { crop: 'Tomato', variety: 'Hybrid', mandi: 'Jodhpur', state: 'Rajasthan', min: 1100, max: 1400, modal: 1250 },
+    { crop: 'Coriander', variety: 'Green', mandi: 'Kota', state: 'Rajasthan', min: 6000, max: 6800, modal: 6400 },
+    { crop: 'Chickpea', variety: 'Desi', mandi: 'Bharatpur', state: 'Rajasthan', min: 4800, max: 5200, modal: 5000 },
+    { crop: 'Moong', variety: 'Green Gram', mandi: 'Barmer', state: 'Rajasthan', min: 5500, max: 6000, modal: 5750 },
+
+    // … repeat same structure for remaining 26 states
+];
+
+
+            let priceChart = null;
+
+            function populateFilters() {
+                const states = [...new Set(priceData.map(item => item.state))];
+                const crops = [...new Set(priceData.map(item => item.crop))];
+                states.forEach(state => elements.filterState.innerHTML += `<option value="${state}">${state}</option>`);
+                crops.forEach(crop => elements.filterCrop.innerHTML += `<option value="${crop}">${crop}</option>`);
+            }
+
+            function renderPriceTable() {
+                const stateFilter = elements.filterState.value;
+                const cropFilter = elements.filterCrop.value;
+
+                const filteredData = priceData.filter(item => 
+                    (stateFilter === 'all' || item.state === stateFilter) &&
+                    (cropFilter === 'all' || item.crop === cropFilter)
+                );
+
+                elements.tableBody.innerHTML = '';
+                if (filteredData.length === 0) {
+                    elements.noResults.style.display = 'block';
+                } else {
+                    elements.noResults.style.display = 'none';
+                    filteredData.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td><strong>${item.crop}</strong></td>
+                            <td>${item.variety}</td>
+                            <td>${item.mandi}</td>
+                            <td>${item.state}</td>
+                            <td>${item.min}</td>
+                            <td>${item.max}</td>
+                            <td><strong>${item.modal}</strong></td>`;
+                        row.addEventListener('click', () => showPriceTrend(item));
+                        elements.tableBody.appendChild(row);
+                    });
+                }
+            }
+            
+            function showPriceTrend(item) {
+                elements.chartTitle.textContent = `Price Trend for ${item.crop} in ${item.mandi}`;
+                const labels = ['May', 'Jun', 'Jul', 'Aug', 'Sep'];
+                const data = labels.map(() => item.modal + (Math.random() - 0.5) * 300);
+
+                if (priceChart) priceChart.destroy();
+                
+                priceChart = new Chart(elements.chartCanvas, {
+                    type: 'line',
+                    data: { labels, datasets: [{
+                        label: `Modal Price (₹/q)`,
+                        data: data,
+                        borderColor: 'rgba(46, 204, 113, 1)',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]},
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+                elements.modal.classList.add('active');
+                elements.modalOverlay.classList.add('active');
+            }
+
+            // Updated AI Forecast function using fetch with search grounding
+            async function handleForecast(e) {
+                e.preventDefault();
+                const crop = document.getElementById('ai-crop').value;
+                const state = document.getElementById('ai-state').value;
+                const period = document.getElementById('ai-period').value;
+
+                elements.aiResult.innerHTML = `<div class="loader-container"><div class="loader"></div><p>AI is analyzing your data...</p></div>`;
+
+                const userQuery = `What is the price forecast for ${crop} in ${state} for ${period}? Provide a price range and a brief justification.`;
+                const systemPrompt = "Act as a market analyst for Indian agricultural products. When providing a forecast, cite your sources. Format the response as: PREDICTION: [Price Range] | JUSTIFICATION: [Paragraph] | SOURCES: [List of source titles and URLs].";
+
+                // Using the API key from your other application
+                const apiKey = "AIzaSyCeil1RRuySImAxPOO6bxh31VDRXms4JSc";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    tools: [{ "google_search": {} }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                };
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API call failed with status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const candidate = result.candidates?.[0];
+                    if (!candidate || !candidate.content?.parts?.[0]?.text) {
+                        throw new Error("Invalid API response format.");
+                    }
+
+                    const text = candidate.content.parts[0].text;
+                    let sources = [];
+                    const groundingMetadata = candidate.groundingMetadata;
+                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                        sources = groundingMetadata.groundingAttributions
+                            .map(attribution => ({
+                                uri: attribution.web?.uri,
+                                title: attribution.web?.title,
+                            }))
+                            .filter(source => source.uri && source.title);
+                    }
+
+                    const parts = text.split('|').reduce((acc, part) => {
+                        const [key, ...value] = part.split(':');
+                        if (key && value) acc[key.trim().toUpperCase()] = value.join(':').trim();
+                        return acc;
+                    }, {});
+
+                    let sourcesHtml = '';
+                    if (sources.length > 0) {
+                        sourcesHtml = `
+                            <div style="margin-top: 1rem;">
+                                <strong>Sources:</strong>
+                                <ul style="list-style-type: '📖 ';">
+                                    ${sources.map(s => `<li><a href="${s.uri}" target="_blank" style="color: var(--primary-color); text-decoration: underline;">${s.title}</a></li>`).join('')}
+                                </ul>
+                            </div>`;
+                    }
+                    
+                    elements.aiResult.innerHTML = `
+                        <p>Forecast for <strong>${crop}</strong> in <strong>${state}</strong></p>
+                        <strong style="font-size: 1.5rem; color: var(--primary-color);">${parts.PREDICTION || 'Not available'}</strong>
+                        <p style="margin-top: 1rem;">${parts.JUSTIFICATION || 'Could not generate justification.'}</p>
+                        ${sourcesHtml}
+                    `;
+
+                } catch (err) {
+                    console.error("AI Forecast Error:", err);
+                    elements.aiResult.innerHTML = `<p style="color: var(--danger-color)">Could not get AI forecast. Please check your network connection and try again.</p>`;
+                }
+            }
+            
+            // Initial render and event listeners
+            populateFilters();
+            renderPriceTable();
+            elements.filterState.addEventListener('change', renderPriceTable);
+            elements.filterCrop.addEventListener('change', renderPriceTable);
+            elements.aiForm.addEventListener('submit', handleForecast);
+            document.querySelectorAll('[data-modal-close]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    elements.modal.classList.remove('active');
+                    elements.modalOverlay.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

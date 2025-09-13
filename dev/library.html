@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricultural Library - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2ECC71; --primary-hover: #27ae60; --secondary-color: #16A085;
+            --heading-color: #2c3e50; --text-color: #34495e; --light-text: #7f8c8d;
+            --bg-color: #ffffff; --alt-bg-color: #f4f7f6; --border-color: #e0e0e0;
+            --white-color: #ffffff; --danger-color: #e74c3c;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 30px rgba(46, 204, 113, 0.15);
+            --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; --border-radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.7; }
+        body.modal-open { overflow: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; color: var(--heading-color); }
+        .main-nav { gap: 2rem; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; }
+        
+        .card { background: var(--bg-color); border-radius: var(--border-radius); box-shadow: var(--card-shadow); transition: all var(--transition-speed); }
+        .btn { display: inline-block; padding: 12px 28px; border-radius: 50px; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(46, 204, 113, 0.3); }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border: 2px solid var(--border-color); }
+        .btn-secondary:hover { background-color: var(--alt-bg-color); }
+        .btn:disabled { background-image: none; background-color: #bdc3c7; border-color: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h3 { font-size: 2.8rem; color: var(--heading-color); }
+        .section-header p { font-size: 1.15rem; color: var(--light-text); max-width: 700px; margin: auto; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; }
+        .book-card { padding: 1.5rem; text-align: center; display: flex; flex-direction: column; }
+        .book-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+        .book-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .book-card h5 { font-size: 1.1rem; color: var(--heading-color); flex-grow: 1; margin: 0 0 1rem 0; }
+        .book-card-actions { display: flex; gap: 10px; margin-top: auto; }
+        .book-card-actions .btn { flex: 1; padding: 10px 15px; font-size: 0.9rem; }
+        
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 3000; }
+        .toast { background-color: var(--heading-color); color: white; padding: 15px 25px; border-radius: 8px; margin-bottom: 1rem; opacity: 0; transform: translateX(100%); animation: slideIn 0.5s forwards; }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+        /* Rich Modal Styles */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .pdf-modal { position: fixed; top: 50%; left: 50%; width: 90%; height: 90%; max-width: 1000px; background-color: #fff; transform: translate(-50%, -50%) scale(0.9); opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2001; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); }
+        .pdf-modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        .pdf-modal-header { display: flex; justify-content: space-between; align-items: center; background-color: var(--alt-bg-color); padding: 10px 20px; border-bottom: 1px solid var(--border-color); }
+        .pdf-modal-title { font-weight: 600; color: var(--heading-color); }
+        .pdf-modal-controls { display: flex; gap: 15px; }
+        .pdf-modal-controls button, .pdf-modal-controls a { background: none; border: none; color: var(--text-color); cursor: pointer; font-size: 24px; display: flex; align-items: center; transition: color 0.2s; }
+        .pdf-modal-controls button:hover, .pdf-modal-controls a:hover { color: var(--primary-color); }
+        .pdf-viewer { flex-grow: 1; border: none; }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48C4.7 9.1 5.97 7.74 7.56 6.9c1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85s1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51-2.76 4.48-4.79.31-.65.21-1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54s-1.11.82-.9 1.48c-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85s-1.25 1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="buy.html">Marketplace</a>
+                <a href="library.html" class="active">Library</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="library" class="app-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Agricultural Library</h3>
+                    <p>Access a collection of valuable books and resources to enhance your farming knowledge.</p>
+                </div>
+                <div id="book-grid" class="card-grid">
+                    </div>
+            </div>
+        </section>
+    </main>
+    
+    <div id="toast-container"></div>
+
+    <div id="pdf-modal-overlay" class="modal-overlay"></div>
+    <div id="pdf-modal" class="pdf-modal">
+        <div class="pdf-modal-header">
+            <span id="pdf-modal-title" class="pdf-modal-title"></span>
+            <div class="pdf-modal-controls">
+                <a id="pdf-download-btn" href="#" download><i data-feather="download"></i></a>
+                <button id="pdf-fullscreen-btn"><i data-feather="maximize"></i></button>
+                <button id="pdf-close-btn"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <iframe id="pdf-viewer" class="pdf-viewer"></iframe>
+    </div>
+
+    <script type="module">
+    const bookData = [
+        { id: 'b1', title: "Principles of Agricultural Economics", price: 499, cover: "books/3D-book-4-1536x1152.webp", pdf: "books/Principles-of-Agricultural-Economics-2.pdf" },
+        { id: 'b2', title: "Agricultural Heritage", price: 350, cover: "books/3D-book-1-1536x1152.webp", pdf: "books/Agricultural-Heritage.pdf" },
+        { id: 'b3', title: "Principles of Agricultural Economics Vol. 1", price: 450, cover: "books/3D-book-5-1536x1152.webp", pdf: "books/Principles-of-Agricultural-Economics-1.pdf" },
+        { id: 'b4', title: "Fundamentals of Plant Biochemistry", price: 550, cover: "books/3D-book-1-2-1536x1152.webp", pdf: "books/FUNDAMENTAL-OF-PLANT-BIOCHEMISTRY-AND-BlOTECHNOLOGY.pdf" },
+        { id: 'b5', title: "Fundamentals of Horticulture", price: 400, cover: "books/Fundamentals-of-Horticulture.webp", pdf: "books/AgriMoon-AHT-111-Fundamentals-of-Horticulture.pdf" },
+        { id: 'b6', title: "Fundamentals of Agronomy", price: 425, cover: "books/3D-book-1-1536x1152.webp", pdf: "books/Fundamentals-of-Agronomy-AGRlMOON.pdf" },
+        { id: 'b7', title: "Agricultural Marketing, Trade and Prices", price: 520, cover: "books/3D-book-1-5-1536x1152.webp", pdf: "books/AGRICULTURAL-MARKETING-TRADE-AND-PRICES-1.pdf" },
+        { id: 'b8', title: "Fundamentals of Agricultural Extension", price: 375, cover: "books/3D-book-4-1536x1152.webp", pdf: "books/FUNDAMENTALS-OF-AGRICULTURAL-EXTENSION-EDUCATION.pdf" }
+    ];
+
+    const bookGrid = document.getElementById('book-grid');
+    const modal = document.getElementById('pdf-modal');
+    const overlay = document.getElementById('pdf-modal-overlay');
+    const pdfViewer = document.getElementById('pdf-viewer');
+    const closeBtn = document.getElementById('pdf-close-btn');
+    const fullscreenBtn = document.getElementById('pdf-fullscreen-btn');
+    const downloadBtn = document.getElementById('pdf-download-btn');
+    const modalTitle = document.getElementById('pdf-modal-title');
+    const cartCountElement = document.getElementById('cart-count');
+
+    // --- UTILITY & CART FUNCTIONS ---
+    const getCart = () => JSON.parse(localStorage.getItem('agriConnectCart')) || [];
+    const saveCart = (cart) => localStorage.setItem('agriConnectCart', JSON.stringify(cart));
+
+    function showToast(message) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function updateCartCount() {
+        const cart = getCart();
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        cartCountElement.textContent = totalItems;
+    }
+
+    function renderBooks() {
+        const cart = getCart();
+        bookGrid.innerHTML = bookData.map((book, index) => {
+            const isInCart = cart.some(item => item.id === book.id);
+            return `
+            <div class="card book-card">
+                <img src="${book.cover}" alt="${book.title}" onerror="this.onerror=null;this.src='https://placehold.co/400x600/e8f5e9/7f8c8d?text=Cover';">
+                <h5>${book.title}</h5>
+                <div class="book-card-actions">
+                    <button class="btn btn-secondary read-btn" data-index="${index}">Read</button>
+                    <button class="btn btn-primary add-to-cart-btn" data-id="${book.id}" ${isInCart ? 'disabled' : ''}>
+                        ${isInCart ? 'In Cart' : `₹${book.price}`}
+                    </button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+    
+    function addToCart(bookId) {
+        let cart = getCart();
+        const bookToAdd = bookData.find(b => b.id === bookId);
+        
+        if (cart.some(item => item.id === bookId)) {
+            showToast(`"${bookToAdd.title}" is already in your cart.`);
+        } else {
+            cart.push({
+                id: bookToAdd.id,
+                name: bookToAdd.title,
+                price: bookToAdd.price,
+                imageUrl: bookToAdd.cover,
+                quantity: 1,
+                type: 'book' // Differentiate from crops
+            });
+            showToast(`"${bookToAdd.title}" was added to your cart!`);
+        }
+        
+        saveCart(cart);
+        updateCartCount();
+        renderBooks(); // Re-render to update the button states
+    }
+
+    // --- MODAL FUNCTIONS ---
+    function openModal(book) {
+        pdfViewer.src = book.pdf;
+        modalTitle.textContent = book.title;
+        downloadBtn.href = book.pdf;
+        downloadBtn.download = book.title.replace(/ /g, '_') + '.pdf';
+        modal.classList.add('active');
+        overlay.classList.add('active');
+        document.body.classList.add('modal-open');
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.classList.remove('modal-open');
+        pdfViewer.src = ""; // Stop PDF loading
+    }
+
+    // --- EVENT LISTENERS ---
+    bookGrid.addEventListener('click', (e) => {
+        const target = e.target.closest('button');
+        if (!target) return;
+
+        if (target.classList.contains('read-btn')) {
+            const bookIndex = target.dataset.index;
+            openModal(bookData[bookIndex]);
+        } else if (target.classList.contains('add-to-cart-btn')) {
+            const bookId = target.dataset.id;
+            addToCart(bookId);
+        }
+    });
+    
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+
+    fullscreenBtn.addEventListener('click', () => {
+        if (pdfViewer.requestFullscreen) {
+            pdfViewer.requestFullscreen();
+        }
+    });
+
+    // --- INITIALIZATION ---
+    feather.replace();
+    renderBooks();
+    updateCartCount();
+</script>
+</body>
+</html>

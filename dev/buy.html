@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2ECC71; --primary-hover: #27ae60; --secondary-color: #16A085;
+            --heading-color: #2c3e50; --text-color: #34495e; --light-text: #7f8c8d;
+            --bg-color: #ffffff; --alt-bg-color: #f4f7f6; --border-color: #e0e0e0;
+            --white-color: #ffffff; --danger-color: #e74c3c;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); --glow-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+            --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; --border-radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.7; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; color: var(--heading-color); }
+        .main-nav { gap: 2rem; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; }
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 0; box-shadow: var(--card-shadow); transition: all var(--transition-speed) ease; display: flex; flex-direction: column; }
+        .toast-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--heading-color); color: white; padding: 15px 25px; border-radius: 50px; z-index: 2000; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; }
+        .toast-notification.show { opacity: 1; transform: translate(-50%, -10px); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 24px; border-radius: 50px; border: 2px solid transparent; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: var(--glow-shadow); }
+        .marketplace-layout { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: flex-start; padding-top: 40px;}
+        .filters-sidebar { position: sticky; top: 100px; }
+        .filter-widget { margin-bottom: 1.5rem; padding: 2rem; }
+        .filter-widget h4 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--heading-color); }
+        .filter-widget ul { list-style: none; }
+        .filter-widget ul li a { display: block; padding: 0.5rem 0; color: var(--text-color); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .filter-widget ul li a:hover, .filter-widget ul li a.active { color: var(--primary-color); font-weight: 700; }
+        input[type="radio"] { margin-right: 0.5rem; accent-color: var(--primary-color); }
+        .price-slider-group label { display: flex; justify-content: space-between; font-weight: 500; margin-bottom: 0.5rem; }
+        input[type="range"] { width: 100%; cursor: pointer; }
+        .main-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .search-bar { flex-grow: 1; max-width: 400px; position: relative; }
+        .search-bar input { width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 50px; border: 1px solid var(--border-color); font-size: 1rem; }
+        .search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--light-text); }
+        .crop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .crop-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(46, 204, 113, 0.15); }
+        .crop-card-image { width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius) var(--border-radius) 0 0; }
+        .crop-card-info { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .crop-card-title { font-size: 1.3rem; font-weight: 600; color: var(--heading-color); }
+        .crop-card-price { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin: 0.25rem 0; }
+        .crop-card-meta { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--light-text); margin-top: 0.5rem; flex-wrap: wrap; }
+        .buy-controls { margin-top: auto; padding-top: 1rem; display: flex; gap: 0.5rem; align-items: center; }
+        .quantity-input { width: 70px; padding: 10px; border: 1px solid var(--border-color); border-radius: 50px; text-align: center; font-weight: 600; font-size: 1rem; }
+        .buy-controls .btn { flex-grow: 1; }
+        @media (max-width: 900px) { .marketplace-layout { grid-template-columns: 1fr; } .filters-sidebar { position: static; } }
+   
+   .main-nav {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+}
+
+.main-nav a {
+  position: relative; /* This is crucial for positioning the pseudo-element */
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.main-nav a.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: green;
+  transition: all 0.3s ease;
+}
+</style>
+</head>
+<body>
+
+    <header class="app-header">
+       <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67 2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+  
+                <a href="prices.html">Prices</a>
+                <a href="buy.html" class="active">Buy</a>
+                <a href="sell.html">Sell</a>
+                <a href="shop.html">Shop</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+             
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="marketplace-layout">
+                <aside class="filters-sidebar">
+                    <div class="card filter-widget">
+                        <h4>Crop Category</h4>
+                        <ul id="category-filter">
+                            <li><a href="#" class="active" data-category="all">All Crops</a></li>
+                            <li><a href="#" data-category="Wheat">Wheat</a></li>
+                            <li><a href="#" data-category="Rice">Rice</a></li>
+                            <li><a href="#" data-category="Cotton">Cotton</a></li>
+                            <li><a href="#" data-category="Sugarcane">Sugarcane</a></li>
+                        </ul>
+                    </div>
+                    <div class="card filter-widget">
+                        <h4>Filter by State</h4>
+                        <select id="state-filter" style="width:100%; padding: 10px; border-radius: 8px; font-size: 1rem; border-color: var(--border-color);">
+                            <option value="all">All India</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Punjab">Punjab</option>
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="Gujarat">Gujarat</option>
+                        </select>
+                    </div>
+                    <div class="card filter-widget">
+                        <h4>Price Range (₹/Quintal)</h4>
+                        <div class="price-slider-group">
+                            <label for="price-range"><span>₹0</span><span id="price-range-value">₹10000</span></label>
+                            <input type="range" id="price-range" min="0" max="10000" value="10000" step="100">
+                        </div>
+                    </div>
+                     <div class="card filter-widget">
+                        <h4>Produce Type</h4>
+                        <div id="type-filter">
+                            <label><input type="radio" name="produce-type" value="all" checked> All</label>
+                            <label><input type="radio" name="produce-type" value="Organic"> Organic</label>
+                            <label><input type="radio" name="produce-type" value="Conventional"> Conventional</label>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="marketplace-main">
+                    <div class="main-controls">
+                        <div class="search-bar">
+                            <i data-feather="search"></i>
+                            <input type="text" id="search-bar" placeholder="Search for crops...">
+                        </div>
+                        <select id="sort-by" style="padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); font-size: 1rem;">
+                            <option value="default">Sort by: Default</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="name-asc">Name: A to Z</option>
+                        </select>
+                    </div>
+
+                    <div id="crop-grid" class="crop-grid">
+                        </div>
+                    <p id="no-listings-message" class="card" style="text-align:center; padding: 2rem; display: none; font-weight: 500;">
+                        No listings match your current filters.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div id="toast-notification" class="toast-notification"></div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DATA: Product information ---
+       
+         const defaultProducts = [
+            { id: 'default-1', name: 'Premium Wheat', category: 'Wheat', price: 2450, location: 'Ludhiana, Punjab', grade: 'A+', type: 'Conventional', imageUrl:  'https://www.greendna.in/cdn/shop/products/wheat_1200x.jpg?v=1589185385'},
+            { id: 'default-3', name: 'Sugarcane Sticks', category: 'Sugarcane', price: 400, location: 'Meerut, Uttar Pradesh', grade: 'A', type: 'Conventional', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/12/370251763/HR/FH/KF/145888256/fresh-sugarcane-sticks.jpg'},
+            { id: 'default-5', name: 'Long-Staple Cotton', category: 'Cotton', price: 7500, location: 'Amreli, Gujarat', grade: 'AA', type: 'Conventional', imageUrl: 'https://parachutehome.com/cdn/shop/articles/What-is-Egyptian-Long-Staple-Cotton_Hero_Retouched-2-1-1.jpg?v=1741064904'},
+            { id: 'default-6', name: 'Organic Turmeric', category: 'Spices', price: 8500, location: 'Erode, Tamil Nadu', grade: 'A+', type: 'Organic', imageUrl: 'https://www.shrijigreen.com/wp-content/uploads/2021/09/Organic-Turmeric-Cultivation.png'}
+        ];
+
+
+
+        const userListings = JSON.parse(localStorage.getItem('userCropListings')) || [];
+
+        const formattedUserListings = userListings.map(listing => {
+            const [city = 'Unknown', state = 'India'] = listing.location.split(',').map(s => s.trim());
+            return {
+                id: listing.id, name: listing.name, category: listing.category, price: listing.price,
+                location: `${city}, ${state}`, grade: listing.grade || 'A', type: listing.type || 'Conventional',
+                imageUrl: listing.img 
+            };
+        });
+
+        // Combine lists with YOUR LISTINGS ON TOP
+        const allProducts = [...formattedUserListings, ...defaultProducts];
+
+        // --- DOM Elements ---
+        const cropGrid = document.getElementById('crop-grid');
+        const cartCountElement = document.getElementById('cart-count');
+        const categoryFilter = document.getElementById('category-filter');
+        const stateFilter = document.getElementById('state-filter');
+        const priceRange = document.getElementById('price-range');
+        const priceRangeValue = document.getElementById('price-range-value');
+        const typeFilter = document.getElementById('type-filter');
+        const searchBar = document.getElementById('search-bar');
+        const sortBy = document.getElementById('sort-by');
+        const noListingsMessage = document.getElementById('no-listings-message');
+        
+        let filters = {
+            category: 'all', state: 'all', maxPrice: 10000,
+            type: 'all', searchTerm: '', sortBy: 'default'
+        };
+
+        const getCart = () => JSON.parse(localStorage.getItem('agriConnectCart')) || [];
+        const saveCart = (cart) => localStorage.setItem('agriConnectCart', JSON.stringify(cart));
+        
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        const updateCartCount = () => {
+            const totalItems = getCart().reduce((sum, item) => sum + item.quantity, 0);
+            cartCountElement.textContent = totalItems;
+        };
+        
+        const addToCart = (productId, quantity) => {
+            const cart = getCart();
+            const product = allProducts.find(p => p.id == productId);
+            if (!product) return;
+
+            const existingItem = cart.find(item => item.id == productId);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({ ...product, quantity: quantity });
+            }
+
+            saveCart(cart);
+            updateCartCount();
+            showToast(`Added ${quantity} x ${product.name} to cart!`);
+        };
+
+        const renderProducts = (productsToRender) => {
+            cropGrid.innerHTML = ''; 
+            noListingsMessage.style.display = productsToRender.length === 0 ? 'block' : 'none';
+
+            productsToRender.forEach(product => {
+                const card = `
+                    <div class="card crop-card">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="crop-card-image">
+                        <div class="crop-card-info">
+                            <h4 class="crop-card-title">${product.name}</h4>
+                            <p class="crop-card-price">₹${product.price.toLocaleString('en-IN')} <span style="font-size: 1rem; font-weight: 400;">/ quintal</span></p>
+                            <div class="crop-card-meta">
+                                <span><i data-feather="map-pin" style="width:14px;"></i> ${product.location}</span>
+                                <span>Grade: ${product.grade}</span>
+                            </div>
+                            <div class="buy-controls">
+                                <input type="number" class="quantity-input" value="1" min="1" max="1000">
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="${product.id}">Add</button>
+                            </div>
+                        </div>
+                    </div>`;
+                cropGrid.innerHTML += card;
+            });
+            feather.replace();
+        };
+
+        const applyFiltersAndRender = () => {
+            let filteredProducts = [...allProducts];
+            if (filters.searchTerm) filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(filters.searchTerm));
+            if (filters.category !== 'all') filteredProducts = filteredProducts.filter(p => p.category === filters.category);
+            if (filters.state !== 'all') filteredProducts = filteredProducts.filter(p => p.location.toLowerCase().includes(filters.state.toLowerCase()));
+            if (filters.type !== 'all') filteredProducts = filteredProducts.filter(p => p.type === filters.type);
+            filteredProducts = filteredProducts.filter(p => p.price <= filters.maxPrice);
+            
+            if (filters.sortBy !== 'default') {
+                switch(filters.sortBy) {
+                    case 'price-asc': filteredProducts.sort((a, b) => a.price - b.price); break;
+                    case 'price-desc': filteredProducts.sort((a, b) => b.price - a.price); break;
+                    case 'name-asc': filteredProducts.sort((a,b) => a.name.localeCompare(b.name)); break;
+                }
+            }
+            renderProducts(filteredProducts);
+        };
+
+        cropGrid.addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.classList.contains('add-to-cart-btn')) {
+                const productId = target.dataset.productId;
+                const card = target.closest('.crop-card');
+                const quantityInput = card.querySelector('.quantity-input');
+                const quantity = parseInt(quantityInput.value, 10);
+
+                if (quantity > 0) {
+                    addToCart(productId, quantity);
+                } else {
+                    alert('Please enter a valid quantity.');
+                }
+            }
+        }); 
+
+        searchBar.addEventListener('input', (e) => { filters.searchTerm = e.target.value.toLowerCase(); applyFiltersAndRender(); });
+        categoryFilter.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (e.target.tagName === 'A') {
+                categoryFilter.querySelector('a.active').classList.remove('active');
+                e.target.classList.add('active');
+                filters.category = e.target.dataset.category;
+                applyFiltersAndRender();
+            }
+        });
+        stateFilter.addEventListener('change', (e) => { filters.state = e.target.value; applyFiltersAndRender(); });
+        priceRange.addEventListener('input', (e) => {
+            filters.maxPrice = parseInt(e.target.value);
+            priceRangeValue.textContent = `₹${filters.maxPrice.toLocaleString('en-IN')}`;
+            applyFiltersAndRender();
+        });
+        typeFilter.addEventListener('change', (e) => {
+            if(e.target.name === 'produce-type') { filters.type = e.target.value; applyFiltersAndRender(); }
+        });
+        sortBy.addEventListener('change', (e) => { filters.sortBy = e.target.value; applyFiltersAndRender(); });
+
+        feather.replace();
+        applyFiltersAndRender();
+        updateCartCount();
+    });
+    </script>
+</body>
+</html>

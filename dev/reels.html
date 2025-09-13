@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>KrishiMandi - Farmer Reels</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2ECC71;
+            --bg-color: #000000;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            position: fixed;
+        }
+
+        .app-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            padding: 10px 0;
+            z-index: 1000;
+        }
+        .app-header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+        }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; }
+        .main-nav { display: flex; gap: 1.5rem; }
+        .main-nav a {
+            text-decoration: none;
+            color: #ddd;
+            font-weight: 500;
+            transition: color 0.2s ease-in-out;
+        }
+        .main-nav a:hover, .main-nav a.active { color: var(--primary-color); }
+
+
+        .reels-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        .reels-feed {
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .reels-feed::-webkit-scrollbar { display: none; }
+        .reels-feed { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .reel {
+            width: 100%;
+            height: 100%;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+        }
+        .reel video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .reel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            padding-bottom: 90px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .reel-interaction-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .status-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 70px;
+            height: 70px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .status-icon.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .reel-info { pointer-events: auto; z-index: 2; }
+        .reel-info h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; color: white; }
+        .reel-info p { font-size: 0.9rem; line-height: 1.3;color: white; }
+
+        .reel-actions {
+            position: absolute;
+            bottom: 90px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            pointer-events: auto;
+            z-index: 2;
+        }
+        .action-button {
+            display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; background: none; border: none; color: white;
+        }
+        .action-button svg {
+            width: 32px; height: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            transition: transform 0.2s ease;
+        }
+        .action-button:hover svg { transform: scale(1.1); }
+        .action-button.like.active svg { fill: #ff3b5c; stroke: #ff3b5c; }
+        .action-button span { font-size: 0.8rem; font-weight: 500; margin-top: 5px; }
+
+        .side-actions-bar {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            pointer-events: none;
+        }
+        .side-action-button {
+            padding: 10px 15px;
+            background-color: rgba(30, 30, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            text-decoration: none;
+            pointer-events: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+        }
+        .side-action-button:hover {
+            background-color: rgba(50, 50, 50, 0.8);
+        }
+        .side-action-button svg { width: 24px; height: 24px; }
+        .side-action-button span { font-weight: 600; font-size: 0.9rem; }
+        
+        /* Comments Panel */
+        .comments-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-height: 70%;
+            width: 100%;
+            margin: 0 auto;
+            max-width: 450px;
+            background-color: #1c1c1c;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            z-index: 1001;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        .comments-panel.active { transform: translateY(0); }
+        .comments-header { padding: 15px; text-align: center;color: white; font-weight: 600; border-bottom: 1px solid #333; }
+        .comments-list { flex-grow: 1; overflow-y: auto; padding: 15px; }
+        .comment { margin-bottom: 15px; }
+        .comment strong { font-size: 0.9rem; color: white; } /* Text color set to white */
+        .comment p { font-size: 0.9rem; color: #ddd; line-height: 1.4; margin-top: 2px; }
+        .comment-form { display: flex; padding: 15px; border-top: 1px solid #333; }
+        .comment-input { flex-grow: 1; background: #333; border: none; color: white; padding: 10px; border-radius: 20px; }
+        .comment-submit { background: var(--primary-color); color: white; border: none; padding: 10px 15px; border-radius: 20px; margin-left: 10px; font-weight: 600; }
+
+        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; }
+        .toast { padding: 12px 20px; border-radius: 8px; color: white; background-color: rgba(0,0,0,0.7); font-weight: 500; margin-top: 10px; opacity: 0; animation: fadeIn 0.5s forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .main-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="side-actions-bar">
+        <a href="knowledge-hub.html" class="side-action-button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            <span>Back</span>
+        </a>
+        <button class="side-action-button" id="upload-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <span>Upload</span>
+        </button>
+    </div>
+
+    <input type="file" id="upload-input" accept="video/*" style="display: none;">
+
+    <div class="reels-container">
+        <div class="reels-feed" id="reels-feed"></div>
+    </div>
+    
+    <div id="toast-container"></div>
+
+    <div class="comments-panel" id="comments-panel">
+        <div class="comments-header" id="comments-header">Comments</div>
+        <div class="comments-list" id="comments-list"></div>
+        <form class="comment-form" id="comment-form">
+            <input type="text" class="comment-input" placeholder="Add a comment..." required>
+            <button type="submit" class="comment-submit">Post</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reelsFeed = document.getElementById('reels-feed');
+            const uploadInput = document.getElementById('upload-input');
+            const uploadBtn = document.getElementById('upload-btn');
+            const commentsPanel = document.getElementById('comments-panel');
+            const commentsList = document.getElementById('comments-list');
+            const commentForm = document.getElementById('comment-form');
+            const commentsHeader = document.getElementById('comments-header');
+
+            let currentReelIndexForComment = -1;
+            let observer;
+
+            let reelData = [
+                { user: 'FarmerRaj', src: "videos/1.mp4", caption: 'Harvesting the golden wheat fields today! 🌾', likes: 2345, isLiked: false, comments: [{u:'AgriFan', t:'Beautiful!'}, {u:'Priya', t:'Amazing yield!'}] },
+                { user: 'GreenThumbPriya', src: "videos/2.mp4", caption: 'My organic tomatoes are finally ripe!', likes: 1890, isLiked: false, comments: [] },
+                { user: 'TractorLife', src: "videos/3.mp4", caption: 'Modern plowing techniques in action.', likes: 5230, isLiked: false, comments: [{u:'TechFarming', t:'What model is that?'}] },
+                { user: 'SunitaFarms', src: "videos/4.mp4", caption: 'Watering the mustard fields. A beautiful sight.', likes: 3120, isLiked: false, comments: [] },
+                { user: 'AnilAgriTech', src: "videos/5.mp4", caption: 'Using drones for crop monitoring.', likes: 9870, isLiked: false, comments: [{u:'DroneGuy', t:'Awesome!'}, {u:'VillageRoots', t:'The future!'}] },
+                { user: 'VillageRoots', src: "videos/6.mp4", caption: 'A day in the life of a cotton farmer.', likes: 2567, isLiked: false, comments: [] },
+                { user: 'CropCareExpert', src: "videos/7.mp4", caption: 'Quick tip: Check your soil pH!', likes: 4500, isLiked: false, comments: [] },
+                { user: 'TheHappyFarmer', src: "videos/8.mp4", caption: 'Fresh produce ready for the mandi!', likes: 3321, isLiked: false, comments: [] },
+                { user: 'SugarcaneKing', src: "videos/9.mp4", caption: 'The sugarcane harvest is looking great.', likes: 4100, isLiked: false, comments: [] }
+            ];
+            
+            function showToast(message) {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                container.appendChild(toast);
+                setTimeout(() => { toast.remove(); }, 3000);
+            }
+
+            function createReelElement(reelInfo, reelIndex) {
+                const reel = document.createElement('div');
+                reel.className = 'reel';
+                
+                const video = document.createElement('video');
+                video.src = reelInfo.src;
+                video.loop = true;
+                video.playsInline = true;
+
+                const statusIcon = document.createElement('div');
+                statusIcon.className = 'status-icon';
+                reel.appendChild(statusIcon);
+                
+                let holdTimeout;
+                const interactionLayer = document.createElement('div');
+                interactionLayer.className = 'reel-interaction-layer';
+
+                interactionLayer.addEventListener('mousedown', () => { holdTimeout = setTimeout(() => { video.pause(); showStatusIcon('pause'); }, 300); });
+                interactionLayer.addEventListener('mouseup', () => { clearTimeout(holdTimeout); if (video.paused) video.play(); });
+                interactionLayer.addEventListener('touchstart', () => { holdTimeout = setTimeout(() => { video.pause(); showStatusIcon('pause'); }, 300); });
+                interactionLayer.addEventListener('touchend', () => { clearTimeout(holdTimeout); if (video.paused) video.play(); });
+                interactionLayer.addEventListener('click', () => { video.muted = !video.muted; showStatusIcon(video.muted ? 'mute' : 'unmute'); });
+                
+                function showStatusIcon(type) {
+                    const icons = {
+                        mute: '<svg fill="white" width="32" height="32" viewBox="0 0 24 24"><path d="M19 11h-1.7c0 .58-.1 1.13-.27 1.64l1.27 1.27c.44-.88.7-1.87.7-2.91zM4 11H3c0 1.86.67 3.58 1.76 4.93l1.27-1.27C5.23 12.93 4.8 12 4.8 11zm7.2 7.2c.45 0 .88-.07 1.29-.18l-1.47-1.47c-.27.03-.54.05-.82.05a6.04 6.04 0 0 1-5.02-2.81L4.7 12.5A8 8 0 0 0 11.2 20v-1.8zm-1.27-5.27l-4-4L4.7 6.5l2.83 2.83L4.8 11H3a9 9 0 0 0 7.2 8.93V22h2v-2.07a9.04 9.04 0 0 0 5.25-4.38l2.92 2.92 1.23-1.23-14.7-14.7zm8.32-1.02a8.98 8.98 0 0 0-5.25-4.38V2h-2v2.07A8.98 8.98 0 0 0 6.75 8.43l1.27 1.27A7.01 7.01 0 0 1 12 4a7.04 7.04 0 0 1 6.2 4.91z"/></svg>',
+                        unmute: '<svg fill="white" width="32" height="32" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>',
+                        pause: '<svg fill="white" width="32" height="32" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+                    };
+                    statusIcon.innerHTML = icons[type];
+                    statusIcon.classList.add('visible');
+                    setTimeout(() => statusIcon.classList.remove('visible'), 800);
+                }
+
+                const overlay = document.createElement('div');
+                overlay.className = 'reel-overlay';
+                
+                overlay.innerHTML = `
+                    <div class="reel-info">
+                        <h4>@${reelInfo.user}</h4>
+                        <p>${reelInfo.caption}</p>
+                    </div>
+                    <div class="reel-actions">
+                        <button class="action-button like ${reelInfo.isLiked ? 'active' : ''}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                            <span class="likes-count">${reelInfo.likes}</span>
+                        </button>
+                        <button class="action-button comment">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            <span class="comments-count">${reelInfo.comments.length}</span>
+                        </button>
+                        <button class="action-button share">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                `;
+
+                if (reelInfo.isUserUploaded) {
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'action-button delete';
+                    deleteButton.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg><span>Delete</span>`;
+                    overlay.querySelector('.reel-actions').appendChild(deleteButton);
+                    deleteButton.addEventListener('click', () => { reel.remove(); showToast("Reel deleted."); });
+                }
+                
+                reel.appendChild(video);
+                reel.appendChild(interactionLayer);
+                reel.appendChild(overlay);
+                
+                const likeBtn = reel.querySelector('.like');
+                likeBtn.addEventListener('click', () => {
+                    reelInfo.isLiked = !reelInfo.isLiked;
+                    reelInfo.likes += reelInfo.isLiked ? 1 : -1;
+                    likeBtn.classList.toggle('active');
+                    likeBtn.querySelector('.likes-count').textContent = reelInfo.likes;
+                });
+
+                reel.querySelector('.comment').addEventListener('click', () => {
+                    openComments(reelIndex);
+                });
+                reel.querySelector('.share').addEventListener('click', () => showToast('Sharing feature coming soon!'));
+
+                return reel;
+            }
+
+            function openComments(reelIndex) {
+                currentReelIndexForComment = reelIndex;
+                const reel = reelData[reelIndex];
+                commentsHeader.textContent = `${reel.comments.length} Comments`;
+                commentsList.innerHTML = '';
+                reel.comments.forEach(comment => {
+                    const commentEl = document.createElement('div');
+                    commentEl.className = 'comment';
+                    commentEl.innerHTML = `<strong>@${comment.u}</strong><p>${comment.t}</p>`;
+                    commentsList.appendChild(commentEl);
+                });
+                commentsPanel.classList.add('active');
+            }
+
+            function closeComments() {
+                commentsPanel.classList.remove('active');
+            }
+            
+            function renderReels() {
+                reelsFeed.innerHTML = '';
+                reelData.forEach((reelInfo, index) => {
+                    const reelElement = createReelElement(reelInfo, index);
+                    reelsFeed.appendChild(reelElement);
+                });
+
+                // Re-initialize observer
+                observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const video = entry.target.querySelector('video');
+                        if (entry.isIntersecting) {
+                            video.play().catch(e => { video.muted = true; video.play()});
+                        } else {
+                            video.pause();
+                            video.currentTime = 0;
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                document.querySelectorAll('.reel').forEach(reel => observer.observe(reel));
+            }
+
+            commentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = e.target.querySelector('.comment-input');
+                const commentText = input.value.trim();
+                if (commentText && currentReelIndexForComment !== -1) {
+                    reelData[currentReelIndexForComment].comments.push({ u: 'You', t: commentText });
+                    openComments(currentReelIndexForComment); 
+                    const reelOnScreen = document.querySelectorAll('.reel')[currentReelIndexForComment];
+                    if(reelOnScreen) {
+                        reelOnScreen.querySelector('.comments-count').textContent = reelData[currentReelIndexForComment].comments.length;
+                    }
+                    input.value = '';
+                }
+            });
+            document.addEventListener('click', (e) => {
+                if (!commentsPanel.contains(e.target) && !e.target.closest('.action-button.comment')) {
+                   closeComments();
+                }
+            });
+
+            uploadBtn.addEventListener('click', () => uploadInput.click());
+            uploadInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const videoURL = URL.createObjectURL(file);
+                    const newReelData = {
+                        user: 'You', 
+                        src: videoURL,
+                        caption: 'My new reel!', 
+                        likes: 0, 
+                        isLiked: false, 
+                        comments: [], 
+                        isUserUploaded: true
+                    };
+                    
+                    reelData.unshift(newReelData);
+                    renderReels(); // Re-render the entire feed
+
+                    const newReel = reelsFeed.firstChild;
+                    if (newReel) {
+                        newReel.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    showToast('Reel uploaded successfully!');
+                }
+                uploadInput.value = '';
+            });
+
+            // Initial Load
+            renderReels();
+        });
+    </script>
+</body>
+</html>
+

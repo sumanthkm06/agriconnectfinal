@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrishiMandi - Farmer Stress & Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .alert-card {
+            border-left: 5px solid #e74c3c;
+        }
+        .alert-card .icon {
+            background-color: #fbe9e7;
+            color: #e74c3c;
+        }
+        .helpline-card {
+            border-left: 5px solid var(--primary-color);
+        }
+        .helpline-card .icon {
+            background-color: #e8f5e9;
+            color: var(--primary-color);
+        }
+        .support-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.3rem;
+        }
+        .support-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .support-card .icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        .helpline-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+        .state-helpline-container {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        #state-helpline-info {
+            margin-top: 1rem;
+            background-color: var(--alt-bg-color);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header scrolled">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48C4.7 9.1 5.97 7.74 7.56 6.9c1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85s1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51-2.76 4.48-4.79.31-.65.21-1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54s-1.11.82-.9 1.48c-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85s-1.25 1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>KrishiMandi</h1>
+            </a>
+             <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="prices.html">Prices</a>
+                <a href="buy.html">Buy</a>
+                <a href="sell.html">Sell</a>
+                <a href="diagnose.html">Diagnose</a>
+                <a href="shop.html">Shop</a>
+                <a href="insurance.html">Insurance</a>
+                <a href="library.html">Library</a>
+                <a href="support.html" class="active">Support</a>
+            </nav>
+            <div id="header-right" class="header-right"></div>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Farmer Stress & Support Center</h3>
+                    <p>You are not alone. Find resources, helplines, and solutions to help you through challenging times.</p>
+                </div>
+
+                <!-- Simulated Alerts -->
+                <div class="section-header">
+                    <h4 style="font-size:1.5rem; margin-bottom:1rem;">Your Farm Alerts</h4>
+                </div>
+                <div class="support-grid">
+                    <div class="card support-card alert-card">
+                        <h4>
+                            <span class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg></span>
+                            Crop Loss Warning
+                        </h4>
+                        <p>We've detected two consecutive crop failure reports for your paddy field. This may indicate a soil health issue. We recommend getting a soil test.</p>
+                        <a href="diagnose.html" class="btn btn-secondary">Diagnose Problem</a>
+                    </div>
+                     <div class="card support-card alert-card">
+                        <h4>
+                            <span class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg></span>
+                            Loan Payment Alert
+                        </h4>
+                        <p>Your KCC loan payment is due in 7 days. If you're facing difficulties, explore government relief schemes or contact a financial advisor.</p>
+                        <a href="insurance.html" class="btn btn-secondary">Explore Schemes</a>
+                    </div>
+                </div>
+
+                <!-- Helplines Section -->
+                <div class="section-header" style="margin-top: 80px;">
+                     <h4 style="font-size:1.5rem; margin-bottom:1rem;">Immediate Assistance</h4>
+                </div>
+                 <div class="support-grid">
+                    <div class="card support-card helpline-card">
+                        <h4>
+                            <span class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></span>
+                           Kisan Call Center
+                        </h4>
+                        <p>National helpline for all farming-related queries. Available in 22 local languages.</p>
+                        <p class="helpline-number">1800-180-1551</p>
+                        <a href="tel:18001801551" class="btn btn-primary">Click to Call (Toll-Free)</a>
+                    </div>
+
+                    <div class="card support-card">
+                        <h4>State-Specific Helplines</h4>
+                         <p>Select your state to find local agriculture department numbers and support centers.</p>
+                         <div class="state-helpline-container">
+                             <label for="state-select">Select Your State:</label>
+                             <select id="state-select" class="form-control" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color);">
+                                 <!-- Options will be populated by JS -->
+                             </select>
+                             <div id="state-helpline-info" class="hidden"></div>
+                         </div>
+                    </div>
+                 </div>
+                 
+                <!-- Knowledge Base Section -->
+                <div class="section-header" style="margin-top: 80px;">
+                    <h4 style="font-size:1.5rem; margin-bottom:1rem;">Knowledge Base & Resources</h4>
+                </div>
+                <div class="support-grid">
+                    <div class="card support-card">
+                        <h4><span class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 4h5m-5 4h5"></path></svg></span>Govt. Schemes</h4>
+                        <p>Explore central and state government schemes for subsidies, loans, and more.</p>
+                        <a href="insurance.html" class="btn btn-secondary">View Schemes</a>
+                    </div>
+                    <div class="card support-card">
+                        <h4><span class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>Insurance Guide</h4>
+                        <p>Understand crop insurance plans to protect your harvest from unforeseen events.</p>
+                        <a href="insurance.html" class="btn btn-secondary">Learn More</a>
+                    </div>
+                    <div class="card support-card">
+                        <h4><span class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>Agri Library</h4>
+                        <p>Access our free digital library of books and research papers on modern farming.</p>
+                        <a href="library.html" class="btn btn-secondary">Browse Books</a>
+                    </div>
+                </div>
+
+                 <!-- Mental Health & Community Section -->
+                 <div class="section-header" style="margin-top: 80px;">
+                     <h4 style="font-size:1.5rem; margin-bottom:1rem;">Mental Health & Community Support</h4>
+                </div>
+                 <div class="support-grid">
+                      <div class="card support-card alert-card">
+                        <h4>
+                            <span class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></span>
+                           Counseling Support
+                        </h4>
+                        <p>Confidential support for stress, anxiety, and other mental health concerns. You are not alone.</p>
+                        <p class="helpline-number">1800-599-0019</p>
+                        <a href="tel:18005990019" class="btn btn-secondary">Call KIRAN Helpline</a>
+                    </div>
+                     <div class="card support-card helpline-card">
+                        <h4>
+                            <span class="icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.122-1.28-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.122-1.28.356-1.857m0 0a5.002 5.002 0 019.288 0M12 14a4 4 0 100-8 4 4 0 000 8z"></path></svg></span>
+                           Community Forum
+                        </h4>
+                        <p>Connect with fellow farmers in our community forum to share experiences and find peer support.</p>
+                        <a href="https://chat.whatsapp.com/FDRP9nvvieYFiJhSXYFixW" target="_blank" class="btn btn-primary" style="margin-top:1rem;">Join Discussion</a>
+                    </div>
+                 </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast-container"></div>
+    <footer class="app-footer">
+        <div class="container">
+            <p>&copy; 2025 KrishiMandi. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stateSelect = document.getElementById('state-select');
+            const stateHelplineInfo = document.getElementById('state-helpline-info');
+            
+            const helplineData = {
+                "Andaman & Nicobar Islands": { name: "Directorate of Agriculture, A&N", number: "03192-233253", address: "Port Blair" },
+                "Andhra Pradesh": { name: "Rythu Bharosa Kendram", number: "155251", address: "Guntur" },
+                "Arunachal Pradesh": { name: "Dept. of Agriculture, AP", number: "0360-2212513", address: "Itanagar" },
+                "Assam": { name: "Assam Agri Helpline", number: "1800-345-3756", address: "Guwahati" },
+                "Bihar": { name: "Bihar Kisan Call Centre", number: "1800-345-6290", address: "Patna" },
+                "Chandigarh": { name: "Chandigarh Agri Dept.", number: "0172-2700223", address: "Chandigarh" },
+                "Chhattisgarh": { name: "CG Kisan Mitra", number: "1800-233-1850", address: "Raipur" },
+                "Dadra & Nagar Haveli and Daman & Diu": { name: "Agri Dept. D&NH and D&D", number: "0260-2642721", address: "Daman" },
+                "Delhi": { name: "Delhi Agri. Marketing Board", number: "011-27454215", address: "Delhi" },
+                "Goa": { name: "Directorate of Agriculture, Goa", number: "0832-2225434", address: "Panaji" },
+                "Gujarat": { name: "iKhedut Portal Helpline", number: "1800-180-1551", address: "Gandhinagar" },
+                "Haryana": { name: "Haryana Kisan Call Centre", number: "1800-180-2117", address: "Panchkula" },
+                "Himachal Pradesh": { name: "HP Agri Helpline", number: "1800-180-1551", address: "Shimla" },
+                "Jammu & Kashmir": { name: "J&K Kisan Call Centre", number: "1800-180-1551", address: "Srinagar/Jammu" },
+                "Jharkhand": { name: "Jharkhand Kisan Call Centre", number: "1800-123-1136", address: "Ranchi" },
+                "Karnataka": { name: "Kisan Karnataka", number: "1800-425-3553", address: "Bengaluru" },
+                "Kerala": { name: "Karshaka Information Centre", number: "1800-425-1661", address: "Thiruvananthapuram" },
+                "Ladakh": { name: "Agriculture Dept. Ladakh", number: "01982-252054", address: "Leh" },
+                "Lakshadweep": { name: "Dept. of Agriculture, LD", number: "04896-262276", address: "Kavaratti" },
+                "Madhya Pradesh": { name: "MP Kisan Call Centre", number: "1800-233-4433", address: "Bhopal" },
+                "Maharashtra": { name: "Maharashtra Krishi Vibhag", number: "1800-233-4000", address: "Pune" },
+                "Manipur": { name: "Manipur Agri Helpline", number: "1800-345-3822", address: "Imphal" },
+                "Meghalaya": { name: "Meghalaya Agri Helpline", number: "1800-180-1551", address: "Shillong" },
+                "Mizoram": { name: "Mizoram Agri Helpline", number: "1800-345-3856", address: "Aizawl" },
+                "Nagaland": { name: "Nagaland Agri Helpline", number: "1800-345-3718", address: "Kohima" },
+                "Odisha": { name: "Ama Krushi Odisha", number: "155333", address: "Bhubaneswar" },
+                "Puducherry": { name: "Puducherry Agri Dept.", number: "0413-2272306", address: "Puducherry" },
+                "Punjab": { name: "Punjab Agri Helpline", number: "1800-180-1551", address: "Mohali" },
+                "Rajasthan": { name: "Rajasthan Kisan Call Centre", number: "1800-180-1551", address: "Jaipur" },
+                "Sikkim": { name: "Sikkim Agri Helpline", number: "1800-345-3252", address: "Gangtok" },
+                "Tamil Nadu": { name: "Uzhavan Seva Maiyam", number: "1800-425-1551", address: "Chennai" },
+                "Telangana": { name: "Rythu Bandhu", number: "040-23383533", address: "Hyderabad" },
+                "Tripura": { name: "Tripura Agri Helpline", number: "1800-345-3312", address: "Agartala" },
+                "Uttar Pradesh": { name: "UP Kisan Call Centre", number: "1800-180-1551", address: "Lucknow" },
+                "Uttarakhand": { name: "Uttarakhand Kisan Helpline", number: "1800-180-4231", address: "Dehradun" },
+                "West Bengal": { name: "Mati Katha", number: "1800-120-8040", address: "Kolkata" }
+            };
+
+            const states = Object.keys(helplineData);
+            states.sort();
+            stateSelect.innerHTML = '<option value="">-- Please choose a state --</option>' + states.map(state => `<option value="${state}">${state}</option>`).join('');
+
+            stateSelect.addEventListener('change', () => {
+                const selectedState = stateSelect.value;
+                if (selectedState && helplineData[selectedState]) {
+                    const data = helplineData[selectedState];
+                    stateHelplineInfo.innerHTML = `
+                        <strong>${data.name}</strong>
+                        <p>Address: ${data.address}</p>
+                        <p class="helpline-number" style="font-size:1.2rem; margin: 0.5rem 0;">${data.number}</p>
+                        <a href="tel:${data.number.replace(/-/g, '')}" class="btn btn-primary">Call Now</a>
+                    `;
+                    stateHelplineInfo.classList.remove('hidden');
+                } else {
+                    stateHelplineInfo.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

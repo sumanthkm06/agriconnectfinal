@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools for Farmers - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. EMBEDDED GLOBAL STYLES
+           ========================================================================== */
+        :root {
+            --primary-color: #2ECC71;
+            --primary-hover: #27ae60;
+            --secondary-color: #16A085;
+            --heading-color: #2c3e50;
+            --text-color: #34495e;
+            --light-text: #7f8c8d;
+            --bg-color: #ffffff;
+            --alt-bg-color: #f4f7f6;
+            --border-color: #e0e0e0;
+            --white-color: #ffffff;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 30px rgba(46, 204, 113, 0.15);
+            --font-family: 'Inter', sans-serif;
+            --transition-speed: 0.3s;
+            --border-radius: 12px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-family);
+            color: var(--text-color);
+            background-color: var(--alt-bg-color);
+            line-height: 1.7;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+        
+        /* --- Header & Footer --- */
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.05); position: sticky; top: 0; width: 100%; z-index: 1000; }
+        .app-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; font-weight: 700; color: var(--heading-color); }
+        .main-nav { display: flex; gap: 2rem; align-items: center; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; transition: color var(--transition-speed) ease; position: relative; padding: 8px 4px; }
+        .main-nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-image: var(--primary-gradient); transition: width 0.4s ease; border-radius: 2px; }
+        .main-nav a:hover, .main-nav a.active { color: var(--heading-color); }
+        .main-nav a:hover::after, .main-nav a.active::after { width: 100%; }
+        #profile-nav-pic { width: 42px; height: 42px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; object-fit: cover; transition: all var(--transition-speed) ease; }
+        .app-footer { padding: 60px 0; background-color: var(--heading-color); color: rgba(255, 255, 255, 0.7); text-align: center; }
+        
+        /* --- Reusable Components --- */
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--card-shadow); transition: all var(--transition-speed); }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h3 { font-size: 2.8rem; font-weight: 800; color: var(--heading-color); }
+        .section-header p { font-size: 1.15rem; color: var(--light-text); max-width: 700px; margin-left: auto; margin-right: auto; }
+
+        /* ==========================================================================
+           2. PAGE-SPECIFIC STYLES FOR AI TOOLS HUB
+           ========================================================================== */
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tool-card {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .tool-card .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            background-color: var(--alt-bg-color);
+            color: var(--primary-color);
+            transition: all var(--transition-speed) ease;
+        }
+
+        .tool-card:hover .icon {
+            background-image: var(--primary-gradient);
+            color: var(--white-color);
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .tool-card .icon i {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .tool-card h4 {
+            font-size: 1.35rem;
+            margin-bottom: 0.75rem;
+            color: var(--heading-color);
+        }
+
+        .tool-card p {
+            color: var(--light-text);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* --- Animations & Shared Sidebars --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 1010; opacity: 0; visibility: hidden; transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease; }
+        .sidebar-overlay.open { opacity: 1; visibility: visible; }
+        .sidebar { position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100%; background-color: white; box-shadow: -4px 0 15px rgba(0,0,0,0.1); z-index: 1020; transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .sidebar.open { right: 0; }
+        .sidebar iframe { width: 100%; height: 100%; border: none; }
+        .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 2.5rem; color: #aaa; cursor: pointer; z-index: 1030; line-height: 1; }
+        #chatbot-button { position: fixed; bottom: 25px; right: 25px; background-image: var(--primary-gradient); color: white; width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 5px 15px rgba(0,0,0,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 999; transition: all var(--transition-speed) ease; }
+        #chatbot-button:hover { box-shadow: var(--glow-shadow); transform: translateY(-5px) scale(1.05); }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51-2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="prices.html">Prices</a>
+                <a href="buy.html">Marketplace</a>
+                <a href="farmlog.html">Farm Log</a>
+                <a href="tools.html" class="active">AI Tools</a>
+                <a href="knowledge-hub.html">Knowledge Hub</a>
+                <img src="https://placehold.co/40x40/E8F5E9/2c3e50?text=U" alt="Profile" id="profile-nav-pic" title="View Profile">
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h3>Your AI Farming Toolkit</h3>
+                    <p>Leverage the power of Artificial Intelligence to make smarter decisions for your farm, from planning to profit.</p>
+                </div>
+                <div class="tools-grid">
+                    <a href="diagnose.html" class="card tool-card">
+                        <div class="icon"><i data-feather="aperture"></i></div>
+                        <h4>AI Crop Diagnosis</h4>
+                        <p>Upload an image to instantly identify plant diseases and get expert-level treatment advice in seconds.</p>
+                    </a>
+                     <a href="identify.html" class="card tool-card">
+                       <div class="icon"><i data-feather="sun"></i></div>
+                        <h4>AI Species Detection</h4>
+                        <p>Upload an image to instantly identify plant species and get expert-level scientific-name in seconds.</p>
+                    </a>
+                    <a href="prices.html" class="card tool-card">
+                        <div class="icon"><i data-feather="trending-up"></i></div>
+                        <h4>AI Price Forecaster</h4>
+                        <p>Get AI-powered predictions on future market prices for your crops to sell at the most profitable time.</p>
+                    </a>
+                    <a href="planner.html" class="card tool-card">
+                        <div class="icon"><i data-feather="file-text"></i></div>
+                        <h4>AI Personalized Plan</h4>
+                        <p>Generate a custom farming plan for your specific crop and location based on your unique profile data.</p>
+                    </a>
+                    <a href="list.html" class="card tool-card">
+                        <div class="icon"><i data-feather="edit"></i></div>
+                        <h4>AI Listing Assistants</h4>
+                        <p>Use AI to suggest the best price and write a compelling, professional description when you sell your crops.</p>
+                    </a>
+                     <a href="library.html" class="card tool-card">
+                        <div class="icon"><i data-feather="book-open"></i></div>
+                        <h4>AI Book Assistant</h4>
+                        <p>Ask questions in plain language to the books in our library and get instant answers from their content.</p>
+                    </a>
+                    <a href="support.html" class="card tool-card">
+                        <div class="icon"><i data-feather="message-circle"></i></div>
+                        <h4>AI Support Companion</h4>
+                        <p>A compassionate AI to help you find resources and guidance during stressful or uncertain times.</p>
+                    </a>
+                    <a href="farmlog.html" class="card tool-card">
+                        <div class="icon"><i data-feather="bar-chart-2"></i></div>
+                        <h4>AI Yield Analysis</h4>
+                        <p>Get a detailed analysis of your past harvests from your Farm Log to learn how to improve next season.</p>
+                    </a>
+                    <a href="shop.html" class="card tool-card">
+                        <div class="icon"><i data-feather="shopping-bag"></i></div>
+                        <h4>AI Product Recommender</h4>
+                        <p>Tell the AI what you need for your crop, and it will recommend the best products from our shop.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <div id="profile-sidebar-overlay" class="sidebar-overlay"></div>
+    <div id="profile-sidebar" class="sidebar">
+        <button id="close-sidebar-btn" class="close-btn" aria-label="Close profile sidebar">&times;</button>
+        <iframe src="profile.html" title="User Profile and Settings"></iframe>
+    </div>
+    
+    <div id="chatbot-container"></div>
+
+    <footer class="app-footer">
+        </footer>
+    
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            // --- Intersection Observer for Scroll Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { 
+                threshold: 0.1 
+            });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            // --- Shared Sidebar & Chatbot Logic ---
+            // (Include the full script here if this were the final file)
+        });
+    </script>
+</body>
+</html>

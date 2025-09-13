@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect - Your Complete Farming Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        /* All custom CSS has been removed as requested. */
+    </style>
+</head>
+<body>
+    <header class="bg-white shadow-sm p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-gray-800 font-bold text-2xl no-underline">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21-1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1 data-translate-key="app_title">AgriConnect</h1>
+            </a>
+            <nav class="flex items-center gap-6">
+                <a href="prices.html" class="text-gray-600 hover:text-green-600 font-medium no-underline" data-translate-key="nav_marketplace">Marketplace</a>
+                <a href="tools.html" class="text-gray-600 hover:text-green-600 font-medium no-underline" data-translate-key="nav_tools">AI Tools</a>
+                <a href="knowledge-hub.html" class="text-gray-600 hover:text-green-600 font-medium no-underline" data-translate-key="nav_knowledge">Knowledge Hub</a>
+                <a href="hire-labour.html" class="text-gray-600 hover:text-green-600 font-medium no-underline" data-translate-key="nav_labour">Labour</a>
+                <a href="loan.html" class="text-gray-600 hover:text-green-600 font-medium no-underline" data-translate-key="nav_loans">Loans</a>
+                <a href="insurance.html" class="text-gray-600 hover:text-green-600 font-medium no-underline" data-translate-key="nav_insurance">Insurance</a>
+               <a href="rent-tools.html" class="text-gray-600 hover:text-green-600 font-medium no-underline" data-translate-key="nav_rent">Rent-tools</a>
+                <a href="farmlog.html" class="text-gray-600 hover:text-green-600 font-medium no-underline" data-translate-key="nav_farmlog">Farm Log</a>
+                <img src="https://placehold.co/40x40/E8F5E9/2c3e50?text=U" alt="Profile" id="profile-nav-pic" title="View Profile" class="rounded-full cursor-pointer border-2 border-gray-300 transition duration-200 hover:scale-105 hover:border-green-500">
+             </nav>
+            <select id="language-selector" class="p-2 border border-gray-300 rounded-md font-semibold">
+                <option value="en">English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            </select>
+            <button class="md:hidden bg-transparent border-none cursor-pointer" aria-label="Open navigation menu">
+                <i data-feather="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="bg-gray-800 text-white text-center py-24 rounded-b-xl mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 id="welcome-message" class="text-4xl font-extrabold mb-4" data-translate-key="hero_title">Harvesting a Better Tomorrow, Today.</h2>
+                <p class="text-xl mb-8" data-translate-key="hero_subtitle">Welcome to AgriConnect, the digital backbone for India's farmers. Real-time data, a thriving marketplace, and intelligent tools to boost your yield and income.</p>
+                <div class="flex justify-center gap-4">
+                    <a href="#features" class="bg-green-500 text-white px-8 py-4 rounded-full font-semibold no-underline transition-transform duration-200 hover:translate-y-[-3px] hover:shadow-lg" data-translate-key="hero_btn_explore">Explore All Tools</a>
+                    <a href="sell.html" class="bg-transparent text-white px-8 py-4 rounded-full font-semibold no-underline border-2 border-white transition-transform duration-200 hover:translate-y-[-3px] hover:shadow-lg" data-translate-key="hero_btn_sell">List Your Crop</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-6 rounded-lg shadow-md mx-4 mt-[-4rem] relative z-10">
+            <div class="container mx-auto flex flex-wrap justify-around items-center gap-4">
+                <div class="flex items-center gap-4 flex-1 min-w-[250px]" id="weather-stat">
+                    <i data-feather="sun" class="w-12 h-12 text-green-500"></i>
+                    <div>
+                        <strong data-translate-key="stats_weather_location">Bannikuppe Weather</strong>
+                        <span id="weather-data" class="block">Loading...</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 flex-1 min-w-[250px]" id="price-stat">
+                    <i data-feather="trending-up" class="w-12 h-12 text-green-500"></i>
+                    <div>
+                        <strong data-translate-key="stats_price_crop">Today's Wheat Price</strong>
+                        <span id="price-data" class="block">Loading...</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 flex-1 min-w-[250px]" id="tasks-stat">
+                    <i data-feather="check-square" class="w-12 h-12 text-green-500"></i>
+                    <div>
+                        <strong data-translate-key="stats_tasks_title">Pending Tasks</strong>
+                        <a href="farmlog.html" id="tasks-data" class="text-blue-500 no-underline block">Loading tasks...</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray-800 text-white py-4 overflow-hidden mt-8">
+            <div class="flex">
+                <div class="flex animate-ticker-scroll whitespace-nowrap" id="price-ticker-tape">
+                    <!-- Prices will be dynamically inserted here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold mb-2" data-translate-key="features_title">One Platform, Every Farming Solution</h3>
+                    <p class="max-w-2xl mx-auto text-gray-600" data-translate-key="features_subtitle">From seed to market, AgriConnect provides the tools you need to thrive in modern agriculture.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Card: AI Tools Hub -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="cpu" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="feature_card_ai_tools_title">AI Tools Hub</h4>
+                        <p class="text-gray-600" data-translate-key="feature_card_ai_tools_desc">Your central hub for all our intelligent assistants, from diagnosis to price forecasting.</p>
+                        <a href="tools.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Explore AI</a>
+                    </div>
+                    <!-- Card: Marketplace -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="shopping-cart" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="feature_card_marketplace_title">Marketplace</h4>
+                        <p class="text-gray-600" data-translate-key="feature_card_marketplace_desc">Buy and sell crops directly from farmers and verified suppliers across the nation.</p>
+                        <a href="buy.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Visit Market</a>
+                    </div>
+                    <!-- Hire Labour Card -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="users" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="hire_labour_title">Hire Labour</h4>
+                        <p class="text-gray-600" data-translate-key="hire_labour_desc">Quickly find and hire skilled agricultural labourers, or list yourself for work opportunities.</p>
+                        <a href="hire-labour.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="hire_labour_btn">Hire Now</a>
+                    </div>
+                    <!-- Card: Farm Log & Tasks -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="clipboard" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="feature_card_farmlog_title">Farm Log & Tasks</h4>
+                        <p class="text-gray-600" data-translate-key="feature_card_farmlog_desc">Track your crop yields, costs, and manage your daily tasks with our integrated logbook.</p>
+                        <a href="farmlog.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Open Log</a>
+                    </div>
+                    <!-- Card: Mandi Prices -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="dollar-sign" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="feature_card_prices_title">Live Mandi Prices</h4>
+                        <p class="text-gray-600" data-translate-key="feature_card_prices_desc">Access real-time crop prices from thousands of markets with our interactive dashboard.</p>
+                        <a href="prices.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Check Prices</a>
+                    </div>
+                    <!-- Card: Knowledge Hub -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="book-open" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="feature_card_knowledge_title">Knowledge Hub</h4>
+                        <p class="text-gray-600" data-translate-key="feature_card_knowledge_desc">Watch expert video tutorials, farmer-made reels, and attend live educational sessions.</p>
+                        <a href="knowledge-hub.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Start Learning</a>
+                    </div>
+                    <!-- Card: Community Forum -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="users" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="feature_card_community_title">Community Forum</h4>
+                        <p class="text-gray-600" data-translate-key="feature_card_community_desc">Connect with other farmers, ask questions, and share your experiences and success stories.</p>
+                        <a href="https://chat.whatsapp.com/FDRP9nvvieYFiJhSXYFixW" target="_blank" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="community_btn">Join Discussion</a>
+                    </div>
+                    <!-- Card: Crop Insurance -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="shield" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="feature_card_insurance_title">Crop Insurance</h4>
+                        <p class="text-gray-600" data-translate-key="feature_card_insurance_desc">Secure your harvest with tailored insurance plans. Get AI advice and file claims easily.</p>
+                        <a href="insurance.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Get a Quote</a>
+                    </div>
+                    <!-- Card: Digital Locker -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="lock" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="feature_card_digilocker_title">Digital Locker</h4>
+                        <p class="text-gray-600" data-translate-key="feature_card_digilocker_desc">Securely store and get AI summaries of your important documents like land records.</p>
+                        <a href="digilocker.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Open Locker</a>
+                    </div>
+                    <!-- Agricultural Tool Rental Card -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="tool" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="tool_rental_title">Agricultural Tool Rental</h4>
+                        <p class="text-gray-600" data-translate-key="tool_rental_desc">Easily rent agricultural tools for your needs or list your own tools to earn income.</p>
+                        <a href="rent-tools.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Find Tools</a>
+                    </div>
+                    <!-- Farm Shop Card -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="shopping-bag" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="farm_shop_title">Farm Shop</h4>
+                        <p class="text-gray-600" data-translate-key="farm_shop_desc">Purchase high-quality seeds, fertilizers, and other essential farming supplies directly from trusted suppliers.</p>
+                        <a href="shop.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Shop Now</a>
+                    </div>
+                    <!-- Market Prices & AI Forecasts Card -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="trending-up" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="market_prices_forecasts_title">Market Prices & AI Forecasts</h4>
+                        <p class="text-gray-600" data-translate-key="market_prices_forecasts_desc">Stay ahead with real-time market prices for your crops. Our advanced AI algorithms provide accurate price forecasts.</p>
+                        <a href="prices.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">View Forecasts</a>
+                    </div>
+                    <!-- Loan Management Portal Card -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="credit-card" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="loan_management_title">Loan Management Portal</h4>
+                        <p class="text-gray-600" data-translate-key="loan_management_desc">Manage your agricultural loans with ease. Apply for new loans, track your repayment schedule, and get personalized financial advice.</p>
+                        <a href="loan.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Manage Loans</a>
+                    </div>
+                    <!-- Farmer Support & Helpline Card -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md text-center transition-transform duration-300 hover:translate-y-[-10px] hover:shadow-xl">
+                        <div class="inline-block p-4 bg-green-500 rounded-full mb-4">
+                            <i data-feather="phone-call" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="helpline_title">Farmer Support & Helpline</h4>
+                        <p class="text-gray-600" data-translate-key="helpline_desc">Get instant support from our agricultural experts. Our helpline is available 24/7 to answer your questions and provide guidance.</p>
+                        <a href="support.html" class="block mt-4 px-4 py-2 bg-transparent border border-green-500 text-green-500 rounded-full font-semibold no-underline transition duration-200 hover:bg-green-500 hover:text-white" data-translate-key="feature_card_button">Call Helpline</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="py-16 bg-gray-200">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold mb-2" data-translate-key="how_it_works_title">Your Farming Cycle, Upgraded</h3>
+                    <p class="max-w-2xl mx-auto text-gray-600" data-translate-key="how_it_works_subtitle">Follow these steps to maximize your farm's potential with AgriConnect.</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                    <div class="flex-1 text-center max-w-sm relative">
+                        <div class="inline-block p-6 bg-green-500 rounded-full mb-4">
+                            <i data-feather="aperture" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <div class="absolute top-0 right-0 bg-blue-500 text-white w-8 h-8 rounded-full flex justify-center items-center font-bold">1</div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="step1_title">Diagnose & Plan</h4>
+                        <p class="text-gray-600" data-translate-key="step1_desc">Use AI tools to diagnose crop issues early and generate a personalized farming plan for the season.</p>
+                    </div>
+                    <span class="text-4xl text-gray-400 hidden md:block">&rarr;</span>
+                    <div class="flex-1 text-center max-w-sm relative">
+                        <div class="inline-block p-6 bg-green-500 rounded-full mb-4">
+                            <i data-feather="shopping-bag" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <div class="absolute top-0 right-0 bg-blue-500 text-white w-8 h-8 rounded-full flex justify-center items-center font-bold">2</div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="step2_title">Buy Quality Inputs</h4>
+                        <p class="text-gray-600" data-translate-key="step2_desc">Purchase certified seeds, fertilizers, and equipment from our trusted Agri-Shop marketplace.</p>
+                    </div>
+                    <span class="text-4xl text-gray-400 hidden md:block">&rarr;</span>
+                    <div class="flex-1 text-center max-w-sm relative">
+                        <div class="inline-block p-6 bg-green-500 rounded-full mb-4">
+                            <i data-feather="bar-chart-2" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <div class="absolute top-0 right-0 bg-blue-500 text-white w-8 h-8 rounded-full flex justify-center items-center font-bold">3</div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="step3_title">Track Your Progress</h4>
+                        <p class="text-gray-600" data-translate-key="step3_desc">Log your activities, costs, and yields in the Farm Log. Use the dashboard to monitor performance.</p>
+                    </div>
+                    <span class="text-4xl text-gray-400 hidden md:block">&rarr;</span>
+                    <div class="flex-1 text-center max-w-sm relative">
+                        <div class="inline-block p-6 bg-green-500 rounded-full mb-4">
+                            <i data-feather="truck" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <div class="absolute top-0 right-0 bg-blue-500 text-white w-8 h-8 rounded-full flex justify-center items-center font-bold">4</div>
+                        <h4 class="text-xl font-semibold mb-2" data-translate-key="step4_title">Sell at the Best Price</h4>
+                        <p class="text-gray-600" data-translate-key="step4_desc">Check live mandi prices, get AI forecasts, and list your produce for sale to verified buyers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold mb-2" data-translate-key="preview_title">Latest from the Community & Hub</h3>
+                    <p class="max-w-2xl mx-auto text-gray-600" data-translate-key="preview_subtitle">Stay updated with the latest tutorials, discussions, and upcoming events.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Expert Tutorial Preview -->
+                    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                        <a href="knowledge-hub.html" class="block relative">
+                            <img src="https://img.youtube.com/vi/nNP4o1wE6Vo/hqdefault.jpg" alt="Tutorial Thumbnail" class="w-full h-48 object-cover">
+                        </a>
+                        <div class="p-6">
+                            <span class="inline-block px-3 py-1 bg-green-500 text-white rounded-full text-sm font-semibold mb-4" data-translate-key="preview_tag_tutorial">Expert Tutorial</span>
+                            <h4 class="text-xl font-semibold mb-2" data-translate-key="tutorial_title">Modern Agricultural Practices</h4>
+                            <p class="text-gray-600" data-translate-key="tutorial_desc">Learn about the latest innovations in farming to boost efficiency and sustainability.</p>
+                            <a href="knowledge-hub.html" class="block mt-4 text-blue-500 font-semibold no-underline" data-translate-key="preview_link_tutorials">Watch More Tutorials &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Live Session Preview -->
+                    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                        <a href="knowledge-hub.html" class="block relative">
+                            <img src="https://placehold.co/1200x630/2c3e50/ecf0f1?text=Drip+Irrigation+Live+Session" alt="Expert" class="w-full h-48 object-cover">
+                        </a>
+                        <div class="p-6">
+                            <span class="inline-block px-3 py-1 bg-blue-500 text-white rounded-full text-sm font-semibold mb-4" data-translate-key="preview_tag_live">Upcoming Live Session</span>
+                            <h4 class="text-xl font-semibold mb-2" data-translate-key="live_session_title">Drip Irrigation Techniques</h4>
+                            <p class="text-gray-600" data-translate-key="live_session_desc">Join Dr. Ramesh Gupta to learn about water conservation. Sept 20, 4:00 PM.</p>
+                            <a href="knowledge-hub.html" class="block mt-4 text-blue-500 font-semibold no-underline" data-translate-key="preview_link_sessions">See All Sessions &rarr;</a>
+                        </div>
+                    </div>
+                    <!-- Community Post Preview -->
+                    <div class="bg-white rounded-2xl shadow-md p-6">
+                        <div class="flex items-center mb-4">
+                            <img src="https://placehold.co/40x40/2c3e50/ffffff?text=R" alt="Ramesh K." class="rounded-full mr-4">
+                            <div>
+                                <strong class="block" data-translate-key="community_post_author">Ramesh K.</strong>
+                                <span class="text-gray-500 text-sm" data-translate-key="community_post_location">from Haryana</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic mb-4" data-translate-key="community_post_text">"My wheat yield increased by 15% this year after using the AI Yield Analysis tool to adjust my fertilizer schedule. Has anyone else seen good results?"</p>
+                        <a href="https://chat.whatsapp.com/FDRP9nvvieYFiJhSXYFixW" target="_blank" class="block text-blue-500 font-semibold no-underline" data-translate-key="preview_link_community">Join the Conversation &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="testimonial" class="py-16 bg-gray-200">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto text-center relative">
+                    <div class="testimonial-slide active">
+                        <blockquote class="text-2xl italic text-gray-700 mb-4" data-translate-key="testimonial1_text">"AgriConnect is a game-changer. The AI diagnosis saved my tomato crop, and the live mandi prices helped me increase my profits by over 20% last season. It's a must-have for every Indian farmer."</blockquote>
+                        <cite class="block text-gray-500 font-semibold" data-translate-key="testimonial1_author_name">Ramesh Kumar, <span data-translate-key="testimonial1_author_location">Farmer from Hisar, Haryana</span></cite>
+                    </div>
+                    <div class="testimonial-slide">
+                        <blockquote class="text-2xl italic text-gray-700 mb-4" data-translate-key="testimonial2_text">"The Farm Log is brilliant. For the first time, I have all my data in one place. The AI task suggestions remind me of important activities I used to forget. Highly recommended!"</blockquote>
+                        <cite class="block text-gray-500 font-semibold" data-translate-key="testimonial2_author_name">Sunita Devi, <span data-translate-key="testimonial2_author_location">Farmer from Nashik, Maharashtra</span></cite>
+                    </div>
+                    <div class="testimonial-slide">
+                        <blockquote class="text-2xl italic text-gray-700 mb-4" data-translate-key="testimonial3_text">"I used the AI Price Forecaster before taking my ragi to the market and waited two more weeks as it suggested. I made an extra ₹8,000! This tool is pure magic."</blockquote>
+                        <cite class="block text-gray-500 font-semibold" data-translate-key="testimonial3_author_name">Ganesh Murthy, <span data-translate-key="testimonial3_author_location">Farmer from Mandya, Karnataka</span></cite>
+                    </div>
+                    <div class="flex justify-center gap-2 mt-4">
+                        <button class="w-3 h-3 bg-gray-400 rounded-full cursor-pointer transition-colors duration-200" id="dot-0"></button>
+                        <button class="w-3 h-3 bg-gray-400 rounded-full cursor-pointer transition-colors duration-200" id="dot-1"></button>
+                        <button class="w-3 h-3 bg-gray-400 rounded-full cursor-pointer transition-colors duration-200" id="dot-2"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="profile-sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 opacity-0 invisible transition-opacity duration-300 z-[1001]"></div>
+    <div id="profile-sidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-[1002]">
+        <button id="close-sidebar-btn" class="absolute top-4 right-4 text-4xl bg-transparent border-none cursor-pointer text-gray-800">&times;</button>
+        <iframe src="profile.html" title="User Profile and Settings" class="w-full h-full border-none"></iframe>
+    </div>
+
+    <footer class="bg-gray-800 text-gray-300 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 mb-4 border-b border-gray-700">
+                <div class="col-span-1">
+                    <a href="index.html" class="flex items-center gap-2 text-white font-bold text-2xl mb-4 no-underline">
+                        <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9-3.03.43-5.61 2.5-6.96 5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21-1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                        <h4 class="text-white text-2xl font-bold">AgriConnect</h4>
+                    </a>
+                    <p class="text-gray-400 mb-4" data-translate-key="footer_about_text">Empowering the heart of India. We are committed to bringing technology and profitability to every farmer.</p>
+                    <div class="flex gap-4">
+                        <a href="https://x.com/SAGARM2005?t=hI44DMoGWfNhKxbnb8RBCw&s=09" target="_blank" aria-label="Twitter"><i data-feather="twitter" class="w-5 h-5 text-gray-400 hover:text-green-500"></i></a>
+                        <a href="https://www.instagram.com/mr.saga_rix_?igsh=NHNxMnNsMTV4NW05" target="_blank" aria-label="Instagram"><i data-feather="instagram" class="w-5 h-5 text-gray-400 hover:text-green-500"></i></a>
+                        <a href="https://wa.me/919019989269" target="_blank" aria-label="WhatsApp"><i data-feather="message-square" class="w-5 h-5 text-gray-400 hover:text-green-500"></i></a>
+                    </div>
+                </div>
+                <div class="col-span-1">
+                    <h5 class="text-lg font-semibold mb-4" data-translate-key="footer_tools_title">Our Tools</h5>
+                    <ul class="list-none space-y-2">
+                        <li><a href="prices.html" class="text-gray-400 hover:text-green-500 no-underline" data-translate-key="nav_prices">Mandi Prices</a></li>
+                        <li><a href="buy.html" class="text-gray-400 hover:text-green-500 no-underline" data-translate-key="nav_marketplace">Marketplace</a></li>
+                        <li><a href="tools.html" class="text-gray-400 hover:text-green-500 no-underline" data-translate-key="nav_tools">AI Tools</a></li>
+                        <li><a href="insurance.html" class="text-gray-400 hover:text-green-500 no-underline" data-translate-key="feature_card_insurance_title">Insurance</a></li>
+                        <li><a href="digilocker.html" class="text-gray-400 hover:text-green-500 no-underline" data-translate-key="feature_card_digilocker_title">DigiLocker</a></li>
+                    </ul>
+                </div>
+                <div class="col-span-1">
+                    <h5 class="text-lg font-semibold mb-4" data-translate-key="footer_contact_title">Contact Info</h5>
+                    <ul class="list-none space-y-2">
+                        <li class="flex items-start gap-2">
+                            <i data-feather="map-pin" class="w-4 h-4 mt-1 text-gray-400"></i>
+                            <span class="text-gray-400 text-sm">Dayananda Sagar University, Harohalli, Ramnagara district, 562112</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-feather="phone" class="w-4 h-4 text-gray-400"></i>
+                            <a href="tel:9019989269" class="text-gray-400 hover:text-green-500 no-underline">9019989269</a>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-feather="mail" class="w-4 h-4 text-gray-400"></i>
+                            <a href="mailto:eng23ds0029@dsu.edu.in" class="text-gray-400 hover:text-green-500 no-underline">eng23ds0029@dsu.edu.in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center text-gray-500 text-sm">
+                <p>&copy; 2025 AgriConnect. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<div class="fixed bottom-8 right-8 z-50 flex flex-col items-center space-y-3" id="chatbot-button">
+    <!-- Speech Bubble -->
+    <div class="relative bg-green-500 text-white text-base font-semibold px-4 py-2 rounded-full shadow-lg">
+        Chat with me
+        <span class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-0 h-0 
+                     border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-green-500"></span>
+    </div>
+
+    <!-- Cartoon Mascot (Bigger) -->
+    <img src="images/chaticon.svg" 
+         alt="AgriBot Mascot" 
+         class="w-36 h-44 object-contain cursor-pointer hover:scale-105 transition-transform duration-300">
+</div>
+
+
+
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-[1000] hidden justify-center items-center opacity-0 transition-opacity duration-300" id="chat-modal">
+        <div class="bg-white rounded-2xl w-11/12 max-w-lg h-[80vh] flex flex-col shadow-2xl relative">
+            <button class="absolute top-4 right-4 text-4xl bg-transparent border-none cursor-pointer text-white" id="chat-modal-close">&times;</button>
+            <div class="bg-green-500 text-white p-4 rounded-t-2xl flex items-center gap-4">
+                <img src="images/logochat.jpg" alt="AgriBot Mascot" class="w-12 h-12 rounded-full border-2 border-white">
+                <div>
+                    <h1 class="text-xl font-semibold">KisanMitra</h1>
+                    <p class="text-sm opacity-80">Your agricultural assistant</p>
+                </div>
+                <select id="language-select" class="ml-auto p-1 rounded-md bg-white bg-opacity-20 text-white border-white border">
+                    <option value="hi" class="bg-green-500 text-white">Hindi</option>
+                    <option value="en" class="bg-green-500 text-white">English</option>
+                    <option value="kn" class="bg-green-500 text-white">ಕನ್ನಡ</option>
+                </select>
+            </div>
+            <div class="flex-grow p-4 overflow-y-auto flex flex-col gap-3" id="chat-messages"></div>
+            <div class="flex items-center p-4 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
+                <input type="text" id="user-input" placeholder="Ask your question..." autocomplete="off" class="flex-grow border border-gray-300 rounded-full px-4 py-2 text-base outline-none focus:border-green-500">
+                <button class="bg-transparent border-none cursor-pointer p-2" id="voice-button"><span class="material-icons text-gray-500">mic</span></button>
+                <button class="bg-transparent border-none cursor-pointer p-2" id="send-button"><span class="material-icons text-green-500 text-2xl">send</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        feather.replace();
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const translations = {
+                "en": {
+                    "app_title": "AgriConnect",
+                    "nav_marketplace": "Marketplace",
+                    "nav_farmlog": "Farm Log",
+                    "nav_tools": "AI Tools",
+                    "nav_knowledge": "Knowledge Hub",
+                    "nav_labour": "Labour",
+                    "nav_insurance": "Insurance",
+                    "nav_digi": "DigiLocker",
+                    "hero_title": "Harvesting a Better Tomorrow, Today.",
+                    "hero_subtitle": "Welcome to AgriConnect, the digital backbone for India's farmers. Real-time data, a thriving marketplace, and intelligent tools to boost your yield and income.",
+                    "hero_btn_explore": "Explore All Tools",
+                    "hero_btn_sell": "List Your Crop",
+                    "stats_weather_location": "Bannikuppe Weather",
+                    "stats_price_crop": "Today's Wheat Price",
+                    "stats_tasks_title": "Pending Tasks",
+                    "features_title": "One Platform, Every Farming Solution",
+                    "features_subtitle": "From seed to market, AgriConnect provides the tools you need to thrive in modern agriculture.",
+                    "feature_card_ai_tools_title": "AI Tools Hub",
+                    "feature_card_ai_tools_desc": "Your central hub for all our intelligent assistants, from diagnosis to price forecasting.",
+                    "feature_card_button": "Explore AI",
+                    "hire_labour_title": "Hire Labour",
+                    "hire_labour_desc": "Quickly find and hire skilled agricultural labourers, or list yourself for work opportunities.",
+                    "hire_labour_btn": "Hire Now",
+                    "feature_card_farmlog_title": "Farm Log & Tasks",
+                    "feature_card_farmlog_desc": "Track your crop yields, costs, and manage your daily tasks with our integrated logbook.",
+                    "feature_card_prices_title": "Live Mandi Prices",
+                    "feature_card_prices_desc": "Access real-time crop prices from thousands of markets with our interactive dashboard.",
+                    "feature_card_knowledge_title": "Knowledge Hub",
+                    "feature_card_knowledge_desc": "Watch expert video tutorials, farmer-made reels, and attend live educational sessions.",
+                    "feature_card_community_title": "Community Forum",
+                    "feature_card_community_desc": "Connect with other farmers, ask questions, and share your experiences and success stories.",
+                    "community_btn": "Join Discussion",
+                    "feature_card_insurance_title": "Crop Insurance",
+                    "feature_card_insurance_desc": "Secure your harvest with tailored insurance plans. Get AI advice and file claims easily.",
+                    "feature_card_digilocker_title": "Digital Locker",
+                    "feature_card_digilocker_desc": "Securely store and get AI summaries of your important documents like land records.",
+                    "tool_rental_title": "Agricultural Tool Rental",
+                    "tool_rental_desc": "Easily rent agricultural tools for your needs or list your own tools to earn income.",
+                    "farm_shop_title": "Farm Shop",
+                    "farm_shop_desc": "Purchase high-quality seeds, fertilizers, and other essential farming supplies directly from trusted suppliers.",
+                    "market_prices_forecasts_title": "Market Prices & AI Forecasts",
+                    "market_prices_forecasts_desc": "Stay ahead with real-time market prices for your crops. Our advanced AI algorithms provide accurate price forecasts.",
+                    "loan_management_title": "Loan Management Portal",
+                    "loan_management_desc": "Manage your agricultural loans with ease. Apply for new loans, track your repayment schedule, and get personalized financial advice.",
+                    "helpline_title": "Farmer Support & Helpline",
+                    "helpline_desc": "Get instant support from our agricultural experts. Our helpline is available 24/7 to answer your questions and provide guidance.",
+                    "how_it_works_title": "Your Farming Cycle, Upgraded",
+                    "how_it_works_subtitle": "Follow these steps to maximize your farm's potential with AgriConnect.",
+                    "step1_title": "Diagnose & Plan",
+                    "step1_desc": "Use AI tools to diagnose crop issues early and generate a personalized farming plan for the season.",
+                    "step2_title": "Buy Quality Inputs",
+                    "step2_desc": "Purchase certified seeds, fertilizers, and equipment from our trusted Agri-Shop marketplace.",
+                    "step3_title": "Track Your Progress",
+                    "step3_desc": "Log your activities, costs, and yields in the Farm Log. Use the dashboard to monitor performance.",
+                    "step4_title": "Sell at the Best Price",
+                    "step4_desc": "Check live mandi prices, get AI forecasts, and list your produce for sale to verified buyers.",
+                    "preview_title": "Latest from the Community & Hub",
+                    "preview_subtitle": "Stay updated with the latest tutorials, discussions, and upcoming events.",
+                    "preview_tag_tutorial": "Expert Tutorial",
+                    "tutorial_title": "Modern Agricultural Practices",
+                    "tutorial_desc": "Learn about the latest innovations in farming to boost efficiency and sustainability.",
+                    "preview_link_tutorials": "Watch More Tutorials &rarr;",
+                    "preview_tag_live": "Upcoming Live Session",
+                    "live_session_title": "Drip Irrigation Techniques",
+                    "live_session_desc": "Join Dr. Ramesh Gupta to learn about water conservation. Sept 20, 4:00 PM.",
+                    "community_post_author": "Ramesh K.",
+                    "community_post_location": "from Haryana",
+                    "community_post_text": `"My wheat yield increased by 15% this year after using the AI Yield Analysis tool to adjust my fertilizer schedule. Has anyone else seen good results?"`,
+                    "preview_link_community": "Join the Conversation &rarr;",
+                    "testimonial1_text": `"AgriConnect is a game-changer. The AI diagnosis saved my tomato crop, and the live mandi prices helped me increase my profits by over 20% last season. It's a must-have for every Indian farmer."`,
+                    "testimonial1_author_name": "Ramesh Kumar,",
+                    "testimonial1_author_location": "Farmer from Hisar, Haryana",
+                    "testimonial2_text": `"The Farm Log is brilliant. For the first time, I have all my data in one place. The AI task suggestions remind me of important activities I used to forget. Highly recommended!"`,
+                    "testimonial2_author_name": "Sunita Devi,",
+                    "testimonial2_author_location": "Farmer from Nashik, Maharashtra",
+                    "testimonial3_text": `"I used the AI Price Forecaster before taking my ragi to the market and waited two more weeks as it suggested. I made an extra ₹8,000! This tool is pure magic."`,
+                    "testimonial3_author_name": "Ganesh Murthy,",
+                    "testimonial3_author_location": "Farmer from Mandya, Karnataka",
+                    "footer_about_text": "Empowering the heart of India. We are committed to bringing technology and profitability to every farmer.",
+                    "footer_tools_title": "Our Tools",
+                    "footer_contact_title": "Contact Info",
+                    "language_selected": "English",
+                    "welcome_back": "Welcome back, ",
+                    "default_welcome": "Harvesting a Better Tomorrow, Today.",
+                    "stats_weather_loading": "Loading...",
+                    "stats_price_unit": " / Quintal",
+                    "stats_tasks_pending": "You have {pendingTasks} task(s) today",
+                    "stats_tasks_none": "No pending tasks. Well done!",
+                    "stats_tasks_view": "View your tasks",
+                    "chat_initial_message": "Hello, farmer friend! I am KisanMitra, your agricultural assistant. How can I help you today?",
+                    "chat_input_placeholder": "Ask your question...",
+                    "chat_header_title": "KisanMitra",
+                    "chat_header_subtitle": "Your agricultural assistant",
+                    "chat_api_error": "Sorry, I couldn't process that. Please try again.",
+                    "chat_api_key_error": "Something went wrong. Please check your API key and try again.",
+                    "chat_voice_unsupported": "Speech recognition not supported.",
+                },
+                "hi": {
+                    "app_title": "एग्रीकनेक्ट",
+                    "nav_marketplace": "बाजार",
+                    "nav_farmlog": "फार्म लॉग",
+                    "nav_tools": "एआई उपकरण",
+                    "nav_knowledge": "ज्ञान केंद्र",
+                    "nav_labour": "श्रम",
+                    "nav_insurance": "बीमा",
+                    "nav_digi": "डिजीलॉकर",
+                    "hero_title": "आज, एक बेहतर कल की फसल उगाएं।",
+                    "hero_subtitle": "एग्रीकनेक्ट में आपका स्वागत है, जो भारत के किसानों के लिए डिजिटल रीढ़ है। वास्तविक समय का डेटा, एक समृद्ध बाज़ार, और आपके उपज और आय को बढ़ाने के लिए बुद्धिमान उपकरण।",
+                    "hero_btn_explore": "सभी उपकरण देखें",
+                    "hero_btn_sell": "अपनी फसल सूचीबद्ध करें",
+                    "stats_weather_location": "बन्निकुप्पे मौसम",
+                    "stats_price_crop": "आज का गेहूं का भाव",
+                    "stats_tasks_title": "लंबित कार्य",
+                    "features_title": "एक मंच, हर खेती का समाधान",
+                    "features_subtitle": "बीज से लेकर बाज़ार तक, एग्रीकनेक्ट आपको आधुनिक कृषि में सफल होने के लिए आवश्यक उपकरण प्रदान करता है।",
+                    "feature_card_ai_tools_title": "एआई उपकरण हब",
+                    "feature_card_ai_tools_desc": "निदान से लेकर मूल्य पूर्वानुमान तक, हमारे सभी बुद्धिमान सहायकों के लिए आपका केंद्रीय केंद्र।",
+                    "feature_card_button": "एआई देखें",
+                    "hire_labour_title": "श्रम को किराए पर लें",
+                    "hire_labour_desc": "तेजी से कुशल कृषि श्रमिकों को खोजें और किराए पर लें, या काम के अवसरों के लिए खुद को सूचीबद्ध करें।",
+                    "hire_labour_btn": "अभी किराए पर लें",
+                    "feature_card_farmlog_title": "फार्म लॉग और कार्य",
+                    "feature_card_farmlog_desc": "हमारे एकीकृत लॉगबुक के साथ अपनी फसल की पैदावार, लागत को ट्रैक करें और अपने दैनिक कार्यों का प्रबंधन करें।",
+                    "feature_card_prices_title": "लाइव मंडी मूल्य",
+                    "feature_card_prices_desc": "हमारे इंटरैक्टिव डैशबोर्ड के साथ हजारों बाजारों से वास्तविक समय की फसल कीमतों तक पहुंचें।",
+                    "feature_card_knowledge_title": "ज्ञान केंद्र",
+                    "feature_card_knowledge_desc": "विशेषज्ञ वीडियो ट्यूटोरियल, किसान-निर्मित रील्स देखें, और लाइव शैक्षिक सत्रों में भाग लें।",
+                    "feature_card_community_title": "सामुदायिक मंच",
+                    "feature_card_community_desc": "अन्य किसानों से जुड़ें, प्रश्न पूछें, और अपने अनुभव और सफलता की कहानियों को साझा करें।",
+                    "community_btn": "चर्चा में शामिल हों",
+                    "feature_card_insurance_title": "फसल बीमा",
+                    "feature_card_insurance_desc": "अनुकूलित बीमा योजनाओं के साथ अपनी फसल को सुरक्षित करें। एआई सलाह प्राप्त करें और आसानी से दावे दर्ज करें।",
+                    "feature_card_digilocker_title": "डिजिटल लॉकर",
+                    "feature_card_digilocker_desc": "अपने महत्वपूर्ण दस्तावेजों जैसे कि भूमि रिकॉर्ड को सुरक्षित रूप से संग्रहीत करें और एआई सारांश प्राप्त करें।",
+                    "tool_rental_title": "कृषि उपकरण किराया",
+                    "tool_rental_desc": "अपनी जरूरतों के लिए आसानी से कृषि उपकरण किराए पर लें या आय अर्जित करने के लिए अपने स्वयं के उपकरणों को सूचीबद्ध करें।",
+                    "farm_shop_title": "फार्म शॉप",
+                    "farm_shop_desc": "सीधे विश्वसनीय आपूर्तिकर्ताओं से उच्च गुणवत्ता वाले बीज, उर्वरक और अन्य आवश्यक कृषि आपूर्ति खरीदें।",
+                    "market_prices_forecasts_title": "बाजार मूल्य और एआई पूर्वानुमान",
+                    "market_prices_forecasts_desc": "अपनी फसलों के लिए वास्तविक समय के बाजार मूल्यों के साथ आगे रहें। हमारे उन्नत एआई एल्गोरिदम सटीक मूल्य पूर्वानुमान प्रदान करते हैं।",
+                    "loan_management_title": "ऋण प्रबंधन पोर्टल",
+                    "loan_management_desc": "आसानी से अपने कृषि ऋणों का प्रबंधन करें। नए ऋणों के लिए आवेदन करें, अपनी पुनर्भुगतान अनुसूची को ट्रैक करें, और व्यक्तिगत वित्तीय सलाह प्राप्त करें।",
+                    "helpline_title": "किसान सहायता और हेल्पलाइन",
+                    "helpline_desc": "हमारे कृषि विशेषज्ञों से तत्काल सहायता प्राप्त करें। हमारी हेल्पलाइन आपके प्रश्नों का उत्तर देने और मार्गदर्शन प्रदान करने के लिए 24/7 उपलब्ध है।",
+                    "how_it_works_title": "आपका कृषि चक्र, उन्नत",
+                    "how_it_works_subtitle": "अपनी खेती की क्षमता को अधिकतम करने के लिए इन चरणों का पालन करें।",
+                    "step1_title": "निदान और योजना",
+                    "step1_desc": "फसल के मुद्दों का जल्दी पता लगाने और मौसम के लिए एक व्यक्तिगत खेती योजना उत्पन्न करने के लिए एआई उपकरणों का उपयोग करें।",
+                    "step2_title": "गुणवत्ता इनपुट खरीदें",
+                    "step2_desc": "हमारे विश्वसनीय एग्री-शॉप बाज़ार से प्रमाणित बीज, उर्वरक और उपकरण खरीदें।",
+                    "step3_title": "अपनी प्रगति को ट्रैक करें",
+                    "step3_desc": "अपनी गतिविधियों, लागतों और पैदावार को फार्म लॉग में लॉग करें। प्रदर्शन की निगरानी के लिए डैशबोर्ड का उपयोग करें।",
+                    "step4_title": "सर्वोत्तम मूल्य पर बेचें",
+                    "step4_desc": "लाइव मंडी मूल्यों की जांच करें, एआई पूर्वानुमान प्राप्त करें, और सत्यापित खरीदारों को बेचने के लिए अपनी उपज सूचीबद्ध करें।",
+                    "preview_title": "समुदाय और हब से नवीनतम",
+                    "preview_subtitle": "नवीनतम ट्यूटोरियल, चर्चाओं और आगामी घटनाओं के साथ अपडेट रहें।",
+                    "preview_tag_tutorial": "विशेषज्ञ ट्यूटोरियल",
+                    "tutorial_title": "आधुनिक कृषि पद्धतियाँ",
+                    "tutorial_desc": "दक्षता और स्थिरता को बढ़ावा देने के लिए खेती में नवीनतम नवाचारों के बारे में जानें।",
+                    "preview_link_tutorials": "अधिक ट्यूटोरियल देखें &rarr;",
+                    "preview_tag_live": "आगामी लाइव सत्र",
+                    "live_session_title": "ड्रिप सिंचाई तकनीकें",
+                    "live_session_desc": "जल संरक्षण के बारे में जानने के लिए डॉ. रमेश गुप्ता के साथ जुड़ें। 20 सितंबर, शाम 4:00 बजे।",
+                    "community_post_author": "रमेश के.",
+                    "community_post_location": "हरियाणा से",
+                    "community_post_text": `"इस साल एआई यील्ड एनालिसिस टूल का उपयोग करके अपनी उर्वरक अनुसूची को समायोजित करने के बाद मेरी गेहूं की पैदावार में 15% की वृद्धि हुई। क्या किसी और ने भी अच्छे परिणाम देखे हैं?"`,
+                    "preview_link_community": "बातचीत में शामिल हों &rarr;",
+                    "testimonial1_text": `"एग्रीकनेक्ट एक गेम-चेंजर है। एआई निदान ने मेरी टमाटर की फसल को बचाया, और लाइव मंडी मूल्यों ने मुझे पिछले सीजन में 20% से अधिक का लाभ बढ़ाने में मदद की। यह हर भारतीय किसान के लिए जरूरी है। "`,
+                    "testimonial1_author_name": "रमेश कुमार,",
+                    "testimonial1_author_location": "हिसार, हरियाणा से किसान",
+                    "testimonial2_text": `"फार्म लॉग शानदार है। पहली बार, मेरे पास मेरा सारा डेटा एक ही जगह पर है। एआई कार्य सुझाव मुझे महत्वपूर्ण गतिविधियों की याद दिलाते हैं जिन्हें मैं भूल जाता था। अत्यधिक अनुशंसित!"`,
+                    "testimonial2_author_name": "सुनीता देवी,",
+                    "testimonial2_author_location": "नासिक, महाराष्ट्र से किसान",
+                    "testimonial3_text": `"मैंने अपने रागी को बाजार में ले जाने से पहले एआई मूल्य पूर्वानुमानक का उपयोग किया और उसके सुझाव के अनुसार दो और सप्ताह इंतजार किया। मैंने अतिरिक्त ₹8,000 कमाए! यह उपकरण जादू है।"`,
+                    "testimonial3_author_name": "गणेश मूर्ति,",
+                    "testimonial3_author_location": "मांड्या, कर्नाटक से किसान",
+                    "footer_about_text": "भारत के दिल को सशक्त बनाना। हम हर किसान तक प्रौद्योगिकी और लाभप्रदता लाने के लिए प्रतिबद्ध हैं।",
+                    "footer_tools_title": "हमारे उपकरण",
+                    "footer_contact_title": "संपर्क जानकारी",
+                    "language_selected": "हिंदी",
+                    "welcome_back": "वापस स्वागत है, ",
+                    "default_welcome": "आज, एक बेहतर कल की फसल उगाएं।",
+                    "stats_weather_loading": "लोड हो रहा है...",
+                    "stats_price_unit": " / क्विंटल",
+                    "stats_tasks_pending": "आपके पास आज {pendingTasks} कार्य है",
+                    "stats_tasks_none": "कोई लंबित कार्य नहीं। शाबाश!",
+                    "stats_tasks_view": "अपने कार्य देखें",
+                    "chat_initial_message": "नमस्ते, किसान भाई! मैं किसानमित्र हूँ, आपका खेतीबाड़ी सहायक। आपकी कैसे मदद कर सकता हूँ?",
+                    "chat_input_placeholder": "अपना प्रश्न पूछें...",
+                    "chat_header_title": "किसानमित्र",
+                    "chat_header_subtitle": "आपका कृषि सहायक",
+                    "chat_api_error": "क्षमा करें, मैं इसे संसाधित नहीं कर सका। कृपया पुनः प्रयास करें।",
+                    "chat_api_key_error": "कुछ गलत हो गया। कृपया अपनी एपीआई कुंजी की जांच करें और फिर से प्रयास करें।",
+                    "chat_voice_unsupported": "वाक् पहचान समर्थित नहीं है।",
+                },
+                "kn": {
+                    "app_title": "ಅಗ್ರಿಕನೆಕ್ಟ್",
+                    "nav_marketplace": "ಮಾರುಕಟ್ಟೆ",
+                    "nav_farmlog": "ಫಾರ್ಮ್ ಲಾಗ್",
+                    "nav_tools": "ಎಐ ಪರಿಕರಗಳು",
+                    "nav_knowledge": "ಜ್ಞಾನ ಕೇಂದ್ರ",
+                    "nav_labour": "ಕಾರ್ಮಿಕ",
+                    "nav_insurance": "ವಿಮೆ",
+                    "nav_digi": "ಡಿಜಿಲಾಕರ್",
+                    "hero_title": "ನಾಳೆಗಾಗಿ ಇಂದು ಉತ್ತಮ ಬೆಳೆ ತೆಗೆಯಿರಿ.",
+                    "hero_subtitle": "ಭಾರತದ ರೈತರಿಗೆ ಡಿಜಿಟಲ್ ಬೆಂಬಲವಾಗಿರುವ ಅಗ್ರಿಕನೆಕ್ಟ್‌ಗೆ ಸ್ವಾಗತ. ನೈಜ-ಸಮಯದ ಡೇಟಾ, ಅಭಿವೃದ್ಧಿ ಹೊಂದುತ್ತಿರುವ ಮಾರುಕಟ್ಟೆ ಮತ್ತು ನಿಮ್ಮ ಇಳುವರಿ ಮತ್ತು ಆದಾಯವನ್ನು ಹೆಚ್ಚಿಸಲು ಬುದ್ಧಿವಂತ ಪರಿಕರಗಳು.",
+                    "hero_btn_explore": "ಎಲ್ಲಾ ಪರಿಕರಗಳನ್ನು ಅನ್ವೇಷಿಸಿ",
+                    "hero_btn_sell": "ನಿಮ್ಮ ಬೆಳೆ ಪಟ್ಟಿ ಮಾಡಿ",
+                    "stats_weather_location": "ಬನ್ನಿಕುಪ್ಪೆ ಹವಾಮಾನ",
+                    "stats_price_crop": "ಇಂದಿನ ಗೋಧಿ ಬೆಲೆ",
+                    "stats_tasks_title": "ಬಾಕಿ ಇರುವ ಕಾರ್ಯಗಳು",
+                    "features_title": "ಒಂದು ವೇದಿಕೆ, ಪ್ರತಿ ಕೃಷಿ ಪರಿಹಾರ",
+                    "features_subtitle": "ಬೀಜದಿಂದ ಮಾರುಕಟ್ಟೆಗೆ, ಅಗ್ರಿಕನೆಕ್ಟ್ ಆಧುನಿಕ ಕೃಷಿಯಲ್ಲಿ ಯಶಸ್ವಿಯಾಗಲು ನಿಮಗೆ ಅಗತ್ಯವಿರುವ ಸಾಧನಗಳನ್ನು ಒದಗಿಸುತ್ತದೆ.",
+                    "feature_card_ai_tools_title": "ಎಐ ಪರಿಕರಗಳ ಕೇಂದ್ರ",
+                    "feature_card_ai_tools_desc": "ರೋಗನಿರ್ಣಯದಿಂದ ಬೆಲೆ ಮುನ್ಸೂಚನೆಯವರೆಗೆ, ನಮ್ಮ ಎಲ್ಲಾ ಬುದ್ಧಿವಂತ ಸಹಾಯಕರಿಗೆ ನಿಮ್ಮ ಕೇಂದ್ರ ಹಬ್.",
+                    "feature_card_button": "ಎಐ ಅನ್ವೇಷಿಸಿ",
+                    "hire_labour_title": "ಕಾರ್ಮಿಕರನ್ನು ನೇಮಿಸಿಕೊಳ್ಳಿ",
+                    "hire_labour_desc": "ಕೌಶಲ್ಯಪೂರ್ಣ ಕೃಷಿ ಕಾರ್ಮಿಕರನ್ನು ತ್ವರಿತವಾಗಿ ಹುಡುಕಿ ಮತ್ತು ನೇಮಿಸಿಕೊಳ್ಳಿ, ಅಥವಾ ಕೆಲಸದ ಅವಕಾಶಗಳಿಗಾಗಿ ನಿಮ್ಮನ್ನು ಪಟ್ಟಿ ಮಾಡಿ.",
+                    "hire_labour_btn": "ಈಗ ನೇಮಿಸಿಕೊಳ್ಳಿ",
+                    "feature_card_farmlog_title": "ಫಾರ್ಮ್ ಲಾಗ್ ಮತ್ತು ಕಾರ್ಯಗಳು",
+                    "feature_card_farmlog_desc": "ನಮ್ಮ ಸಮಗ್ರ ಲಾಗ್‌ಬುಕ್‌ನೊಂದಿಗೆ ನಿಮ್ಮ ಬೆಳೆ ಇಳುವರಿ, ವೆಚ್ಚಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ದೈನಂದಿನ ಕಾರ್ಯಗಳನ್ನು ನಿರ್ವಹಿಸಿ.",
+                    "feature_card_prices_title": "ಲೈವ್ ಮಂಡಿ ಬೆಲೆಗಳು",
+                    "feature_card_prices_desc": "ನಮ್ಮ ಸಂವಾದಾತ್ಮಕ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ನೊಂದಿಗೆ ಸಾವಿರಾರು ಮಾರುಕಟ್ಟೆಗಳಿಂದ ನೈಜ-ಸಮಯದ ಬೆಳೆ ಬೆಲೆಗಳನ್ನು ಪ್ರವೇಶಿಸಿ.",
+                    "feature_card_knowledge_title": "ಜ್ಞಾನ ಕೇಂದ್ರ",
+                    "feature_card_knowledge_desc": "ತಜ್ಞರ ವೀಡಿಯೊ ಟ್ಯುಟೋರಿಯಲ್‌ಗಳು, ರೈತ-ನಿರ್ಮಿತ ರೀಲ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ ಮತ್ತು ನೇರ ಶೈಕ್ಷಣಿಕ ಸೆಷನ್‌ಗಳಿಗೆ ಹಾಜರಾಗಿ.",
+                    "feature_card_community_title": "ಸಮುದಾಯ ವೇದಿಕೆ",
+                    "feature_card_community_desc": "ಇತರ ರೈತರೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸಿ, ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಿ, ಮತ್ತು ನಿಮ್ಮ ಅನುಭವಗಳು ಮತ್ತು ಯಶಸ್ಸಿನ ಕಥೆಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ.",
+                    "community_btn": "ಚರ್ಚೆಯಲ್ಲಿ ಸೇರಿ",
+                    "feature_card_insurance_title": "ಬೆಳೆ ವಿಮೆ",
+                    "feature_card_insurance_desc": "ಹೊಂದಿಕೊಂಡ ವಿಮಾ ಯೋಜನೆಗಳೊಂದಿಗೆ ನಿಮ್ಮ ಫಸಲನ್ನು ಸುರಕ್ಷಿತಗೊಳಿಸಿ. AI ಸಲಹೆ ಪಡೆಯಿರಿ ಮತ್ತು ಕ್ಲೈಮ್‌ಗಳನ್ನು ಸುಲಭವಾಗಿ ಸಲ್ಲಿಸಿ.",
+                    "feature_card_digilocker_title": "ಡಿಜಿಟಲ್ ಲಾಕರ್",
+                    "feature_card_digilocker_desc": "ನಿಮ್ಮ ಪ್ರಮುಖ ದಾಖಲೆಗಳನ್ನು ಸುರಕ್ಷಿತವಾಗಿ ಸಂಗ್ರಹಿಸಿ ಮತ್ತು ಭೂ ದಾಖಲೆಗಳಂತಹವುಗಳ AI ಸಾರಾಂಶಗಳನ್ನು ಪಡೆಯಿರಿ.",
+                    "tool_rental_title": "ಕೃಷಿ ಉಪಕರಣ ಬಾಡಿಗೆ",
+                    "tool_rental_desc": "ನಿಮ್ಮ ಅಗತ್ಯಗಳಿಗಾಗಿ ಕೃಷಿ ಉಪಕರಣಗಳನ್ನು ಸುಲಭವಾಗಿ ಬಾಡಿಗೆಗೆ ಪಡೆಯಿರಿ ಅಥವಾ ಆದಾಯ ಗಳಿಸಲು ನಿಮ್ಮ ಸ್ವಂತ ಉಪಕರಣಗಳನ್ನು ಪಟ್ಟಿ ಮಾಡಿ.",
+                    "farm_shop_title": "ಫಾರ್ಮ್ ಶಾಪ್",
+                    "farm_shop_desc": "ನಂಬಿಕಸ್ಥ ಪೂರೈಕೆದಾರರಿಂದ ನೇರವಾಗಿ ಉತ್ತಮ ಗುಣಮಟ್ಟದ ಬೀಜಗಳು, ರಸಗೊಬ್ಬರಗಳು ಮತ್ತು ಇತರ ಅಗತ್ಯ ಕೃಷಿ ಸಾಮಗ್ರಿಗಳನ್ನು ಖರೀದಿಸಿ.",
+                    "market_prices_forecasts_title": "ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳು ಮತ್ತು AI ಮುನ್ಸೂಚನೆಗಳು",
+                    "market_prices_forecasts_desc": "ನಿಮ್ಮ ಬೆಳೆಗಳ ನೈಜ-ಸಮಯದ ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳೊಂದಿಗೆ ಮುನ್ನಡೆಯಿರಿ. ನಮ್ಮ ಸುಧಾರಿತ AI ಅಲ್ಗಾರಿದಮ್‌ಗಳು ನಿಖರ ಬೆಲೆ ಮುನ್ಸೂಚನೆಗಳನ್ನು ಒದಗಿಸುತ್ತವೆ.",
+                    "loan_management_title": "ಸಾಲ ನಿರ್ವಹಣಾ ಪೋರ್ಟಲ್",
+                    "loan_management_desc": "ನಿಮ್ಮ ಕೃಷಿ ಸಾಲಗಳನ್ನು ಸುಲಭವಾಗಿ ನಿರ್ವಹಿಸಿ. ಹೊಸ ಸಾಲಗಳಿಗಾಗಿ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ, ನಿಮ್ಮ ಮರುಪಾವತಿ ವೇಳಾಪಟ್ಟಿಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ, ಮತ್ತು ವೈಯಕ್ತಿಕ ಹಣಕಾಸು ಸಲಹೆ ಪಡೆಯಿರಿ.",
+                    "helpline_title": "ರೈತ ಸಹಾಯ ಮತ್ತು ಸಹಾಯವಾಣಿ",
+                    "helpline_desc": "ನಮ್ಮ ಕೃಷಿ ತಜ್ಞರಿಂದ ತಕ್ಷಣದ ಬೆಂಬಲ ಪಡೆಯಿರಿ. ನಮ್ಮ ಸಹಾಯವಾಣಿ ನಿಮ್ಮ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಲು ಮತ್ತು ಮಾರ್ಗದರ್ಶನ ನೀಡಲು 24/7 ಲಭ್ಯವಿದೆ.",
+                    "how_it_works_title": "ನಿಮ್ಮ ಕೃಷಿ ಚಕ್ರ, ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಲಾಗಿದೆ",
+                    "how_it_works_subtitle": "ನಿಮ್ಮ ಫಾರ್ಮ್‌ನ ಸಾಮರ್ಥ್ಯವನ್ನು ಹೆಚ್ಚಿಸಲು ಈ ಹಂತಗಳನ್ನು ಅನುಸರಿಸಿ.",
+                    "step1_title": "ರೋಗನಿರ್ಣಯ ಮತ್ತು ಯೋಜನೆ",
+                    "step1_desc": "ಬೆಳೆ ಸಮಸ್ಯೆಗಳನ್ನು ಬೇಗನೆ ಪತ್ತೆಹಚ್ಚಲು ಮತ್ತು ಸೀಸನ್‌ಗಾಗಿ ವೈಯಕ್ತಿಕ ಕೃಷಿ ಯೋಜನೆಯನ್ನು ರಚಿಸಲು AI ಪರಿಕರಗಳನ್ನು ಬಳಸಿ.",
+                    "step2_title": "ಗುಣಮಟ್ಟದ ಒಳಹರಿವುಗಳನ್ನು ಖರೀದಿಸಿ",
+                    "step2_desc": "ನಮ್ಮ ನಂಬಿಕಸ್ಥ ಅಗ್ರಿ-ಶಾಪ್ ಮಾರುಕಟ್ಟೆಯಿಂದ ಪ್ರಮಾಣೀಕೃತ ಬೀಜಗಳು, ರಸಗೊಬ್ಬರಗಳು ಮತ್ತು ಉಪಕರಣಗಳನ್ನು ಖರೀದಿಸಿ.",
+                    "step3_title": "ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ",
+                    "step3_desc": "ನಿಮ್ಮ ಚಟುವಟಿಕೆಗಳು, ವೆಚ್ಚಗಳು ಮತ್ತು ಇಳುವರಿಗಳನ್ನು ಫಾರ್ಮ್ ಲಾಗ್‌ನಲ್ಲಿ ದಾಖಲಿಸಿ. ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಮೇಲ್ವಿಚಾರಣೆ ಮಾಡಲು ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ಬಳಸಿ.",
+                    "step4_title": "ಅತ್ಯುತ್ತಮ ಬೆಲೆಗೆ ಮಾರಾಟ ಮಾಡಿ",
+                    "step4_desc": "ಲೈವ್ ಮಂಡಿ ಬೆಲೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ, AI ಮುನ್ಸೂಚನೆಗಳನ್ನು ಪಡೆಯಿರಿ ಮತ್ತು ಪರಿಶೀಲಿಸಿದ ಖರೀದಿದಾರರಿಗೆ ಮಾರಾಟ ಮಾಡಲು ನಿಮ್ಮ ಉತ್ಪನ್ನವನ್ನು ಪಟ್ಟಿ ಮಾಡಿ.",
+                    "preview_title": "ಸಮುದಾಯ ಮತ್ತು ಕೇಂದ್ರದಿಂದ ಇತ್ತೀಚಿನದು",
+                    "preview_subtitle": "ಇತ್ತೀಚಿನ ಟ್ಯುಟೋರಿಯಲ್‌ಗಳು, ಚರ್ಚೆಗಳು ಮತ್ತು ಮುಂಬರುವ ಕಾರ್ಯಕ್ರಮಗಳೊಂದಿಗೆ ನವೀಕರಿಸಿ.",
+                    "preview_tag_tutorial": "ತಜ್ಞರ ಟ್ಯುಟೋರಿಯಲ್",
+                    "tutorial_title": "ಆಧುನಿಕ ಕೃಷಿ ಪದ್ಧತಿಗಳು",
+                    "tutorial_desc": "ದಕ್ಷತೆ ಮತ್ತು ಸ್ಥಿರತೆಯನ್ನು ಹೆಚ್ಚಿಸಲು ಕೃಷಿಯಲ್ಲಿನ ಇತ್ತೀಚಿನ ಆವಿಷ್ಕಾರಗಳ ಬಗ್ಗೆ ತಿಳಿಯಿರಿ.",
+                    "preview_link_tutorials": "ಹೆಚ್ಚಿನ ಟ್ಯುಟೋರಿಯಲ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ &rarr;",
+                    "preview_tag_live": "ಮುಂಬರುವ ಲೈವ್ ಸೆಷನ್",
+                    "live_session_title": "ಹನಿ ನೀರಾವರಿ ತಂತ್ರಗಳು",
+                    "live_session_desc": "ಜಲ ಸಂರಕ್ಷಣೆ ಬಗ್ಗೆ ತಿಳಿಯಲು ಡಾ. ರಮೇಶ್ ಗುಪ್ತಾ ಅವರೊಂದಿಗೆ ಸೇರಿಕೊಳ್ಳಿ. ಸೆಪ್ಟೆಂಬರ್ 20, ಸಂಜೆ 4:00.",
+                    "community_post_author": "ರಮೇಶ್ ಕೆ.",
+                    "community_post_location": "ಹರಿಯಾಣದಿಂದ",
+                    "community_post_text": `"ಈ ವರ್ಷ ಎಐ ಇಳುವರಿ ವಿಶ್ಲೇಷಣಾ ಸಾಧನವನ್ನು ಬಳಸಿಕೊಂಡು ನನ್ನ ಗೊಬ್ಬರ ವೇಳಾಪಟ್ಟಿಯನ್ನು ಹೊಂದಿಸಿದ ನಂತರ ನನ್ನ ಗೋಧಿ ಇಳುವರಿ 15% ಹೆಚ್ಚಾಯಿತು. ಬೇರೆ ಯಾರಾದರೂ ಉತ್ತಮ ಫಲಿತಾಂಶಗಳನ್ನು ಕಂಡಿದ್ದಾರೆಯೇ?"`,
+                    "preview_link_community": "ಸಂಭಾಷಣೆಯಲ್ಲಿ ಸೇರಿಕೊಳ್ಳಿ &rarr;",
+                    "testimonial1_text": `"ಅಗ್ರಿಕನೆಕ್ಟ್ ಆಟ ಬದಲಾಯಿಸುವಂತಿದೆ. AI ರೋಗನಿರ್ಣಯವು ನನ್ನ ಟೊಮೆಟೊ ಬೆಳೆಯನ್ನು ಉಳಿಸಿತು, ಮತ್ತು ಲೈವ್ ಮಂಡಿ ಬೆಲೆಗಳು ಕಳೆದ ಋತುವಿನಲ್ಲಿ ನನ್ನ ಲಾಭವನ್ನು 20% ಕ್ಕಿಂತ ಹೆಚ್ಚಿಸಲು ಸಹಾಯ ಮಾಡಿತು. ಇದು ಪ್ರತಿ ಭಾರತೀಯ ರೈತರಿಗೆ ಅತ್ಯಗತ್ಯವಾಗಿದೆ."`,
+                    "testimonial1_author_name": "ರಮೇಶ್ ಕುಮಾರ್,",
+                    "testimonial1_author_location": "ಹಿಸಾರ್, ಹರಿಯಾಣದಿಂದ ರೈತ",
+                    "testimonial2_text": `"ಫಾರ್ಮ್ ಲಾಗ್ ಅದ್ಭುತವಾಗಿದೆ. ಮೊದಲ ಬಾರಿಗೆ, ನನ್ನ ಎಲ್ಲಾ ಡೇಟಾ ಒಂದೇ ಸ್ಥಳದಲ್ಲಿದೆ. AI ಕಾರ್ಯ ಸಲಹೆಗಳು ನಾನು ಮರೆಯುತ್ತಿದ್ದ ಪ್ರಮುಖ ಚಟುವಟಿಕೆಗಳನ್ನು ನನಗೆ ನೆನಪಿಸುತ್ತವೆ. ಹೆಚ್ಚು ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ!"`,
+                    "testimonial2_author_name": "ಸುನಿತಾ ದೇವಿ,",
+                    "testimonial2_author_location": "ನಾಸಿಕ್, ಮಹಾರಾಷ್ಟ್ರದಿಂದ ರೈತ",
+                    "testimonial3_text": `"ನನ್ನ ರಾಗಿಯನ್ನು ಮಾರುಕಟ್ಟೆಗೆ ತೆಗೆದುಕೊಂಡು ಹೋಗುವ ಮೊದಲು ನಾನು ಎಐ ಬೆಲೆ ಮುನ್ಸೂಚಕವನ್ನು ಬಳಸಿದೆ ಮತ್ತು ಅದು ಸೂಚಿಸಿದಂತೆ ಇನ್ನೂ ಎರಡು ವಾರ ಕಾಯ್ದೆ. ನಾನು ಹೆಚ್ಚುವರಿ ₹8,000 ಗಳಿಸಿದೆ! ಈ ಉಪಕರಣವು ಶುದ್ಧ ಮಾಂತ್ರಿಕವಾಗಿದೆ."`,
+                    "testimonial3_author_name": "ಗಣೇಶ್ ಮೂರ್ತಿ,",
+                    "testimonial3_author_location": "ಮಂಡ್ಯ, ಕರ್ನಾಟಕದಿಂದ ರೈತ",
+                    "footer_about_text": "ಭಾರತದ ಹೃದಯಕ್ಕೆ ಅಧಿಕಾರ ನೀಡುವುದು. ನಾವು ಪ್ರತಿ ರೈತನಿಗೆ ತಂತ್ರಜ್ಞಾನ ಮತ್ತು ಲಾಭದಾಯಕತೆಯನ್ನು ತರಲು ಬದ್ಧರಾಗಿದ್ದೇವೆ.",
+                    "footer_tools_title": "ನಮ್ಮ ಪರಿಕರಗಳು",
+                    "footer_contact_title": "ಸಂಪರ್ಕ ಮಾಹಿತಿ",
+                    "language_selected": "ಕನ್ನಡ",
+                    "welcome_back": "ಮರಳಿ ಸ್ವಾಗತ, ",
+                    "default_welcome": "ನಾಳೆಗಾಗಿ ಇಂದು ಉತ್ತಮ ಬೆಳೆ ತೆಗೆಯಿರಿ.",
+                    "stats_weather_loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+                    "stats_price_unit": " / ಕ್ವಿಂಟಾಲ್",
+                    "stats_tasks_pending": "ನಿಮಗೆ ಇಂದು {pendingTasks} ಕಾರ್ಯ(ಗಳು) ಇದೆ",
+                    "stats_tasks_none": "ಯಾವುದೇ ಬಾಕಿ ಇರುವ ಕಾರ್ಯಗಳಿಲ್ಲ. ಚೆನ್ನಾಗಿ ಮಾಡಿದ್ದೀರಿ!",
+                    "stats_tasks_view": "ನಿಮ್ಮ ಕಾರ್ಯಗಳನ್ನು ವೀಕ್ಷಿಸಿ",
+                    "chat_initial_message": "ನಮಸ್ಕಾರ, ರೈತ ಮಿತ್ರ! ನಾನು ಕಿಸಾನ್ ಮಿತ್ರ, ನಿಮ್ಮ ಕೃಷಿ ಸಹಾಯಕ. ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?",
+                    "chat_input_placeholder": "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ...",
+                    "chat_header_title": "ಕಿಸಾನ್ ಮಿತ್ರ",
+                    "chat_header_subtitle": "ನಿಮ್ಮ ಕೃಷಿ ಸಹಾಯಕ",
+                    "chat_api_error": "ಕ್ಷಮಿಸಿ, ನಾನು ಅದನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+                    "chat_api_key_error": "ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ API ಕೀಲಿಯನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+                    "chat_voice_unsupported": "ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ.",
+                }
+            };
+
+            const languageSelector = document.getElementById('language-selector');
+
+            function changeLanguage(lang) {
+                document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.getAttribute('data-translate-key');
+                    if (translations[lang] && translations[lang][key]) {
+                         element.textContent = translations[lang][key];
+                    }
+                });
+                localStorage.setItem('selectedLanguage', lang);
+            }
+
+            languageSelector.addEventListener('change', (event) => {
+                changeLanguage(event.target.value);
+            });
+
+            const savedLanguage = localStorage.getItem('selectedLanguage');
+            if (savedLanguage) {
+                languageSelector.value = savedLanguage;
+                changeLanguage(savedLanguage);
+            } else {
+                changeLanguage('en');
+            }
+
+            // --- Sidebar Functionality ---
+            const profilePic = document.getElementById('profile-nav-pic');
+            const sidebar = document.getElementById('profile-sidebar');
+            const overlay = document.getElementById('profile-sidebar-overlay');
+            const closeBtn = document.getElementById('close-sidebar-btn');
+
+            const openSidebar = () => {
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.remove('invisible', 'opacity-0');
+                overlay.classList.add('visible', 'opacity-100');
+                document.body.style.overflow = 'hidden';
+            };
+            const closeSidebar = () => {
+                sidebar.classList.remove('translate-x-0');
+                overlay.classList.remove('visible', 'opacity-100');
+                overlay.classList.add('invisible', 'opacity-0');
+                document.body.style.overflow = '';
+            };
+            if (profilePic && sidebar && overlay && closeBtn) {
+                profilePic.addEventListener('click', openSidebar);
+                closeBtn.addEventListener('click', closeSidebar);
+                overlay.addEventListener('click', closeSidebar);
+            }
+
+            // --- Quick Stats Bar Logic ---
+            const statsBar = {
+                weatherEl: document.getElementById('weather-data'),
+                priceEl: document.getElementById('price-data'),
+                tasksEl: document.getElementById('tasks-data'),
+                
+                init() {
+                    this.updateWeather();
+                    this.updatePrice();
+                    this.updateTasks();
+                },
+                updateWeather() {
+                    const weathers = ["28°C, Clear Skies", "30°C, Partly Cloudy", "26°C, Light Showers"];
+                    this.weatherEl.textContent = weathers[Math.floor(Math.random() * weathers.length)];
+                },
+                updatePrice() {
+                    const basePrice = 2450;
+                    const randomChange = (Math.random() - 0.5) * 50;
+                    const livePrice = (basePrice + randomChange).toFixed(2);
+                    const priceUnit = translations[languageSelector.value]["stats_price_unit"] || " / Quintal";
+                    this.priceEl.textContent = `₹${livePrice}${priceUnit}`;
+                },
+                updateTasks() {
+                    try {
+                        const tasks = JSON.parse(localStorage.getItem('dailyTasks')) || [];
+                        const pendingTasks = tasks.filter(task => !task.completed).length;
+                        if (pendingTasks > 0) {
+                            const pendingText = translations[languageSelector.value]["stats_tasks_pending"] || "You have {pendingTasks} task(s) today";
+                            this.tasksEl.textContent = pendingText.replace("{pendingTasks}", pendingTasks);
+                        } else {
+                            this.tasksEl.textContent = translations[languageSelector.value]["stats_tasks_none"] || "No pending tasks. Well done!";
+                        }
+                    } catch (e) {
+                         this.tasksEl.textContent = translations[languageSelector.value]["stats_tasks_view"] || "View your tasks";
+                    }
+                }
+            };
+            statsBar.init();
+
+            // --- Live Price Ticker Logic ---
+            const priceTicker = {
+                tape: document.getElementById('price-ticker-tape'),
+                data: [
+                    { name: 'WHEAT', price: 2478.10, change: 1.2 },
+                    { name: 'RICE', price: 3050.75, change: -0.8 },
+                    { name: 'RAGI', price: 3570.00, change: 2.1 },
+                    { name: 'COTTON', price: 7015.50, change: 0.5 },
+                    { name: 'SUGARCANE', price: 402.10, change: 1.5 },
+                    { name: 'MUSTARD', price: 5420.00, change: -0.5 },
+                    { name: 'SOYBEAN', price: 4380.25, change: 2.8 }
+                ],
+                init() {
+                    const content = this.data.map(item => this.createItemHTML(item)).join('');
+                    this.tape.innerHTML = content + content;
+                },
+                createItemHTML(item) {
+                    const isPositive = item.change >= 0;
+                    const changeClass = isPositive ? 'text-green-500' : 'text-red-500';
+                    const changeArrow = isPositive ? '▲' : '▼';
+                    return `
+                        <div class="px-8 flex items-center gap-4">
+                            <span class="font-semibold">${item.name}</span>
+                            <span class="text-green-500">₹${item.price.toFixed(2)}</span>
+                            <span class="${changeClass}">
+                                ${changeArrow} ${Math.abs(item.change)}%
+                            </span>
+                        </div>
+                    `;
+                }
+            };
+            priceTicker.init();
+            
+            // --- Testimonial Slider Logic ---
+            const testimonialSlider = {
+                slides: document.querySelectorAll('.testimonial-slide'),
+                dots: document.querySelectorAll('[id^="dot-"]'),
+                currentIndex: 0,
+                interval: null,
+                init() {
+                    this.dots.forEach((dot, index) => {
+                        dot.addEventListener('click', () => this.showSlide(index));
+                    });
+                    this.showSlide(this.currentIndex);
+                    this.startAutoPlay();
+                },
+                startAutoPlay() {
+                    if (this.interval) clearInterval(this.interval);
+                    this.interval = setInterval(() => this.nextSlide(), 5000);
+                },
+                showSlide(index) {
+                    this.slides.forEach(slide => slide.classList.remove('active'));
+                    this.dots.forEach(dot => dot.classList.remove('bg-green-500'));
+                    this.slides[index].classList.add('active');
+                    this.dots[index].classList.add('bg-green-500');
+                    this.currentIndex = index;
+                },
+                nextSlide() {
+                    let nextIndex = (this.currentIndex + 1) % this.slides.length;
+                    this.showSlide(nextIndex);
+                }
+            };
+            testimonialSlider.init();
+        });
+
+        // Chatbot functionality
+        const API_KEY = "AIzaSyAcuTYwM2Vsxu9AaeRaiOKFXuYFYhLFRsY";
+        const elements = {
+            chatMessages: document.getElementById('chat-messages'),
+            userInput: document.getElementById('user-input'),
+            sendButton: document.getElementById('send-button'),
+            chatbotButton: document.getElementById('chatbot-button'),
+            chatModal: document.getElementById('chat-modal'),
+            chatModalClose: document.getElementById('chat-modal-close'),
+            voiceButton: document.getElementById('voice-button'),
+            languageSelect: document.getElementById('language-select'),
+        };
+        
+        const translations = {
+            'en': {
+                initial: 'Hello, farmer friend! I am KisanMitra, your agricultural assistant. How can I help you today?',
+                systemPrompt: `You are an expert agriculture chatbot for farmers in India. Your name is KisanMitra. You must use a friendly and helpful tone. You understand Indian farming practices, crops, seasons, and local challenges. You must answer in English. Keep your responses concise and to the point.`,
+                apiError: "Sorry, I couldn't process that. Please try again.",
+                placeholder: "Ask your question..."
+            },
+            'hi': {
+                initial: 'नमस्ते, किसान भाई! मैं किसानमित्र हूँ, आपका खेतीबाड़ी सहायक। आपकी कैसे मदद कर सकता हूँ?',
+                systemPrompt: `आप एक विशेषज्ञ भारतीय किसान चैटबॉट हैं। आपका नाम किसानमित्र है। आपका अंदाज़ दोस्ताना और सहायक होना चाहिए। आपको भारतीय खेती की जानकारी, फसलें, मौसम और स्थानीय मुश्किलें पता होनी चाहिए। आपको पूरा जवाब हिन्दी में देना चाहिए। अपने जवाबों को संक्षिप्त और सीधा रखें।`,
+                apiError: "क्षमा करें, मैं इसे संसाधित नहीं कर सका। कृपया पुनः प्रयास करें।",
+                placeholder: "अपना प्रश्न पूछें..."
+            },
+            'kn': {
+                initial: 'ನಮಸ್ಕಾರ, ರೈತ ಮಿತ್ರ! ನಾನು ಕಿಸಾನ್ ಮಿತ್ರ, ನಿಮ್ಮ ಕೃಷಿ ಸಹಾಯಕ. ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?',
+                systemPrompt: `ನೀವು ಭಾರತೀಯ ರೈತರಿಗಾಗಿ ತಜ್ಞ ಕೃಷಿ ಚಾಟ್‌ಬಾಟ್. ನಿಮ್ಮ ಹೆಸರು ಕಿಸಾನ್ ಮಿತ್ರ. ನಿಮ್ಮ ಶೈಲಿ ಸ್ನೇಹಪರ ಮತ್ತು ಸಹಾಯಕವಾಗಿರಬೇಕು. ನಿಮಗೆ ಭಾರತೀಯ ಕೃಷಿ ಪದ್ಧತಿಗಳು, ಬೆಳೆಗಳು, ಹವಾಮಾನ ಮತ್ತು ಸ್ಥಳೀಯ ಸಮಸ್ಯೆಗಳ ಬಗ್ಗೆ ತಿಳಿದಿರಬೇಕು. ನೀವು ಪ್ರಶ್ನೆಗಳಿಗೆ ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಬೇಕು. ನಿಮ್ಮ ಉತ್ತರಗಳನ್ನು ಸಂಕ್ಷಿಪ್ತ ಮತ್ತು ನೇರವಾಗಿ ಇರಿಸಿ.`,
+                apiError: "ಕ್ಷಮಿಸಿ, ನಾನು ಅದನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+                placeholder: "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ..."
+            }
+        };
+
+        let recognition;
+        let currentLanguage = elements.languageSelect.value;
+        const chatHistory = [];
+
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('p-3', 'rounded-xl', 'max-w-xs', 'break-words', 'shadow-sm');
+            messageDiv.textContent = text;
+            if (isUser) {
+                messageDiv.classList.add('bg-green-500', 'text-white', 'self-end', 'rounded-br-none');
+            } else {
+                messageDiv.classList.add('bg-gray-200', 'text-gray-800', 'self-start', 'rounded-bl-none');
+            }
+            elements.chatMessages.appendChild(messageDiv);
+            elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+        }
+
+        elements.chatbotButton.addEventListener('click', () => {
+            elements.chatModal.style.display = 'flex';
+            setTimeout(() => elements.chatModal.classList.remove('opacity-0', 'invisible'), 10);
+        });
+
+        elements.chatModalClose.addEventListener('click', () => {
+            elements.chatModal.classList.add('opacity-0', 'invisible');
+            setTimeout(() => elements.chatModal.style.display = 'none', 300);
+        });
+
+        elements.languageSelect.addEventListener('change', () => {
+            currentLanguage = elements.languageSelect.value;
+            chatHistory.length = 0;
+            elements.chatMessages.innerHTML = '';
+            elements.userInput.placeholder = translations[currentLanguage].placeholder;
+            addMessage(translations[currentLanguage].initial);
+        });
+
+        async function sendMessage() {
+            const userText = elements.userInput.value.trim();
+            if (userText === '') return;
+
+            addMessage(userText, true);
+            chatHistory.push({ role: "user", parts: [{ text: userText }] });
+            elements.userInput.value = '';
+
+            const loadingMessage = document.createElement('div');
+            loadingMessage.classList.add('p-3', 'rounded-xl', 'bg-gray-200', 'text-gray-800', 'self-start');
+            loadingMessage.innerHTML = '<div class="flex space-x-1"><span class="w-2 h-2 bg-gray-500 rounded-full animate-pulse-fast"></span><span class="w-2 h-2 bg-gray-500 rounded-full animate-pulse-fast-2"></span><span class="w-2 h-2 bg-gray-500 rounded-full animate-pulse-fast-3"></span></div>';
+            elements.chatMessages.appendChild(loadingMessage);
+            elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`;
+                const payload = { 
+                    contents: chatHistory, 
+                    systemInstruction: { parts: [{ text: translations[currentLanguage].systemPrompt }] } 
+                };
+                
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const result = await response.json();
+                
+                let botResponse = result?.candidates?.[0]?.content?.parts?.[0]?.text || translations[currentLanguage].apiError;
+
+                elements.chatMessages.removeChild(loadingMessage);
+                addMessage(botResponse);
+                chatHistory.push({ role: "model", parts: [{ text: botResponse }] });
+
+            } catch (error) {
+                console.error("Error calling Gemini API:", error);
+                elements.chatMessages.removeChild(loadingMessage);
+                addMessage(translations[currentLanguage].apiError);
+            }
+        }
+
+        if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = false;
+            recognition.lang = 'hi-IN';
+            
+            recognition.onstart = () => { elements.voiceButton.classList.add('text-red-500'); };
+            recognition.onend = () => { elements.voiceButton.classList.remove('text-red-500'); };
+            recognition.onerror = (event) => console.error('Speech recognition error:', event.error);
+            recognition.onresult = (event) => {
+                elements.userInput.value = event.results[0][0].transcript;
+                sendMessage();
+            };
+            elements.voiceButton.addEventListener('click', () => {
+                const langMap = { 'en': 'en-IN', 'hi': 'hi-IN', 'kn': 'kn-IN' };
+                recognition.lang = langMap[currentLanguage];
+                recognition.start();
+            });
+        } else {
+            console.warn('Speech recognition not supported.');
+            elements.voiceButton.style.display = 'none';
+        }
+
+        elements.sendButton.addEventListener('click', sendMessage);
+        elements.userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+        
+        addMessage(translations[currentLanguage].initial);
+    </script>
+</body>
+</html>

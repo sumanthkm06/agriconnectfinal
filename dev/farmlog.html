@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Farm Log - KrishiMandi</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.sh/@google/generative-ai"
+        }
+    }
+    </script>
+
+    <style>
+        /* ==========================================================================
+           1. EMBEDDED GLOBAL STYLES (Derived from style.css)
+           ========================================================================== */
+        :root {
+            --primary-color: #2ECC71;
+            --primary-hover: #27ae60;
+            --secondary-color: #16A085;
+            --heading-color: #2c3e50;
+            --text-color: #34495e;
+            --light-text: #7f8c8d;
+            --bg-color: #ffffff;
+            --alt-bg-color: #f4f7f6;
+            --border-color: #e0e0e0;
+            --white-color: #ffffff;
+            --danger-color: #e74c3c;
+            --danger-hover: #c0392b;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 30px rgba(46, 204, 113, 0.15);
+            --glow-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+            --font-family: 'Inter', sans-serif;
+            --transition-speed: 0.3s;
+            --border-radius: 12px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-family);
+            color: var(--text-color);
+            background-color: var(--alt-bg-color);
+            line-height: 1.7;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h3 { font-size: 2.8rem; font-weight: 800; color: var(--heading-color); }
+        .section-header p { font-size: 1.15rem; color: var(--light-text); }
+
+        /* --- Header & Footer --- */
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.05); position: sticky; top: 0; width: 100%; z-index: 1000; }
+        .app-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; font-weight: 700; color: var(--heading-color); }
+        .main-nav { display: flex; gap: 2rem; align-items: center; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; transition: color var(--transition-speed) ease; position: relative; padding: 8px 4px; }
+        .main-nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-image: var(--primary-gradient); transition: width 0.4s ease; border-radius: 2px; }
+        .main-nav a:hover, .main-nav a.active { color: var(--heading-color); }
+        .main-nav a:hover::after, .main-nav a.active::after { width: 100%; }
+        #profile-nav-pic { width: 42px; height: 42px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; object-fit: cover; transition: all var(--transition-speed) ease; }
+        .app-footer { padding: 60px 0; background-color: var(--heading-color); color: rgba(255, 255, 255, 0.7); text-align: center; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; padding-bottom: 40px; text-align: left; }
+        .footer-col h5 { color: var(--white-color); margin-bottom: 1rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 0.75rem; }
+        .footer-col a { color: rgba(255, 255, 255, 0.7); text-decoration: none; transition: color var(--transition-speed); }
+        .footer-col a:hover { color: var(--primary-color); }
+        .social-icons { display: flex; gap: 1rem; margin-top: 1rem; }
+        .social-icons a { display: inline-flex; justify-content: center; align-items: center; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; }
+        .footer-bottom { padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+
+        /* --- Reusable Components --- */
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--card-shadow); transition: all var(--transition-speed); }
+        .btn { display: inline-block; padding: 14px 32px; border-radius: 50px; border: 2px solid transparent; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; padding: 16px 34px; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: var(--glow-shadow); }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border-color: var(--border-color); }
+        .btn-secondary:hover { background-color: var(--primary-color); border-color: var(--primary-color); color: var(--white-color); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; font-family: var(--font-family); transition: all 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .hidden { display: none !important; }
+
+        /* Toast Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+        .toast {
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards;
+            background-color: var(--primary-color);
+        }
+        .toast.error { background-color: var(--danger-color); }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateX(100%); }
+        }
+
+        /* ==========================================================================
+           2. PAGE-SPECIFIC STYLES FOR FARM LOG
+           ========================================================================== */
+        
+        /* --- Tab Navigation --- */
+        .tabs-nav { display: flex; justify-content: center; margin-bottom: 2.5rem; background-color: var(--bg-color); padding: 0.5rem; border-radius: 50px; box-shadow: var(--card-shadow); }
+        .tab-btn { padding: 0.75rem 2rem; border: none; background-color: transparent; font-size: 1.1rem; font-weight: 600; color: var(--light-text); cursor: pointer; border-radius: 50px; transition: all var(--transition-speed) ease; }
+        .tab-btn.active { background-image: var(--primary-gradient); color: var(--white-color); box-shadow: var(--glow-shadow); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* --- Analytics Dashboard --- */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card { padding: 1.5rem; text-align: center; }
+        .stat-card .icon { font-size: 2rem; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .stat-card .value { font-size: 2.2rem; font-weight: 700; color: var(--heading-color); line-height: 1.2; }
+        .stat-card .label { color: var(--light-text); font-weight: 500; }
+        .chart-container { position: relative; height: 400px; width: 100%; }
+
+        /* --- Crop Records Section --- */
+        .page-layout { display: grid; grid-template-columns: 3fr 2fr; gap: 2rem; align-items: start; }
+        .record-card { margin-bottom: 1.5rem; padding: 1.5rem; }
+        .record-card h4 { color: var(--secondary-color); font-size: 1.4rem; margin-bottom: 1rem; }
+        .record-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem; margin-bottom: 1rem; }
+        .record-meta strong { color: var(--heading-color); }
+        .fertilizer-info { border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem; }
+        .fertilizer-info h5 { font-size: 1rem; color: var(--text-color); margin-bottom: 0.5rem; }
+        .fertilizer-image { width: 100%; border-radius: 8px; margin-top: 0.5rem; }
+        .record-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem; }
+        .btn-icon { background: none; border: none; cursor: pointer; color: var(--light-text); padding: 0.5rem; }
+        .btn-icon:hover { color: var(--primary-color); }
+        .btn-ai-analysis { width: 100%; margin-top: 1rem; }
+
+        /* --- Daily Tasks Section --- */
+        .task-list { list-style: none; margin-top: 1.5rem; }
+        .task-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 0.75rem; background-color: var(--bg-color); transition: all var(--transition-speed); }
+        .task-item:hover { border-color: var(--primary-color); }
+        .task-checkbox { width: 20px; height: 20px; accent-color: var(--primary-color); cursor: pointer; }
+        .task-details { flex-grow: 1; }
+        .task-text { font-weight: 500; }
+        .task-item.completed .task-text { text-decoration: line-through; color: var(--light-text); }
+        .task-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--light-text); margin-top: 0.25rem; }
+        .task-category { padding: 0.2rem 0.6rem; border-radius: 20px; color: white; font-weight: 500; font-size: 0.75rem; }
+        .task-actions button { background: none; border: none; color: var(--light-text); cursor: pointer; transition: all var(--transition-speed); }
+        .task-actions button:hover { color: var(--danger-color); }
+        .task-input-group { display: grid; grid-template-columns: 1fr auto auto auto; gap: 1rem; }
+        
+        /* --- Modals, Toasts, Loader --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1010; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); background: white; padding: 2rem; border-radius: var(--border-radius); z-index: 1011; width: 90%; max-width: 600px; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+        .modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+        .modal-header h4 { font-size: 1.5rem; color: var(--heading-color); }
+        .close-btn { font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--light-text); line-height: 1; }
+        #ai-response h5 { color: var(--secondary-color); margin-top: 1rem; margin-bottom: 0.5rem; }
+        #ai-response ul { list-style-position: inside; padding-left: 0.5rem; }
+        .loader-container { display: flex; align-items: center; justify-content: center; min-height: 150px; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Responsive */
+        @media (max-width: 900px) { .page-layout { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .main-nav { display: none; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .task-input-group { grid-template-columns: 1fr; }
+            .tabs-nav { flex-direction: column; border-radius: var(--border-radius); }
+            .tab-btn { border-radius: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>KrishiMandi</h1>
+            </a>
+            <nav class="main-nav">
+
+                <a href="shop.html">Market-place</a>
+                <a href="farmlog.html" class="active" data-translate-key="nav_farmlog">Farm Log</a>
+                <a href="tools.html">AI Tools</a>
+                <a href="knowledge-hub.html">Knowledge Hub</a>
+                <a href="community.html">Community</a>
+                <a href="contact.html">Contact</a>
+                <img src="https://placehold.co/40x40/E8F5E9/2c3e50?text=S" alt="Profile" id="profile-nav-pic" title="View Profile">
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3 data-translate-key="farmlog_title">My Farm Log</h3>
+                    <p data-translate-key="farmlog_subtitle">Track your crop history and manage daily tasks, all in one place.</p>
+                </div>
+
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="crop-records" data-translate-key="farmlog_tab_records">Crop Records</button>
+                    <button class="tab-btn" data-tab="daily-tasks" data-translate-key="farmlog_tab_tasks">Daily Tasks</button>
+                </div>
+
+                <div id="crop-records" class="tab-content active">
+                    <div id="analytics-dashboard" class="dashboard-grid">
+                        <div class="card stat-card">
+                            <div class="icon" data-feather="trending-up"></div>
+                            <div id="total-yield" class="value">0 Kg</div>
+                            <div class="label" data-translate-key="farmlog_stat_yield">Total Yield Logged</div>
+                        </div>
+                        <div class="card stat-card">
+                             <div class="icon" data-feather="dollar-sign"></div>
+                            <div id="total-cost" class="value">₹0</div>
+                            <div class="label" data-translate-key="farmlog_stat_cost">Total Fertilizer Cost</div>
+                        </div>
+                        <div class="card stat-card">
+                             <div class="icon" data-feather="clipboard"></div>
+                            <div id="total-records" class="value">0</div>
+                            <div class="label" data-translate-key="farmlog_stat_records">Total Records</div>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div class="chart-container">
+                            <canvas id="yield-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="page-layout">
+                        <div class="form-container">
+                            <div class="card">
+                                <h4 id="form-title" data-translate-key="farmlog_form_title_add">Add New Crop Record</h4>
+                                <form id="crop-form">
+                                    <input type="hidden" id="record-id">
+                                    <div class="form-group">
+                                        <label for="crop-name" data-translate-key="farmlog_form_crop">Crop Name</label>
+                                        <select id="crop-name" required>
+                                            <option value="">Select Crop</option>
+                                            <option value="Rice">Rice</option>
+                                            <option value="Wheat">Wheat</option>
+                                            <option value="Maize">Maize</option>
+                                            <option value="Cotton">Cotton</option>
+                                            <option value="Sugarcane">Sugarcane</option>
+                                            <option value="Mustard">Mustard</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label for="sowing-date" data-translate-key="farmlog_form_sowing">Sowing Date</label>
+                                            <input type="date" id="sowing-date" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="harvest-date" data-translate-key="farmlog_form_harvest">Harvesting Date</label>
+                                            <input type="date" id="harvest-date" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem;">
+                                        <h5 style="font-size: 1.1rem; margin-bottom: 1rem;" data-translate-key="farmlog_form_fertilizer">Fertilizer Application</h5>
+                                        <button type="button" id="scan-btn" class="btn btn-secondary" style="width: 100%; margin-bottom: 1rem;" data-translate-key="farmlog_form_scan_btn">Scan Fertilizer Bag (AI)</button>
+                                        <input type="file" id="image-input" accept="image/*" class="hidden">
+                                        <img id="scanned-image" class="fertilizer-image hidden" alt="Scanned image">
+                                        <div id="scan-loading" class="loader-container hidden"><div class="loader"></div></div>
+                                        <div class="grid-2">
+                                            <div class="form-group">
+                                                <label for="fertilizer-name" data-translate-key="farmlog_form_fert_name">Fertilizer Name</label>
+                                                <input type="text" id="fertilizer-name">
+                                            </div>
+                                             <div class="form-group">
+                                                <label for="fertilizer-price" data-translate-key="farmlog_form_fert_price">Price (₹)</label>
+                                                <input type="number" id="fertilizer-price" step="0.01">
+                                            </div>
+                                        </div>
+                                        <div class="grid-3">
+                                            <div class="form-group">
+                                                <label for="fertilizer-qty" data-translate-key="farmlog_form_fert_qty">Quantity</label>
+                                                <input type="number" id="fertilizer-qty" step="0.01">
+                                            </div>
+                                             <div class="form-group">
+                                                <label for="fertilizer-unit" data-translate-key="farmlog_form_fert_unit">Unit</label>
+                                                <select id="fertilizer-unit"><option value="">Select</option><option value="kg">kg</option><option value="liter">Liter</option><option value="bag">Bag</option></select>
+                                            </div>
+                                             <div class="form-group">
+                                                <label for="fertilizer-date" data-translate-key="farmlog_form_fert_date">Date</label>
+                                                <input type="date" id="fertilizer-date">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     <div class="form-group">
+                                        <label for="yield" data-translate-key="farmlog_form_yield">Yield (in Kg)</label>
+                                        <input type="number" id="yield" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="notes" data-translate-key="farmlog_form_notes">Notes</label>
+                                        <textarea id="notes" rows="3" placeholder="Optional notes..."></textarea>
+                                    </div>
+                                    <button type="submit" id="submit-record-btn" class="btn btn-primary" style="width:100%;" data-translate-key="farmlog_form_add_btn">Add Record</button>
+                                    <button type="button" id="cancel-edit-btn" class="btn btn-secondary hidden" style="width:100%; margin-top: 0.5rem;" data-translate-key="farmlog_form_cancel_btn">Cancel Edit</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="records-list-container">
+                             <h4 style="text-align: center; margin-bottom: 1rem;" data-translate-key="farmlog_records_title">My Crop Records</h4>
+                             <div id="records-list">
+                                 </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="daily-tasks" class="tab-content">
+                    <div class="card">
+                        <button id="ai-task-btn" class="btn btn-secondary" style="width: 100%; margin-bottom: 1.5rem;" data-translate-key="farmlog_tasks_ai_btn">
+                            <i data-feather="sparkles" style="vertical-align: middle; margin-right: 8px;"></i>
+                            Get AI Task Suggestions
+                        </button>
+                        <form id="task-form">
+                           <div class="task-input-group">
+                                <input type="text" id="task-input" placeholder="e.g., Water the paddy fields" required>
+                                <input type="date" id="task-due-date">
+                                <select id="task-category">
+                                    <option value="general">General</option>
+                                    <option value="irrigation">Irrigation</option>
+                                    <option value="fertilizer">Fertilizer</option>
+                                    <option value="pest-control">Pest Control</option>
+                                    <option value="maintenance">Maintenance</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary" data-translate-key="farmlog_tasks_add_btn">Add Task</button>
+                           </div>
+                        </form>
+                        <ul id="task-list" class="task-list">
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="ai-yield-modal-overlay" class="modal-overlay"></div>
+    <div id="ai-yield-modal" class="modal">
+        <div class="modal-header">
+            <h4>AI Yield Analysis</h4>
+            <button class="close-btn" data-modal-close>&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="ai-yield-response" class="ai-response">
+                 </div>
+        </div>
+    </div>
+    
+    <div id="ai-task-modal-overlay" class="modal-overlay"></div>
+    <div id="ai-task-modal" class="modal">
+        <div class="modal-header">
+            <h4>AI Task Suggestions</h4>
+            <button class="close-btn" data-modal-close>&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="ai-task-suggestion-form">
+                <div class="form-group">
+                    <label for="ai-task-crop">What is your main crop?</label>
+                    <select id="ai-task-crop">
+                        <option value="Rice">Rice</option>
+                        <option value="Wheat">Wheat</option>
+                        <option value="Maize">Maize</option>
+                        <option value="Cotton">Cotton</option>
+                        <option value="Sugarcane">Sugarcane</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ai-task-month">What is the current month?</label>
+                    <select id="ai-task-month">
+                        </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Get Suggestions</button>
+            </form>
+            <div id="ai-task-response" class="ai-response" style="margin-top: 1rem;"></div>
+        </div>
+    </div>
+    
+    <div id="chatbot-container"></div>
+    
+    <footer class="app-footer">
+        <div class="container">
+              <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="logo" style="margin-bottom: 1rem;">
+                        <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9-3.03.43-5.61 2.5-6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                        <h4 style="color: white; font-size: 1.5rem;">KrishiMandi</h4>
+                    </a>
+                      <p>Empowering the heart of India. We are committed to bringing technology and profitability to every farmer.</p>
+                      <div class="social-icons">
+                          <a href="https://x.com/SAGARM2005?t=hI44DMoGWfNhKxbnb8RBCw&s=09" target="_blank" aria-label="Twitter"><i data-feather="twitter"></i></a>
+                          <a href="https://www.instagram.com/mr.saga_rix_?igsh=NHNxMnNsMTV4NW05" target="_blank" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                      </div>
+                </div>
+                  <div class="footer-col">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="buy.html">Marketplace</a></li>
+                        <li><a href="community.html">Community Forum</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contact Info</h5>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="display: flex; align-items: start; gap: 10px;">
+                            <i data-feather="map-pin" style="width: 16px; margin-top: 5px;"></i>
+                            <span>Dayananda Sagar University, Harohalli, Ramnagara district, 562112</span>
+                        </li>
+                          <li style="display: flex; align-items: center; gap: 10px;">
+                            <i data-feather="phone" style="width: 16px;"></i>
+                            <a href="tel:9019989269">9019989269</a>
+                        </li>
+                          <li style="display: flex; align-items: center; gap: 10px;">
+                            <i data-feather="mail" style="width: 16px;"></i>
+                            <a href="mailto:eng23ds0029@dsu.edu.in">eng23ds0029@dsu.edu.in</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 KrishiMandi. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script type="module">
+        import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai";
+
+        // Shared utility for showing toast notifications
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container') || (() => {
+                const c = document.createElement('div');
+                c.id = 'toast-container';
+                Object.assign(c.style, { position: 'fixed', bottom: '20px', right: '20px', zIndex: '2000' });
+                document.body.appendChild(c);
+                return c;
+            })();
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            Object.assign(toast.style, { padding: '15px 20px', borderRadius: '8px', color: 'white', fontWeight: '500', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', marginTop: '10px', opacity: '0', transform: 'translateX(100%)', animation: 'slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards' });
+            const styleSheet = document.styleSheets[0];
+            try {
+                styleSheet.insertRule(`@keyframes slideIn { to { opacity: 1; transform: translateX(0); } }`, styleSheet.cssRules.length);
+                styleSheet.insertRule(`@keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }`, styleSheet.cssRules.length);
+            } catch (e) { /* Ignore if already exists */ }
+            toast.style.backgroundColor = type === 'error' ? 'var(--danger-color)' : 'var(--primary-color)';
+            toastContainer.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        // --- Main App Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ===================================================================
+            // INITIAL SETUP & SHARED ELEMENTS
+            // ===================================================================
+            feather.replace(); // Initialize Feather Icons
+            const GEMINI_API_KEY = "AIzaSyAcuTYwM2Vsxu9AaeRaiOKFXuYFYhLFRsY"; // Updated API key
+            const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+
+            // --- Tab Switching Logic ---
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    tabContents.forEach(content => {
+                        content.id === tabId ? content.classList.add('active') : content.classList.remove('active');
+                    });
+                });
+            });
+
+            // --- Modal Handling ---
+            document.querySelectorAll('[data-modal-close]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btn.closest('.modal').classList.remove('active');
+                    btn.closest('.modal').previousElementSibling.classList.remove('active');
+                });
+            });
+
+            // ===================================================================
+            // CROP RECORDS TAB LOGIC
+            // ===================================================================
+            const cropRecordsApp = {
+                elements: {
+                    form: document.getElementById('crop-form'),
+                    formTitle: document.getElementById('form-title'),
+                    submitBtn: document.getElementById('submit-record-btn'),
+                    cancelBtn: document.getElementById('cancel-edit-btn'),
+                    recordIdInput: document.getElementById('record-id'),
+                    recordsList: document.getElementById('records-list'),
+                    scanBtn: document.getElementById('scan-btn'),
+                    imageInput: document.getElementById('image-input'),
+                    scannedImage: document.getElementById('scanned-image'),
+                    scanLoading: document.getElementById('scan-loading'),
+                    dashboard: {
+                        totalYield: document.getElementById('total-yield'),
+                        totalCost: document.getElementById('total-cost'),
+                        totalRecords: document.getElementById('total-records'),
+                    },
+                    chartCanvas: document.getElementById('yield-chart'),
+                    aiYieldModal: document.getElementById('ai-yield-modal'),
+                    aiYieldOverlay: document.getElementById('ai-yield-modal-overlay'),
+                    aiYieldResponse: document.getElementById('ai-yield-response'),
+                },
+                state: {
+                    records: [],
+                    chartInstance: null,
+                },
+                init() {
+                    this.loadRecords();
+                    this.renderRecords();
+                    this.updateDashboard();
+                    this.bindEvents();
+                },
+                loadRecords() {
+                    this.state.records = JSON.parse(localStorage.getItem('farmLogRecords')) || [
+                        // Sample data for first-time users
+                        { id: 1, cropName: 'Rice', sowingDate: '2025-06-15', harvestDate: '2025-10-20', yield: 2500, fertilizerName: 'Urea', fertilizerPrice: 270, fertilizerQty: 50, fertilizerUnit: 'kg', fertilizerDate: '2025-07-01', notes: 'Good monsoon season.' },
+                        { id: 2, cropName: 'Wheat', sowingDate: '2024-11-10', harvestDate: '2025-04-05', yield: 2200, fertilizerName: 'DAP', fertilizerPrice: 1350, fertilizerQty: 25, fertilizerUnit: 'kg', fertilizerDate: '2024-11-25', notes: 'Slight pest issue in January.' }
+                    ];
+                },
+                saveRecords() {
+                    localStorage.setItem('farmLogRecords', JSON.stringify(this.state.records));
+                },
+                renderRecords() {
+                    this.elements.recordsList.innerHTML = '';
+                    if (this.state.records.length === 0) {
+                        this.elements.recordsList.innerHTML = `<p style="text-align:center;">No records yet. Add one using the form!</p>`;
+                        return;
+                    }
+                    this.state.records.forEach(record => {
+                        const recordEl = document.createElement('div');
+                        recordEl.className = 'card record-card';
+                        recordEl.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <h4>${record.cropName}</h4>
+                                <div class="record-actions">
+                                    <button class="btn-icon edit-record" data-id="${record.id}"><i data-feather="edit-2"></i></button>
+                                    <button class="btn-icon delete-record" data-id="${record.id}"><i data-feather="trash-2"></i></button>
+                                </div>
+                            </div>
+                            <div class="record-meta">
+                                <p><strong>Sowing:</strong> ${record.sowingDate}</p>
+                                <p><strong>Harvest:</strong> ${record.harvestDate}</p>
+                                <p><strong>Yield:</strong> ${record.yield} Kg</p>
+                                ${record.notes ? `<p><strong>Notes:</strong> ${record.notes}</p>` : ''}
+                            </div>
+                            ${ (record.fertilizerName || record.imageData) ? `
+                            <div class="fertilizer-info">
+                                <h5>Fertilizer Details</h5>
+                                ${record.imageData ? `<img src="${record.imageData}" class="fertilizer-image">` : ''}
+                                <p style="font-size: 0.9rem;">${record.fertilizerName || ''} - ${record.fertilizerQty || ''} ${record.fertilizerUnit || ''} - ₹${record.fertilizerPrice || ''}</p>
+                            </div>` : ''}
+                            <button class="btn btn-secondary btn-ai-analysis" data-id="${record.id}" style="width:100%; margin-top:1rem;">Get AI Yield Analysis</button>
+                        `;
+                        this.elements.recordsList.appendChild(recordEl);
+                    });
+                    feather.replace();
+                },
+                updateDashboard() {
+                    const totalYield = this.state.records.reduce((sum, r) => sum + (Number(r.yield) || 0), 0);
+                    const totalCost = this.state.records.reduce((sum, r) => sum + (Number(r.fertilizerPrice) || 0), 0);
+                    this.elements.dashboard.totalYield.textContent = `${totalYield.toLocaleString()} Kg`;
+                    this.elements.dashboard.totalCost.textContent = `₹${totalCost.toLocaleString()}`;
+                    this.elements.dashboard.totalRecords.textContent = this.state.records.length;
+                    
+                    // Chart Logic
+                    const cropData = this.state.records.reduce((acc, record) => {
+                        acc[record.cropName] = (acc[record.cropName] || 0) + (Number(record.yield) || 0);
+                        return acc;
+                    }, {});
+                    const chartLabels = Object.keys(cropData);
+                    const chartValues = Object.values(cropData);
+                    
+                    if (this.state.chartInstance) {
+                        this.state.chartInstance.destroy();
+                    }
+                    this.state.chartInstance = new Chart(this.elements.chartCanvas, {
+                        type: 'bar',
+                        data: {
+                            labels: chartLabels,
+                            datasets: [{
+                                label: 'Total Yield (Kg)',
+                                data: chartValues,
+                                backgroundColor: 'rgba(46, 204, 113, 0.6)',
+                                borderColor: 'rgba(46, 204, 113, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                },
+                bindEvents() {
+                    this.elements.form.addEventListener('submit', this.handleSubmit.bind(this));
+                    this.elements.cancelBtn.addEventListener('click', this.resetForm.bind(this));
+                    this.elements.scanBtn.addEventListener('click', () => this.elements.imageInput.click());
+                    this.elements.imageInput.addEventListener('change', this.handleImageScan.bind(this));
+                    this.elements.recordsList.addEventListener('click', this.handleListClick.bind(this));
+                },
+                handleSubmit(e) {
+                    e.preventDefault();
+                    const id = this.elements.recordIdInput.value;
+                    const recordData = {
+                        cropName: document.getElementById('crop-name').value,
+                        sowingDate: document.getElementById('sowing-date').value,
+                        harvestDate: document.getElementById('harvest-date').value,
+                        yield: document.getElementById('yield').value,
+                        fertilizerName: document.getElementById('fertilizer-name').value,
+                        fertilizerPrice: document.getElementById('fertilizer-price').value,
+                        fertilizerQty: document.getElementById('fertilizer-qty').value,
+                        fertilizerUnit: document.getElementById('fertilizer-unit').value,
+                        fertilizerDate: document.getElementById('fertilizer-date').value,
+                        notes: document.getElementById('notes').value,
+                        imageData: this.elements.scannedImage.src.startsWith('data:') ? this.elements.scannedImage.src : null,
+                    };
+
+                    if (id) { // Update
+                        const index = this.state.records.findIndex(r => r.id == id);
+                        this.state.records[index] = { ...this.state.records[index], ...recordData };
+                        showToast('Record updated successfully!');
+                    } else { // Create
+                        recordData.id = Date.now();
+                        this.state.records.push(recordData);
+                        showToast('Record added successfully!');
+                    }
+                    
+                    this.saveRecords();
+                    this.renderRecords();
+                    this.updateDashboard();
+                    this.resetForm();
+                },
+                resetForm() {
+                    this.elements.form.reset();
+                    this.elements.recordIdInput.value = '';
+                    this.elements.formTitle.textContent = 'Add New Crop Record';
+                    this.elements.submitBtn.textContent = 'Add Record';
+                    this.elements.cancelBtn.classList.add('hidden');
+                    this.elements.scannedImage.classList.add('hidden');
+                },
+                handleListClick(e) {
+                    const target = e.target.closest('button');
+                    if (!target) return;
+
+                    const id = target.dataset.id;
+                    if (target.classList.contains('edit-record')) {
+                        this.editRecord(id);
+                    } else if (target.classList.contains('delete-record')) {
+                        this.deleteRecord(id);
+                    } else if (target.classList.contains('btn-ai-analysis')) {
+                        this.getAiYieldAnalysis(id);
+                    }
+                },
+                editRecord(id) {
+                    const record = this.state.records.find(r => r.id == id);
+                    if (!record) return;
+
+                    document.getElementById('record-id').value = record.id;
+                    document.getElementById('crop-name').value = record.cropName;
+                    document.getElementById('sowing-date').value = record.sowingDate;
+                    document.getElementById('harvest-date').value = record.harvestDate;
+                    document.getElementById('yield').value = record.yield;
+                    document.getElementById('fertilizer-name').value = record.fertilizerName || '';
+                    document.getElementById('fertilizer-price').value = record.fertilizerPrice || '';
+                    document.getElementById('fertilizer-qty').value = record.fertilizerQty || '';
+                    document.getElementById('fertilizer-unit').value = record.fertilizerUnit || '';
+                    document.getElementById('fertilizer-date').value = record.fertilizerDate || '';
+                    document.getElementById('notes').value = record.notes || '';
+                    if (record.imageData) {
+                        this.elements.scannedImage.src = record.imageData;
+                        this.elements.scannedImage.classList.remove('hidden');
+                    } else {
+                        this.elements.scannedImage.classList.add('hidden');
+                    }
+
+                    this.elements.formTitle.textContent = 'Edit Crop Record';
+                    this.elements.submitBtn.textContent = 'Update Record';
+                    this.elements.cancelBtn.classList.remove('hidden');
+                    window.scrollTo({ top: this.elements.form.offsetTop, behavior: 'smooth' });
+                },
+                deleteRecord(id) {
+                    if (confirm('Are you sure you want to delete this record?')) {
+                        this.state.records = this.state.records.filter(r => r.id != id);
+                        this.saveRecords();
+                        this.renderRecords();
+                        this.updateDashboard();
+                        showToast('Record deleted.');
+                    }
+                },
+                async handleImageScan(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onloadend = async () => {
+                        this.elements.scannedImage.src = reader.result;
+                        this.elements.scannedImage.classList.remove('hidden');
+                        this.elements.scanLoading.classList.remove('hidden');
+                        
+                        const base64Data = reader.result.split(',')[1];
+                        const prompt = "From the image of this fertilizer bag, extract the 'name' and 'price' (MRP in Rs). Respond only with a JSON object like {\"name\": \"Product Name\", \"price\": 1200}. If a detail is not found, use an empty string for the value.";
+                        
+                        try {
+                            const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+                            const imagePart = {
+                                inlineData: {
+                                    data: base64Data,
+                                    mimeType: file.type,
+                                },
+                            };
+                            const result = await model.generateContent([prompt, imagePart]);
+                            const response = result.response;
+                            const jsonString = response.text().replace(/```json|```/g, '').trim();
+                            const data = JSON.parse(jsonString);
+
+                            if (data.name) document.getElementById('fertilizer-name').value = data.name;
+                            if (data.price) document.getElementById('fertilizer-price').value = data.price;
+                            showToast('Fertilizer details extracted by AI!');
+                        } catch (err) {
+                            console.error("AI Scan Error:", err);
+                            showToast('Could not analyze image. Please enter details manually.', 'error');
+                        } finally {
+                             this.elements.scanLoading.classList.add('hidden');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                },
+                async getAiYieldAnalysis(id) {
+                    const record = this.state.records.find(r => r.id == id);
+                    if (!record) return;
+                    
+                    this.elements.aiYieldModal.classList.add('active');
+                    this.elements.aiYieldOverlay.classList.add('active');
+                    this.elements.aiYieldResponse.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
+
+                    const prompt = `I am a farmer in Bannikuppe, Karnataka. Here is my crop record:
+- Crop: ${record.cropName}
+- Sowing Date: ${record.sowingDate}
+- Harvest Date: ${record.harvestDate}
+- Final Yield: ${record.yield} Kg
+- Fertilizer Used: ${record.fertilizerQty || 'N/A'} ${record.fertilizerUnit || ''} of ${record.fertilizerName || 'N/A'}
+Act as an expert agronomist. Please provide a brief analysis of this yield. Was it good for this region and crop? Then, provide a bulleted list of 2-3 specific, actionable suggestions to improve the yield for the next season. Keep the language simple and direct for a farmer.`;
+                    
+                    try {
+                        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+                        const result = await model.generateContent([prompt]);
+                        const response = result.response;
+                        const analysisText = response.text();
+                        this.elements.aiYieldResponse.innerHTML = analysisText.replace(/\*\*(.*?)\*\*/g, '<h5>$1</h5>').replace(/\*/g, '<li>');
+                    } catch (err) {
+                        console.error("AI Analysis Error:", err);
+                        this.elements.aiYieldResponse.innerHTML = '<p>Could not get AI analysis at this time. Please check your API key and try again later.</p>';
+                    }
+                }
+            };
+            cropRecordsApp.init();
+
+            // ===================================================================
+            // DAILY TASKS TAB LOGIC
+            // ===================================================================
+            const dailyTasksApp = {
+                elements: {
+                    form: document.getElementById('task-form'),
+                    input: document.getElementById('task-input'),
+                    dateInput: document.getElementById('task-due-date'),
+                    categoryInput: document.getElementById('task-category'),
+                    list: document.getElementById('task-list'),
+                    aiTaskBtn: document.getElementById('ai-task-btn'),
+                    aiTaskModal: document.getElementById('ai-task-modal'),
+                    aiTaskOverlay: document.getElementById('ai-task-modal-overlay'),
+                    aiTaskForm: document.getElementById('ai-task-suggestion-form'),
+                    aiTaskResponse: document.getElementById('ai-task-response'),
+                    aiTaskMonthSelect: document.getElementById('ai-task-month'),
+                },
+                state: {
+                    tasks: [],
+                },
+                init() {
+                    this.populateMonthDropdown();
+                    this.loadTasks();
+                    this.renderTasks();
+                    this.bindEvents();
+                },
+                populateMonthDropdown() {
+                    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    this.elements.aiTaskMonthSelect.innerHTML = months.map(m => `<option value="${m}">${m}</option>`).join('');
+                    this.elements.aiTaskMonthSelect.value = months[new Date().getMonth()];
+                },
+                loadTasks() {
+                    this.state.tasks = JSON.parse(localStorage.getItem('dailyTasks')) || [
+                        { id: 1, text: 'Water the mustard fields', completed: false, dueDate: '2025-09-15', category: 'irrigation' },
+                        { id: 2, text: 'Buy new plow blades from Agri-Shop', completed: true, dueDate: '2025-09-10', category: 'maintenance' }
+                    ];
+                },
+                saveTasks() {
+                    localStorage.setItem('dailyTasks', JSON.stringify(this.state.tasks));
+                },
+                renderTasks() {
+                    this.elements.list.innerHTML = '';
+                    const categoryColors = { general: '#7f8c8d', irrigation: '#3498db', fertilizer: '#27ae60', 'pest-control': '#e74c3c', maintenance: '#f39c12' };
+                    this.state.tasks.forEach(task => {
+                        const li = document.createElement('li');
+                        li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                        li.dataset.id = task.id;
+                        li.innerHTML = `
+                            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                            <div class="task-details">
+                                <span class="task-text">${task.text}</span>
+                                <div class="task-meta">
+                                    ${task.dueDate ? `<span>Due: ${task.dueDate}</span>` : ''}
+                                    <span class="task-category" style="background-color: ${categoryColors[task.category] || categoryColors.general};">${task.category}</span>
+                                </div>
+                            </div>
+                            <div class="task-actions">
+                                <button class="delete-task-btn"><i data-feather="trash-2"></i></button>
+                            </div>
+                        `;
+                        this.elements.list.appendChild(li);
+                    });
+                    feather.replace();
+                },
+                bindEvents() {
+                    this.elements.form.addEventListener('submit', this.addTask.bind(this));
+                    this.elements.list.addEventListener('click', this.handleTaskClick.bind(this));
+                    this.elements.aiTaskBtn.addEventListener('click', () => {
+                        this.elements.aiTaskModal.classList.add('active');
+                        this.elements.aiTaskOverlay.classList.add('active');
+                    });
+                    this.elements.aiTaskForm.addEventListener('submit', this.getAiTaskSuggestions.bind(this));
+                },
+                addTask(e) {
+                    e.preventDefault();
+                    const text = this.elements.input.value.trim();
+                    if (!text) return;
+                    
+                    const newTask = {
+                        id: Date.now(),
+                        text: text,
+                        completed: false,
+                        dueDate: this.elements.dateInput.value,
+                        category: this.elements.categoryInput.value,
+                    };
+
+                    this.state.tasks.push(newTask);
+                    this.saveTasks();
+                    this.renderTasks();
+                    this.elements.form.reset();
+                    showToast('Task added!');
+                },
+                handleTaskClick(e) {
+                    const target = e.target;
+                    const li = target.closest('.task-item');
+                    if (!li) return;
+                    const id = li.dataset.id;
+
+                    if (target.matches('.delete-task-btn, .delete-task-btn *')) {
+                        this.deleteTask(id);
+                    } else if (target.matches('.task-checkbox')) {
+                        this.toggleTask(id);
+                    }
+                },
+                toggleTask(id) {
+                    const task = this.state.tasks.find(t => t.id == id);
+                    if (task) {
+                        task.completed = !task.completed;
+                        this.saveTasks();
+                        this.renderTasks();
+                    }
+                },
+                deleteTask(id) {
+                    this.state.tasks = this.state.tasks.filter(t => t.id != id);
+                    this.saveTasks();
+                    this.renderTasks();
+                    showToast('Task removed.');
+                },
+                async getAiTaskSuggestions(e) {
+                    e.preventDefault();
+                    this.elements.aiTaskResponse.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
+                    const crop = document.getElementById('ai-task-crop').value;
+                    const month = document.getElementById('ai-task-month').value;
+
+                    const prompt = `I am a farmer in Bannikuppe, Karnataka, growing ${crop}. It is currently ${month}. Generate a list of 5-7 typical and important farming tasks for me for this month. Present it as a simple, comma-separated list. For example: 'Prepare soil for nursery, Apply basal fertilizer, Check for stem borer pests'.`;
+
+                    try {
+                        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+                        const result = await model.generateContent([prompt]);
+                        const response = result.response;
+                        const suggestionsText = response.text();
+                        const suggestions = suggestionsText.split(',').map(s => s.trim());
+                        
+                        this.elements.aiTaskResponse.innerHTML = `
+                            <h5>Here are some suggestions for ${month}:</h5>
+                            <ul>${suggestions.map(s => `<li>${s}</li>`).join('')}</ul>
+                            <button id="add-suggested-tasks" class="btn btn-primary" style="width:100%; margin-top: 1rem;">Add All to My Task List</button>
+                        `;
+
+                        document.getElementById('add-suggested-tasks').addEventListener('click', () => {
+                            suggestions.forEach(text => {
+                                this.state.tasks.push({ id: Date.now(), text, completed: false, category: 'general', dueDate: '' });
+                            });
+                            this.saveTasks();
+                            this.renderTasks();
+                            showToast('AI suggestions added to your list!');
+                            this.elements.aiTaskModal.classList.remove('active');
+                            this.elements.aiTaskOverlay.classList.remove('active');
+                        });
+
+                    } catch (err) {
+                        console.error("AI Task Suggestion Error:", err);
+                        this.elements.aiTaskResponse.innerHTML = '<p>Could not get AI suggestions at this time. Please try again later.</p>';
+                    }
+                }
+            };
+            dailyTasksApp.init();
+
+        });
+    </script>
+</body>
+</html>

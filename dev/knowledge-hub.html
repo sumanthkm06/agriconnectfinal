@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Hub & Library - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2ECC71;
+            --primary-hover: #27ae60;
+            --secondary-color: #16A085;
+            --heading-color: #2c3e50;
+            --text-color: #34495e;
+            --light-text: #7f8c8d;
+            --bg-color: #ffffff;
+            --alt-bg-color: #f4f7f6;
+            --border-color: #e0e0e0;
+            --white-color: #ffffff;
+            --danger-color: #e74c3c;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 30px rgba(46, 204, 113, 0.15);
+            --font-family: 'Inter', sans-serif;
+            --transition-speed: 0.3s;
+            --border-radius: 12px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-family);
+            color: var(--text-color);
+            background-color: var(--alt-bg-color);
+            line-height: 1.7;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 60px 0; }
+
+        /* --- Header & Navigation --- */
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 0.75rem 0; border-bottom: 1px solid rgba(0, 0, 0, 0.05); position: sticky; top: 0; width: 100%; z-index: 1000; }
+        .app-header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.5rem; font-weight: 700; color: var(--heading-color); }
+        .main-nav { display: flex; flex-wrap: nowrap; gap: 1.5rem; align-items: center; }
+        .main-nav a { white-space: nowrap; text-decoration: none; color: var(--text-color); font-weight: 600; transition: color var(--transition-speed) ease; position: relative; padding: 8px 4px; }
+        .main-nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background-image: var(--primary-gradient); transition: width 0.4s ease; border-radius: 2px; }
+        .main-nav a:hover, .main-nav a.active { color: var(--heading-color); }
+        .main-nav a:hover::after, .main-nav a.active::after { width: 100%; }
+        #profile-nav-pic { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; object-fit: cover; transition: all var(--transition-speed) ease; }
+        .mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; }
+
+        /* --- Reusable Components --- */
+        .card { background: var(--bg-color); border-radius: var(--border-radius); box-shadow: var(--card-shadow); overflow: hidden; }
+        .btn { display: inline-block; padding: 12px 28px; border-radius: 50px; border: 2px solid transparent; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(46, 204, 113, 0.3); }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border-color: var(--border-color); }
+        .btn-secondary:hover { background-color: var(--primary-color); border-color: var(--primary-color); color: var(--white-color); }
+        .btn:disabled { background-image: none; background-color: #bdc3c7; border-color: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* --- Tab Navigation --- */
+        .tabs-nav { display: flex; justify-content: center; margin-bottom: 2.5rem; background-color: var(--bg-color); padding: 0.5rem; border-radius: 50px; box-shadow: var(--card-shadow); }
+        .tab-btn { padding: 0.75rem 2rem; border: none; background-color: transparent; font-size: 1.1rem; font-weight: 600; color: var(--light-text); cursor: pointer; border-radius: 50px; transition: all var(--transition-speed) ease; text-decoration: none; display: inline-block; }
+        .tab-btn.active { background-image: var(--primary-gradient); color: var(--white-color); box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3); }
+        .tab-content { display: none; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Content Grids --- */
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .video-card, .session-card { display: flex; flex-direction: column; transition: all var(--transition-speed) ease; }
+        .video-card:hover, .session-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+        .video-thumbnail-container { position: relative; cursor: pointer; }
+        .video-thumbnail { width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
+        .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: rgba(0,0,0,0.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: transform 0.2s; }
+        .video-thumbnail-container:hover .play-icon { transform: translate(-50%, -50%) scale(1.1); }
+        .video-info, .session-info { display: flex; flex-direction: column; flex-grow: 1; padding: 1.5rem; }
+        .video-info h5, .session-info h5 { font-size: 1.2rem; color: var(--heading-color); margin-bottom: 0.5rem; line-height: 1.3; }
+        .video-info p, .session-info p { flex-grow: 1; color: var(--light-text); font-size: 0.95rem; }
+        .video-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .video-actions .btn { flex: 1; padding: 10px; }
+        .session-card .expert-image { width: 100%; height: 200px; object-fit: cover; }
+        .session-info { text-align: center; }
+        .session-card .session-date { font-weight: 600; color: var(--secondary-color); margin-bottom: 1rem; }
+        .session-card .btn { margin-top: auto; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; }
+        .book-card { padding: 1.5rem; text-align: center; display: flex; flex-direction: column; }
+        .book-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+        .book-card img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .book-card h5 { font-size: 1.1rem; color: var(--heading-color); flex-grow: 1; margin: 0 0 1rem 0; }
+        .book-card-actions { display: flex; gap: 10px; margin-top: auto; }
+        .book-card-actions .btn { flex: 1; padding: 10px 15px; font-size: 0.9rem; }
+
+        /* --- Modals --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1010; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); background: white; padding: 0; border-radius: var(--border-radius); z-index: 1011; width: 90%; max-width: 900px; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+        .modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .modal-header h4 { font-size: 1.5rem; color: var(--heading-color); margin: 0; }
+        .close-btn { font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--light-text); line-height: 1; }
+        .modal-body { padding: 1.5rem; max-height: 70vh; overflow-y: auto; }
+        .youtube-player-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+        .youtube-player-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        #ai-modal-body h5 { color: var(--secondary-color); margin-top: 1rem; margin-bottom: 0.5rem; }
+        #ai-modal-body ul { list-style-position: inside; padding-left: 0.5rem; }
+        #ai-modal-body ul li { margin-bottom: 0.5rem; }
+        .loader-container { display: flex; align-items: center; justify-content: center; min-height: 100px; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* PDF Modal Styles */
+        body.modal-open { overflow: hidden; }
+        .pdf-modal { position: fixed; top: 50%; left: 50%; width: 90%; height: 90%; max-width: 1000px; background-color: #fff; transform: translate(-50%, -50%) scale(0.9); opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 2001; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); }
+        .pdf-modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        .pdf-modal-header { display: flex; justify-content: space-between; align-items: center; background-color: var(--alt-bg-color); padding: 10px 20px; border-bottom: 1px solid var(--border-color); }
+        .pdf-modal-title { font-weight: 600; color: var(--heading-color); }
+        .pdf-modal-controls { display: flex; gap: 15px; }
+        .pdf-modal-controls button, .pdf-modal-controls a { background: none; border: none; color: var(--text-color); cursor: pointer; font-size: 24px; display: flex; align-items: center; transition: color 0.2s; }
+        .pdf-modal-controls button:hover, .pdf-modal-controls a:hover { color: var(--primary-color); }
+        .pdf-viewer { flex-grow: 1; border: none; }
+        
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 3000; }
+        .toast { background-color: var(--heading-color); color: white; padding: 15px 25px; border-radius: 8px; margin-bottom: 1rem; opacity: 0; transform: translateX(100%); animation: slideIn 0.5s forwards; }
+        @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+        @media (max-width: 992px) {
+            .main-nav { display: none; }
+            .mobile-menu-btn { display: block; }
+        }
+        @media (max-width: 768px) {
+            .app-section { padding: 40px 0; }
+            .tabs-nav { flex-direction: column; border-radius: var(--border-radius); padding: 0.5rem; }
+            .tab-btn { border-radius: var(--border-radius); }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67 2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="buy.html">Marketplace</a>
+                <a href="sell.html">Sell Crops</a>
+                <a href="knowledge-hub.html" class="active">Knowledge Hub</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+                <img src="https://placehold.co/40x40/E8F5E9/2c3e50?text=U" alt="Profile" id="profile-nav-pic" title="View Profile">
+            </nav>
+            <button class="mobile-menu-btn" aria-label="Open navigation menu"><i data-feather="menu"></i></button>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div class="section-header" style="text-align: center; margin-bottom: 2rem;">
+                    <h3 style="font-size: 2.5rem; color: var(--heading-color); margin-bottom: 0.5rem;">Farmer Knowledge Hub</h3>
+                    <p style="font-size: 1.1rem; color: var(--light-text); max-width: 600px; margin: 0 auto;">Learn from peers, experts, and tutorials. Watch, share, and grow your knowledge.</p>
+                </div>
+
+                <nav class="tabs-nav">
+                    <a href="reels.html" class="tab-btn">Farmer Reels</a>
+                    <button class="tab-btn active" data-tab="tutorials-content">Expert Tutorials</button>
+                    <button class="tab-btn" data-tab="live-sessions-content">Live Sessions</button>
+                    <button class="tab-btn" data-tab="books-content">Books</button>
+                </nav>
+
+                <div id="tutorials-content" class="tab-content active">
+                    <div id="youtube-grid" class="content-grid">
+                    </div>
+                </div>
+
+                <div id="live-sessions-content" class="tab-content">
+                    <div id="sessions-grid" class="content-grid">
+                        <div class="card session-card">
+                            <img src="images/drip.jpg" alt="Expert" class="expert-image">
+                            <div class="session-info">
+                                <h5>Modern Drip Irrigation Techniques</h5>
+                                <p class="session-date">Upcoming: Sept 20, 2025 - 4:00 PM</p>
+                                <p>Join Dr. Ramesh Gupta, a leading agronomist, as he discusses water conservation and efficiency with modern drip irrigation systems.</p>
+                                <a href="https://www.geeksforgeeks.org/biology/modern-methods-of-irrigation/" target="_blank" class="btn btn-primary">Register Now</a>
+                            </div>
+                        </div>
+                        <div class="card session-card">
+                            <img src="images/pest.jpg" class="expert-image">
+                            <div class="session-info">
+                                <h5>Organic Pest Control Masterclass</h5>
+                                <p class="session-date">Upcoming: Sept 28, 2025 - 11:00 AM</p>
+                                <p>Learn from Sunita Devi, an award-winning organic farmer, about creating effective, all-natural pesticides from common household items.</p>
+                                <a href="https://www.numberanalytics.com/blog/crop-rotation-economics-guide-profit" target="_blank" class="btn btn-primary">Register Now</a>
+                            </div>
+                        </div>
+                        <div class="card session-card">
+                            <img src="images/maxi.jpg" class="expert-image">
+                            <div class="session-info">
+                                <h5>Maximizing Profits with Crop Rotation</h5>
+                                <p class="session-date">Upcoming: Oct 05, 2025 - 2:00 PM</p>
+                                <p>Financial expert and former farmer, Mr. Anand Kumar, shares his strategies on how smart crop rotation can boost soil health and your income.</p>
+                                <a href="https://www.numberanalytics.com/blog/crop-rotation-economics-guide-profit" target="_blank" class="btn btn-primary">Register Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="books-content" class="tab-content">
+                    <div id="book-grid" class="card-grid">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="youtube-modal-overlay" class="modal-overlay"></div>
+    <div id="youtube-modal" class="modal">
+        <div class="modal-header">
+            <h4 id="youtube-modal-title"></h4>
+            <button class="close-btn" data-modal-close>&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 0; background: #000;">
+            <div class="youtube-player-container" id="youtube-player"></div>
+        </div>
+    </div>
+
+    <div id="ai-modal-overlay" class="modal-overlay"></div>
+    <div id="ai-modal" class="modal">
+        <div class="modal-header">
+            <h4 id="ai-modal-title"></h4>
+            <button class="close-btn" data-modal-close>&times;</button>
+        </div>
+        <div class="modal-body" id="ai-modal-body"></div>
+    </div>
+    
+    <div id="pdf-modal-overlay" class="modal-overlay"></div>
+    <div id="pdf-modal" class="pdf-modal">
+        <div class="pdf-modal-header">
+            <span id="pdf-modal-title" class="pdf-modal-title"></span>
+            <div class="pdf-modal-controls">
+                <a id="pdf-download-btn" href="#" download><i data-feather="download"></i></a>
+                <button id="pdf-fullscreen-btn"><i data-feather="maximize"></i></button>
+                <button id="pdf-close-btn"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <iframe id="pdf-viewer" class="pdf-viewer"></iframe>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <footer class="app-footer">
+        <div class="container">
+            <p>&copy; 2025 AgriConnect. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            const tabButtons = document.querySelectorAll('.tab-btn:not(a)');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const cartCountElement = document.getElementById('cart-count');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    tabContents.forEach(content => {
+                        content.id === tabId ? content.classList.add('active') : content.classList.remove('active');
+                    });
+                });
+            });
+
+            // --- YT SECTION LOGIC ---
+            const youtubeApp = {
+                videos: [
+                    { url: 'https://youtu.be/nNP4o1wE6Vo', title: 'Modern Farming 101', summary: 'This video provides a comprehensive guide on modern agricultural practices, focusing on innovative technologies and sustainable methods to increase crop yield and efficiency.' },
+                    { url: 'https://youtu.be/DKI1rmdnbyM', title: 'ರೈತ ಮಹಿಳೆ ಕೋಟಿ ಗಳಿಸಿದ ಕಥೆ', summary: 'Learn about the various government subsidies and schemes available to farmers. This tutorial covers eligibility criteria, application processes, and benefits to help you make the most of available support.' },
+                    { url: 'https://youtu.be/Fc_BeS4g2FQ', title: 'ಶ್ರೀಗಂಧ ಬೆಳೆದವರ ಲೈಫ್', summary: 'Discover essential techniques for testing your soil and improving its health. The video covers topics like nutrient management, organic matter, and creating a thriving environment for your crops.' },
+                    { url: 'https://youtu.be/ZihEgF-sBvI', title: 'Zero Budget Natural Farming', summary: 'A practical tutorial on effective water management, showcasing different irrigation systems like drip and sprinkler. Learn how to conserve water while ensuring your crops get the hydration they need.' },
+                    { url: 'https://youtu.be/667ICXwsJfE', title: 'How Kisan Drones Can Help Farmers ', summary: 'This guide explains the best practices for crop rotation. Understand how alternating crops can break pest cycles, improve soil fertility, and ultimately enhance your farm\'s profitability.' },
+                    { url: 'https://youtu.be/26qTgXJKMAE', title: 'THE ONE-MAN FARM', summary: 'An introduction to using drones in modern agriculture. See how drones are used for crop monitoring, pesticide spraying, and data collection to make informed farming decisions.' }
+                ],
+                elements: {
+                    grid: document.getElementById('youtube-grid'),
+                    modal: document.getElementById('youtube-modal'),
+                    overlay: document.getElementById('youtube-modal-overlay'),
+                    player: document.getElementById('youtube-player'),
+                    title: document.getElementById('youtube-modal-title'),
+                    aiModal: document.getElementById('ai-modal'),
+                    aiModalOverlay: document.getElementById('ai-modal-overlay'),
+                    aiModalTitle: document.getElementById('ai-modal-title'),
+                    aiModalBody: document.getElementById('ai-modal-body'),
+                },
+                getVideoId(url) {
+                    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                    const match = url.match(regExp);
+                    return (match && match[2].length === 11) ? match[2] : null;
+                },
+                renderVideos() {
+                    this.elements.grid.innerHTML = this.videos.map((video, index) => {
+                        const videoId = this.getVideoId(video.url);
+                        if (!videoId) return '';
+                        return `
+                            <div class="card video-card">
+                                <div class="video-thumbnail-container" data-video-id="${videoId}" data-index="${index}">
+                                    <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="${video.title}" class="video-thumbnail">
+                                    <div class="play-icon"><i data-feather="play"></i></div>
+                                </div>
+                                <div class="video-info">
+                                    <h5>${video.title}</h5>
+                                    <div class="video-actions">
+                                        <button class="btn btn-secondary watch-btn" data-video-id="${videoId}" data-index="${index}">Watch</button>
+                                        <button class="btn btn-primary ai-summary-btn" data-index="${index}">AI Summary</button>
+                                    </div>
+                                </div>
+                            </div>`;
+                    }).join('');
+                    feather.replace();
+                },
+                bindEvents() {
+                    this.elements.grid.addEventListener('click', e => {
+                        const watchBtn = e.target.closest('.watch-btn, .video-thumbnail-container');
+                        const summaryBtn = e.target.closest('.ai-summary-btn');
+                        if (watchBtn) {
+                            const videoId = watchBtn.dataset.videoId;
+                            const video = this.videos[Number(watchBtn.dataset.index)];
+                            this.playVideo(videoId, video.title);
+                        }
+                        if (summaryBtn) {
+                            const video = this.videos[Number(summaryBtn.dataset.index)];
+                            this.getAiSummary(video);
+                        }
+                    });
+                    document.querySelectorAll('[data-modal-close]').forEach(btn => {
+                        btn.addEventListener('click', () => this.closeAllModals());
+                    });
+                    this.elements.overlay.addEventListener('click', () => this.closeAllModals());
+                    this.elements.aiModalOverlay.addEventListener('click', () => this.closeAllModals());
+                },
+                playVideo(id, title) {
+                    this.elements.player.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                    this.elements.title.textContent = title;
+                    this.elements.modal.classList.add('active');
+                    this.elements.overlay.classList.add('active');
+                },
+                getAiSummary(video) {
+                    this.elements.aiModalTitle.textContent = `AI Summary: ${video.title}`;
+                    this.elements.aiModalBody.innerHTML = `<div class="loader-container"><div class="loader"></div></div>`;
+                    this.elements.aiModal.classList.add('active');
+                    this.elements.aiModalOverlay.classList.add('active');
+
+                    // --- AI SIMULATION ---
+                    setTimeout(() => {
+                        const formattedSummary = `
+                            <h5>Key Takeaways from "${video.title}"</h5>
+                            <p>${video.summary}</p>
+                            <ul>
+                                <li><strong>Main Focus:</strong> Learn the core principles of the topic.</li>
+                                <li><strong>Key Technique:</strong> Discover a practical method you can apply immediately.</li>
+                                <li><strong>Benefit:</strong> Understand how this knowledge can improve your farm's productivity and sustainability.</li>
+                            </ul>`;
+                        this.elements.aiModalBody.innerHTML = formattedSummary;
+                    }, 1500); // Simulate network delay
+                },
+                closeAllModals() {
+                    document.querySelectorAll('.modal, .modal-overlay').forEach(el => el.classList.remove('active'));
+                    if(this.elements.player) this.elements.player.innerHTML = '';
+                    document.body.classList.remove('modal-open');
+                },
+                init() {
+                    if (!this.elements.grid) return;
+                    this.renderVideos();
+                    this.bindEvents();
+                }
+            };
+            youtubeApp.init();
+
+
+            // --- BOOKS SECTION LOGIC ---
+            const bookData = [
+                { id: 'b1', title: "Principles of Agricultural Economics", price: 499, cover: "books/3D-book-4-1536x1152.webp", pdf: "books/Principles-of-Agricultural-Economics-2.pdf" },
+                { id: 'b2', title: "Agricultural Heritage", price: 350, cover: "books/3D-book-1-1536x1152.webp", pdf: "books/Agricultural-Heritage.pdf" },
+                { id: 'b3', title: "Principles of Agricultural Economics Vol. 1", price: 450, cover: "books/3D-book-5-1536x1152.webp", pdf: "books/Principles-of-Agricultural-Economics-1.pdf" },
+                { id: 'b4', title: "Fundamentals of Plant Biochemistry", price: 550, cover: "books/3D-book-1-2-1536x1152.webp", pdf: "books/FUNDAMENTAL-OF-PLANT-BIOCHEMISTRY-AND-BlOTECHNOLOGY.pdf" },
+                { id: 'b5', title: "Fundamentals of Horticulture", price: 400, cover: "books/Fundamentals-of-Horticulture.webp", pdf: "books/AgriMoon-AHT-111-Fundamentals-of-Horticulture.pdf" },
+                { id: 'b6', title: "Fundamentals of Agronomy", price: 425, cover: "books/3D-book-1-1536x1152.webp", pdf: "books/Fundamentals-of-Agronomy-AGRlMOON.pdf" },
+                { id: 'b7', title: "Agricultural Marketing, Trade and Prices", price: 520, cover: "books/3D-book-1-5-1536x1152.webp", pdf: "books/AGRICULTURAL-MARKETING-TRADE-AND-PRICES-1.pdf" },
+                { id: 'b8', title: "Fundamentals of Agricultural Extension", price: 375, cover: "books/3D-book-4-1536x1152.webp", pdf: "books/FUNDAMENTALS-OF-AGRICULTURAL-EXTENSION-EDUCATION.pdf" }
+            ];
+
+            const bookGrid = document.getElementById('book-grid');
+            const modal = document.getElementById('pdf-modal');
+            const overlay = document.getElementById('pdf-modal-overlay');
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const closeBtn = document.getElementById('pdf-close-btn');
+            const fullscreenBtn = document.getElementById('pdf-fullscreen-btn');
+            const downloadBtn = document.getElementById('pdf-download-btn');
+            const modalTitle = document.getElementById('pdf-modal-title');
+            
+            // --- UTILITY & CART FUNCTIONS ---
+            const getCart = () => JSON.parse(localStorage.getItem('agriConnectCart')) || [];
+            const saveCart = (cart) => localStorage.setItem('agriConnectCart', JSON.stringify(cart));
+
+            function showToast(message) {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                container.appendChild(toast);
+                setTimeout(() => toast.remove(), 3000);
+            }
+
+            function updateCartCount() {
+                const cart = getCart();
+                const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                cartCountElement.textContent = totalItems;
+            }
+
+            function renderBooks() {
+                const cart = getCart();
+                bookGrid.innerHTML = bookData.map((book, index) => {
+                    const isInCart = cart.some(item => item.id === book.id);
+                    return `
+                    <div class="card book-card">
+                        <img src="${book.cover}" alt="${book.title}" onerror="this.onerror=null;this.src='https://placehold.co/400x600/e8f5e9/7f8c8d?text=Cover';">
+                        <h5>${book.title}</h5>
+                        <div class="book-card-actions">
+                            <button class="btn btn-secondary read-btn" data-index="${index}">Read</button>
+                            <button class="btn btn-primary add-to-cart-btn" data-id="${book.id}" ${isInCart ? 'disabled' : ''}>
+                                ${isInCart ? 'In Cart' : `₹${book.price}`}
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+                feather.replace();
+            }
+            
+            function addToCart(bookId) {
+                let cart = getCart();
+                const bookToAdd = bookData.find(b => b.id === bookId);
+                
+                if (cart.some(item => item.id === bookId)) {
+                    showToast(`"${bookToAdd.title}" is already in your cart.`);
+                } else {
+                    cart.push({
+                        id: bookToAdd.id,
+                        name: bookToAdd.title,
+                        price: bookToAdd.price,
+                        imageUrl: bookToAdd.cover,
+                        quantity: 1,
+                        type: 'book' // Differentiate from crops
+                    });
+                    showToast(`"${bookToAdd.title}" was added to your cart!`);
+                }
+                
+                saveCart(cart);
+                updateCartCount();
+                renderBooks(); // Re-render to update the button states
+            }
+
+            // --- MODAL FUNCTIONS ---
+            function openModal(book) {
+                pdfViewer.src = book.pdf;
+                modalTitle.textContent = book.title;
+                downloadBtn.href = book.pdf;
+                downloadBtn.download = book.title.replace(/ /g, '_') + '.pdf';
+                modal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.classList.add('modal-open');
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                pdfViewer.src = ""; // Stop PDF loading
+            }
+
+            // --- EVENT LISTENERS ---
+            bookGrid.addEventListener('click', (e) => {
+                const target = e.target.closest('button');
+                if (!target) return;
+
+                if (target.classList.contains('read-btn')) {
+                    const bookIndex = target.dataset.index;
+                    openModal(bookData[bookIndex]);
+                } else if (target.classList.contains('add-to-cart-btn')) {
+                    const bookId = target.dataset.id;
+                    addToCart(bookId);
+                }
+            });
+            
+            closeBtn.addEventListener('click', closeModal);
+            overlay.addEventListener('click', closeModal);
+
+            fullscreenBtn.addEventListener('click', () => {
+                if (pdfViewer.requestFullscreen) {
+                    pdfViewer.requestFullscreen();
+                }
+            });
+
+            // --- INITIALIZATION ---
+            renderBooks();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>

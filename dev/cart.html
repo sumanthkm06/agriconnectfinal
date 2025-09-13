@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Cart - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2ECC71; --primary-hover: #27ae60; --secondary-color: #16A085;
+            --heading-color: #2c3e50; --text-color: #34495e; --light-text: #7f8c8d;
+            --bg-color: #ffffff; --alt-bg-color: #f4f7f6; --border-color: #e0e0e0;
+            --white-color: #ffffff; --danger-color: #e74c3c;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); --glow-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+            --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; --border-radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.7; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; color: var(--heading-color); }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; }
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--card-shadow); }
+        .btn { display: inline-block; padding: 12px 28px; border-radius: 50px; border: 2px solid transparent; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: var(--glow-shadow); }
+        .btn-primary:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        .cart-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 2.5rem; align-items: flex-start; }
+        .section-title { font-size: 1.8rem; font-weight: 700; color: var(--heading-color); margin-bottom: 1.5rem; }
+        .cart-item { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border-color); }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-image { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h5 { font-size: 1.1rem; color: var(--heading-color); margin-bottom: 0.25rem; }
+        .cart-item-price { font-weight: 600; color: var(--primary-color); }
+        .cart-item-actions { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
+        .quantity-selector { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 50px; }
+        .quantity-selector button { background: none; border: none; padding: 0.5rem 1rem; cursor: pointer; font-size: 1.2rem; line-height: 1; }
+        .quantity-selector .item-quantity { width: 40px; text-align: center; border: none; font-size: 1rem; font-weight: 500; background: transparent; }
+        .item-action-btn { background: none; border: none; color: var(--light-text); font-weight: 500; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
+        .item-action-btn:hover { color: var(--danger-color); }
+        .order-summary { position: sticky; top: 100px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 0.75rem; }
+        .summary-total { font-weight: 700; font-size: 1.2rem; border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem; }
+        .empty-cart-message { text-align: center; padding: 4rem 2rem; }
+        .empty-cart-message i { font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem; }
+        @media (max-width: 900px) { .cart-layout { grid-template-columns: 1fr; } .order-summary { position: static; margin-top: 2rem; } }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67 2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="buy.html">Continue Shopping</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div id="cart-view">
+                    <div class="cart-layout" id="cart-layout-container">
+                        <div class="cart-items-container">
+                            <h2 class="section-title" id="cart-title">Your Cart</h2>
+                            <div class="card">
+                                <div id="cart-items-list">
+                                    </div>
+                            </div>
+                        </div>
+                        <aside class="order-summary">
+                            <div class="card">
+                                <h3 class="section-title" style="font-size: 1.5rem;">Order Summary</h3>
+                                <div class="summary-row"><span>Subtotal</span><span id="summary-subtotal">₹0.00</span></div>
+                                <div class="summary-row"><span>Est. Tax (5%)</span><span id="summary-tax">₹0.00</span></div>
+                                <div class="summary-row"><span>Shipping</span><span>Calculated at next step</span></div>
+                                <div class="summary-row summary-total"><span>Total</span><span id="summary-total">₹0.00</span></div>
+                                <a href="checkout.html" id="checkout-btn" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">Proceed to Checkout</a>
+                            </div>
+                        </aside>
+                    </div>
+                    <div class="card empty-cart-message" id="empty-cart-container" style="display: none;">
+                        <i data-feather="shopping-bag"></i>
+                        <h3>Your Cart is Empty</h3>
+                        <p>Looks like you haven't added any crops yet.</p>
+                        <a href="buy.html" class="btn btn-primary" style="margin-top: 1rem;">Start Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const TAX_RATE = 0.05;
+        const cartItemsList = document.getElementById('cart-items-list');
+        const cartTitle = document.getElementById('cart-title');
+        const summarySubtotal = document.getElementById('summary-subtotal');
+        const summaryTax = document.getElementById('summary-tax');
+        const summaryTotal = document.getElementById('summary-total');
+        const emptyCartContainer = document.getElementById('empty-cart-container');
+        const cartLayoutContainer = document.getElementById('cart-layout-container');
+        const checkoutBtn = document.getElementById('checkout-btn');
+
+        const getCart = () => JSON.parse(localStorage.getItem('agriConnectCart')) || [];
+        const saveCart = (cart) => localStorage.setItem('agriConnectCart', JSON.stringify(cart));
+        const formatCurrency = (amount) => `₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        
+        const updateQuantity = (productId, change) => {
+            let cart = getCart();
+            const item = cart.find(p => p.id == productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(p => p.id != productId);
+                }
+            }
+            saveCart(cart);
+            renderCart();
+        };
+
+        const removeItem = (productId) => {
+            let cart = getCart();
+            cart = cart.filter(p => p.id != productId);
+            saveCart(cart);
+            renderCart();
+        };
+
+        const calculateSummary = (cart) => {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * TAX_RATE;
+            const total = subtotal + tax; // Shipping is calculated later
+
+            summarySubtotal.textContent = formatCurrency(subtotal);
+            summaryTax.textContent = formatCurrency(tax);
+            summaryTotal.textContent = formatCurrency(total);
+        };
+        
+        const renderCart = () => {
+            const cart = getCart();
+            
+            if (cart.length === 0) {
+                cartLayoutContainer.style.display = 'none';
+                emptyCartContainer.style.display = 'block';
+                checkoutBtn.classList.add('disabled');
+                checkoutBtn.setAttribute('disabled', 'disabled');
+            } else {
+                cartLayoutContainer.style.display = 'grid';
+                emptyCartContainer.style.display = 'none';
+                checkoutBtn.classList.remove('disabled');
+                checkoutBtn.removeAttribute('disabled');
+                
+                cartItemsList.innerHTML = '';
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    const itemElement = `
+                        <div class="cart-item">
+                            <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-image">
+                            <div class="cart-item-details">
+                                <h5>${item.name}</h5>
+                                <p class="cart-item-price">${formatCurrency(item.price)} / quintal</p>
+                                <div class="cart-item-actions">
+                                    <div class="quantity-selector">
+                                        <button class="quantity-change" data-id="${item.id}" data-change="-1">-</button>
+                                        <span class="item-quantity">${item.quantity}</span>
+                                        <button class="quantity-change" data-id="${item.id}" data-change="1">+</button>
+                                    </div>
+                                    <button class="item-action-btn remove-item" data-id="${item.id}">Remove</button>
+                                </div>
+                            </div>
+                            <div class="cart-item-total" style="font-weight: 700; font-size: 1.1rem;">
+                                ${formatCurrency(itemTotal)}
+                            </div>
+                        </div>`;
+                    cartItemsList.innerHTML += itemElement;
+                });
+
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartTitle.textContent = `Your Cart (${totalItems} Item${totalItems > 1 ? 's' : ''})`;
+                calculateSummary(cart);
+            }
+            feather.replace();
+        };
+
+        cartItemsList.addEventListener('click', (e) => {
+            const target = e.target.closest('button');
+            if (!target) return;
+
+            const productId = target.dataset.id;
+            
+            if (target.classList.contains('quantity-change')) {
+                const change = parseInt(target.dataset.change);
+                updateQuantity(productId, change);
+            }
+            
+            if (target.classList.contains('remove-item')) {
+                removeItem(productId);
+            }
+        });
+
+        renderCart();
+        feather.replace();
+    });
+    </script>
+</body>
+</html>

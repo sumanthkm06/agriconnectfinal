@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's DigiLocker - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js`;
+    </script>
+     <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.sh/@google/generative-ai"
+        }
+    }
+    </script>
+
+
+    <style>
+        :root {
+            --primary-color: #2ECC71; --primary-hover: #27ae60; --secondary-color: #16A085;
+            --heading-color: #2c3e50; --text-color: #34495e; --light-text: #7f8c8d;
+            --bg-color: #ffffff; --alt-bg-color: #f4f7f6; --border-color: #e0e0e0;
+            --white-color: #ffffff; --danger-color: #e74c3c; --danger-hover: #c0392b;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 30px rgba(46, 204, 113, 0.15);
+            --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; --border-radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.7; }
+        body.modal-open { overflow: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; color: var(--heading-color); }
+        .main-nav { gap: 2rem; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; }
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--card-shadow); }
+        .btn { display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 12px 28px; border-radius: 50px; border: 2px solid transparent; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(46, 204, 113, 0.3); }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border-color: var(--border-color); }
+        .btn-secondary:hover { background-color: var(--alt-bg-color); }
+        .btn-danger { background-color: var(--danger-color); color: var(--white-color); border:none; }
+        .btn-danger:hover { background-color: var(--danger-hover); }
+        .digilocker-layout { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: flex-start; }
+        .digilocker-sidebar .card { padding: 1.5rem; }
+        .digilocker-sidebar h4 { font-size: 1.2rem; color: var(--heading-color); margin-bottom: 1rem; }
+        .category-list { list-style: none; }
+        .category-list li a { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; text-decoration: none; color: var(--text-color); font-weight: 500; border-radius: 8px; transition: all 0.2s; }
+        .category-list li a:hover { background-color: var(--alt-bg-color); color: var(--primary-color); }
+        .category-list li a.active { background-image: var(--primary-gradient); color: var(--white-color); }
+        .storage-widget { margin-top: 2rem; }
+        .storage-meter { width: 100%; height: 10px; background-color: var(--border-color); border-radius: 5px; overflow: hidden; margin-top: 0.5rem; }
+        .storage-bar { width: 0%; height: 100%; background-image: var(--primary-gradient); transition: width 0.5s ease; }
+        #storage-text { font-size: 0.85rem; color: var(--light-text); text-align: center; margin-top: 0.5rem; }
+        .digilocker-main-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .search-bar { position: relative; flex-grow: 1; max-width: 400px; }
+        .search-bar input { width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border-radius: 50px; border: 1px solid var(--border-color); }
+        .search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--light-text); }
+        .upload-btn { flex-shrink: 0; }
+        .storage-warning { padding: 1rem; background-color: #fff8e1; border: 1px solid #fdd835; color: #6d4c41; border-radius: var(--border-radius); margin-bottom: 1.5rem; text-align: center; }
+        .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
+        .doc-card { display: flex; flex-direction: column; text-align: center; padding: 1.5rem; transition: all var(--transition-speed); }
+        .doc-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+        .doc-icon i { width: 48px; height: 48px; color: var(--primary-color); }
+        .doc-name { font-size: 1.1rem; font-weight: 600; color: var(--heading-color); flex-grow: 1; margin: 1rem 0; word-break: break-word; }
+        .doc-date { font-size: 0.85rem; color: var(--light-text); margin-bottom: 1rem; }
+        .doc-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .doc-actions .btn { width: 100%; padding: 8px 10px; font-size: 0.85rem; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1010; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.95); background: white; padding: 2rem; border-radius: var(--border-radius); z-index: 1011; width: 90%; max-width: 500px; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+        .modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h4 { font-size: 1.5rem; color: var(--heading-color); margin:0; }
+        .close-btn { font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--light-text); line-height: 1; }
+        .form-group { margin-bottom: 1rem; }
+        .modal-body { max-height: 80vh; overflow-y: auto; }
+        #ai-summary-response { max-height: 60vh; overflow-y: auto; padding: 1rem; background: var(--alt-bg-color); border-radius: 8px; }
+        #ai-summary-response h5 { color: var(--secondary-color); margin: 1rem 0 0.5rem; }
+        .loader-container { display: flex; justify-content: center; padding: 2rem; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .pdf-viewer-modal { max-width: 90vw; width: 1000px; padding: 0; }
+        .pdf-viewer-modal .modal-header { padding: 1rem 1.5rem; }
+        .pdf-viewer-modal .modal-body { height: 85vh; padding: 0; }
+        .pdf-viewer { width: 100%; height: 100%; border: none; }
+        @media (max-width: 900px) { .digilocker-layout { grid-template-columns: 1fr; } .digilocker-sidebar { position: static; } }
+   
+         /* --- Modals (Rich Style) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); /* Slightly darker overlay */
+    z-index: 1010; opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease; /* Slower transition */
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.modal {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.9); /* Start smaller */
+    background: linear-gradient(145deg, #ffffff, #f9fdf9); /* Subtle gradient background */
+    padding: 2.5rem; /* More padding */
+    border-radius: 18px; /* More rounded corners */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* Richer, softer shadow */
+    z-index: 1011; width: 90%; max-width: 550px; /* Slightly wider */
+    opacity: 0; pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother, bouncier transition */
+    border: 1px solid rgba(224, 224, 224, 0.5); /* Light border */
+}
+.modal.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+
+.modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 2rem; /* More space below header */
+    padding-bottom: 1rem; /* Padding for the line */
+    border-bottom: 1px solid var(--border-color); /* Separator line */
+}
+.modal-header h4 {
+    font-size: 1.8rem; /* Larger title */
+    color: var(--heading-color); margin:0;
+    font-weight: 700;
+}
+.close-btn {
+    font-size: 2.5rem; /* Larger close button */
+    background: none; border: none; cursor: pointer;
+    color: var(--light-text); line-height: 1;
+    transition: color 0.2s ease;
+}
+.close-btn:hover { color: var(--danger-color); transform: rotate(90deg); } /* Added subtle rotation on hover */
+
+.modal-body { max-height: 80vh; overflow-y: auto; padding-right: 10px; } /* Added padding-right for scrollbar */
+.modal-body::-webkit-scrollbar { width: 6px; } /* Custom scrollbar */
+.modal-body::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 3px; }
+.modal-body::-webkit-scrollbar-track { background: var(--alt-bg-color); }
+
+
+/* Form Group and Input Styles (Added/Updated) */
+.form-group { margin-bottom: 1.5rem; } /* More space between form elements */
+.form-group label {
+    display: block; margin-bottom: 0.8rem; /* More space for label */
+    font-weight: 600; color: var(--heading-color);
+    font-size: 0.95rem;
+}
+.form-group input[type="text"],
+.form-group select,
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px 15px; /* Increased padding for inputs */
+    border: 1px solid var(--border-color);
+    border-radius: 10px; /* More rounded input fields */
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: var(--alt-bg-color); /* Light background for inputs */
+    transition: all 0.3s ease;
+}
+.form-group input[type="text"]:focus,
+.form-group select:focus,
+.form-group input[type="file"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.25); /* Richer focus glow */
+    background-color: var(--white-color); /* White background on focus */
+}
+
+/* Custom styling for file input */
+.form-group input[type="file"] {
+    cursor: pointer;
+    /* Hide default file input button, but keep file selection */
+    color: transparent;
+}
+.form-group input[type="file"]::before {
+    content: 'Choose File...';
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+.form-group input[type="file"]:hover::before {
+    background-color: var(--primary-hover);
+}
+.form-group input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+/* Make the primary button in the modal richer */
+.modal .btn-primary {
+    padding: 14px 30px; /* Slightly larger button */
+    font-size: 1.05rem; /* Larger text */
+    border-radius: 50px;
+    background-image: var(--primary-gradient); /* Ensure it uses the gradient */
+    box-shadow: 0 5px 20px rgba(46, 204, 113, 0.2); /* Initial subtle shadow */
+}
+.modal .btn-primary:hover {
+    transform: translateY(-5px); /* More pronounced lift */
+    box-shadow: 0 12px 30px rgba(46, 204, 113, 0.4); /* Stronger shadow on hover */
+}
+   </style>
+</head>
+<body>
+
+    <header class="app-header">
+       <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48.79-1.67 2.06-3.03 3.65-3.87 1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85.78-.28 1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51 2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54-.66-.21-1.11.82-.9 1.48-.79 1.67 2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85-.78-.28-1.25-1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="digilocker.html" class="active">DigiLocker</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Farmer's DigiLocker</h3>
+                    <p>Securely store, manage, and understand your important documents like Aadhaar, Land Deeds, and more.</p>
+                </div>
+
+                <div class="digilocker-layout">
+                    <aside class="digilocker-sidebar">
+                        <div class="card">
+                            <h4>Categories</h4>
+                            <ul class="category-list" id="category-list">
+                                <li><a href="#" class="active" data-category="all"><i data-feather="grid"></i> All Documents</a></li>
+                                <li><a href="#" data-category="Personal ID"><i data-feather="user"></i> Personal ID</a></li>
+                                <li><a href="#" data-category="Land Records"><i data-feather="map"></i> Land Records</a></li>
+                                <li><a href="#" data-category="Subsidies"><i data-feather="award"></i> Subsidies</a></li>
+                                <li><a href="#" data-category="Certificates"><i data-feather="file-text"></i> Certificates</a></li>
+                                <li><a href="#" data-category="Other"><i data-feather="folder"></i> Other</a></li>
+                            </ul>
+                        </div>
+                        <div class="card storage-widget">
+                            <h4>Local Storage Usage</h4>
+                            <div class="storage-meter"><div id="storage-bar" class="storage-bar"></div></div>
+                            <p id="storage-text">0 KB / 5000 KB</p>
+                        </div>
+                    </aside>
+
+                    <div class="digilocker-main">
+                        <div class="digilocker-main-controls">
+                            <div class="search-bar">
+                                <i data-feather="search"></i>
+                                <input type="text" id="search-bar" placeholder="Search documents...">
+                            </div>
+                            <button id="upload-btn" class="btn btn-primary upload-btn">Upload Document</button>
+                        </div>
+
+                        <div class="storage-warning">
+                            <strong>Note:</strong> Your documents are stored privately in your browser's local storage. They are not uploaded to any server. Clearing your browser data will permanently delete them.
+                        </div>
+
+                        <div id="doc-grid" class="doc-grid"></div>
+                        <div id="no-docs-message" class="card" style="text-align: center; display: none;">
+                            <p>No documents found. Click "Upload Document" to get started!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-overlay" class="modal-overlay"></div>
+
+    <div id="upload-modal" class="modal">
+        <div class="modal-header"><h4>Upload New Document</h4><button class="close-btn" data-modal-close="upload-modal">&times;</button></div>
+        <div class="modal-body">
+            <form id="upload-form">
+                <div class="form-group"><label for="doc-name">Document Name*</label><input type="text" id="doc-name" placeholder="e.g., Aadhaar Card" required></div>
+                <div class="form-group"><label for="doc-category">Category*</label><select id="doc-category" required><option value="Personal ID">Personal ID</option><option value="Land Records">Land Records</option><option value="Subsidies">Subsidies</option><option value="Certificates">Certificates</option><option value="Other">Other</option></select></div>
+                <div class="form-group"><label for="doc-file">Select PDF File* (Max 2MB)</label><input type="file" id="doc-file" accept=".pdf" required></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Upload</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="ai-summary-modal" class="modal">
+        <div class="modal-header"><h4>AI Document Summary</h4><button class="close-btn" data-modal-close="ai-summary-modal">&times;</button></div>
+        <div class="modal-body"><div id="ai-summary-response"></div></div>
+    </div>
+
+    <div id="pdf-viewer-modal" class="modal pdf-viewer-modal">
+       <div class="modal-header"><h4 id="pdf-modal-title"></h4><button class="close-btn" data-modal-close="pdf-viewer-modal">&times;</button></div>
+       <div class="modal-body"><iframe id="pdf-viewer" class="pdf-viewer"></iframe></div>
+    </div>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            const API_KEY = "AIzaSyC_DFnBZD2FqGo8Xn1QjIl3ses0M-JO3I";
+            const genAI = new GoogleGenerativeAI(API_KEY);
+
+            const digilockerApp = {
+                elements: {
+                    docGrid: document.getElementById('doc-grid'),
+                    noDocsMessage: document.getElementById('no-docs-message'),
+                    uploadBtn: document.getElementById('upload-btn'),
+                    uploadModal: document.getElementById('upload-modal'),
+                    uploadForm: document.getElementById('upload-form'),
+                    categoryList: document.getElementById('category-list'),
+                    searchBar: document.getElementById('search-bar'),
+                    storageBar: document.getElementById('storage-bar'),
+                    storageText: document.getElementById('storage-text'),
+                    pdfViewer: document.getElementById('pdf-viewer'),
+                    pdfModalTitle: document.getElementById('pdf-modal-title'),
+                    aiSummaryResponse: document.getElementById('ai-summary-response'),
+                },
+                state: {
+                    documents: [],
+                    activeCategory: 'all',
+                    searchTerm: '',
+                },
+                MAX_STORAGE: 5000 * 1024, // 5MB
+
+                init() {
+                    this.loadDocuments();
+                    this.renderDocuments();
+                    this.updateStorageMeter();
+                    this.bindEvents();
+                },
+
+                bindEvents() {
+                    this.elements.uploadBtn.addEventListener('click', () => this.openModal('upload-modal'));
+                    document.querySelectorAll('[data-modal-close]').forEach(btn => {
+                        btn.addEventListener('click', () => this.closeModal(btn.dataset.modalClose));
+                    });
+                    this.elements.uploadForm.addEventListener('submit', this.handleUpload.bind(this));
+                    this.elements.categoryList.addEventListener('click', this.handleCategoryFilter.bind(this));
+                    this.elements.searchBar.addEventListener('input', this.handleSearch.bind(this));
+                    this.elements.docGrid.addEventListener('click', this.handleDocAction.bind(this));
+                },
+
+                openModal(id) {
+                    document.getElementById(id).classList.add('active');
+                    document.getElementById('modal-overlay').classList.add('active');
+                    document.body.classList.add('modal-open');
+                },
+                closeModal(id) {
+                    document.getElementById(id).classList.remove('active');
+                    document.getElementById('modal-overlay').classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                },
+
+                loadDocuments() { this.state.documents = JSON.parse(localStorage.getItem('digilockerDocs')) || []; },
+                saveDocuments() { localStorage.setItem('digilockerDocs', JSON.stringify(this.state.documents)); },
+
+                renderDocuments() {
+                    this.elements.docGrid.innerHTML = '';
+                    let filteredDocs = this.state.documents;
+
+                    if (this.state.activeCategory !== 'all') {
+                        filteredDocs = filteredDocs.filter(doc => doc.category === this.state.activeCategory);
+                    }
+                    if (this.state.searchTerm) {
+                        filteredDocs = filteredDocs.filter(doc => doc.name.toLowerCase().includes(this.state.searchTerm));
+                    }
+
+                    if (filteredDocs.length === 0) {
+                        this.elements.noDocsMessage.style.display = 'block';
+                    } else {
+                        this.elements.noDocsMessage.style.display = 'none';
+                        filteredDocs.forEach(doc => {
+                            const docCard = `
+                                <div class="card doc-card">
+                                    <div class="doc-icon"><i data-feather="file-text"></i></div>
+                                    <h5 class="doc-name">${doc.name}</h5>
+                                    <p class="doc-date">Uploaded: ${new Date(doc.id).toLocaleDateString('en-IN')}</p>
+                                    <div class="doc-actions">
+                                        <button class="btn btn-secondary view-doc" data-id="${doc.id}">View</button>
+                                        <button class="btn btn-secondary ai-summary" data-id="${doc.id}">AI Summary</button>
+                                    </div>
+                                    <button class="btn btn-danger" data-id="${doc.id}" style="margin-top: 0.5rem; padding: 8px 10px; font-size: 0.85rem;">Delete</button>
+                                </div>`;
+                            this.elements.docGrid.innerHTML += docCard;
+                        });
+                    }
+                    feather.replace();
+                },
+
+                async handleUpload(e) {
+                    e.preventDefault();
+                    const name = document.getElementById('doc-name').value;
+                    const category = document.getElementById('doc-category').value;
+                    const file = document.getElementById('doc-file').files[0];
+
+                    if (!name || !category || !file) return alert('Please fill all fields.');
+                    if (file.size > 2 * 1024 * 1024) return alert('File is too large. Max 2MB allowed.');
+
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const newDoc = {
+                            id: Date.now(),
+                            name: name,
+                            category: category,
+                            fileData: reader.result, // Base64 string
+                            size: file.size,
+                        };
+                        this.state.documents.push(newDoc);
+                        this.saveDocuments();
+                        this.renderDocuments();
+                        this.updateStorageMeter();
+                        this.closeModal('upload-modal');
+                        this.elements.uploadForm.reset();
+                    };
+                    reader.readAsDataURL(file);
+                },
+
+                handleCategoryFilter(e) {
+                    e.preventDefault();
+                    const link = e.target.closest('a');
+                    if (!link) return;
+                    
+                    this.elements.categoryList.querySelector('.active').classList.remove('active');
+                    link.classList.add('active');
+                    this.state.activeCategory = link.dataset.category;
+                    this.renderDocuments();
+                },
+
+                handleSearch(e) {
+                    this.state.searchTerm = e.target.value.toLowerCase();
+                    this.renderDocuments();
+                },
+
+                handleDocAction(e) {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+                    const docId = button.dataset.id;
+                    if (button.classList.contains('view-doc')) this.viewDocument(docId);
+                    if (button.classList.contains('ai-summary')) this.getAiSummary(docId);
+                    if (button.classList.contains('btn-danger')) this.deleteDocument(docId);
+                },
+
+                viewDocument(id) {
+                    const doc = this.state.documents.find(d => d.id == id);
+                    if (doc) {
+                        this.elements.pdfViewer.src = doc.fileData;
+                        this.elements.pdfModalTitle.textContent = doc.name;
+                        this.openModal('pdf-viewer-modal');
+                    }
+                },
+                
+                deleteDocument(id) {
+                    if (confirm('Are you sure you want to permanently delete this document?')) {
+                        this.state.documents = this.state.documents.filter(d => d.id != id);
+                        this.saveDocuments();
+                        this.renderDocuments();
+                        this.updateStorageMeter();
+                    }
+                },
+
+                async getAiSummary(id) {
+                    const doc = this.state.documents.find(d => d.id == id);
+                    if (!doc) return;
+                    
+                    this.openModal('ai-summary-modal');
+                    this.elements.aiSummaryResponse.innerHTML = `<div class="loader-container"><div class="loader"></div></div>`;
+
+                    try {
+                        // Extract text from PDF using PDF.js
+                        const pdfData = atob(doc.fileData.substring(doc.fileData.indexOf(',') + 1));
+                        const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+                        let textContent = '';
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            const page = await pdf.getPage(i);
+                            const text = await page.getTextContent();
+                            textContent += text.items.map(item => item.str).join(' ');
+                        }
+
+                        if (!textContent.trim()) {
+                           throw new Error("Could not extract text from PDF.");
+                        }
+
+                        // Send extracted text to Gemini
+                        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+                        const prompt = `You are an expert legal and agricultural document analyst. Summarize the key points of the following document for a farmer in India. Focus on names, dates, amounts, land survey numbers, and any obligations or entitlements. Present the summary with clear headings and bullet points using markdown. Document text: "${textContent.substring(0, 3000)}"`;
+                        
+                        const result = await model.generateContent(prompt);
+                        const response = await result.response;
+                        let summary = response.text();
+                        summary = summary.replace(/\*\*(.*?)\*\*/g, '<h5>$1</h5>').replace(/ \*(.*?)\n/g, '<li>$1</li>');
+                        this.elements.aiSummaryResponse.innerHTML = `<div class="ai-response"><ul>${summary}</ul></div>`;
+
+                    } catch (err) {
+                        this.elements.aiSummaryResponse.innerHTML = `<p>Could not generate AI summary. The document may not contain readable text or there was an API error.</p>`;
+                        console.error("AI Summary Error:", err);
+                    }
+                },
+
+                updateStorageMeter() {
+                    const totalSize = this.state.documents.reduce((sum, doc) => sum + doc.size, 0);
+                    const percentage = Math.min((totalSize / this.MAX_STORAGE) * 100, 100);
+                    
+                    this.elements.storageBar.style.width = `${percentage}%`;
+                    this.elements.storageText.textContent = `${(totalSize / 1024).toFixed(2)} KB / ${(this.MAX_STORAGE / 1024).toFixed(0)} KB`;
+                }
+            };
+
+            digilockerApp.init();
+        });
+    </script>
+</body>
+</html>

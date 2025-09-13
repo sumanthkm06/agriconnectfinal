@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Listing Assistant - AgriConnect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.sh/@google/generative-ai"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #34c759; /* A more vibrant green */
+            --primary-hover: #2db84d;
+            --secondary-color: #007bff; /* A nice blue for accents */
+            --heading-color: #1a2a3a;
+            --text-color: #4a4a4a;
+            --light-text: #999;
+            --bg-color: #ffffff;
+            --alt-bg-color: #f7f9fb; /* Lighter, subtle background */
+            --border-color: #e0e6ed;
+            --white-color: #ffffff;
+            --danger-color: #dc3545;
+            --primary-gradient: linear-gradient(45deg, var(--primary-color), #2ed8b6); /* A modern, energetic gradient */
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Stronger, more elegant shadow */
+            --font-family: 'Inter', sans-serif;
+            --transition-speed: 0.4s;
+            --border-radius: 16px; /* A bit more rounded */
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.8; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 100px 0; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h3 { font-size: 2.8rem; color: var(--heading-color); }
+        .section-header p { font-size: 1.2rem; color: var(--light-text); max-width: 600px; margin: 0 auto; }
+        .app-header { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); padding: 1.2rem 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 10px; text-decoration: none; display: flex; align-items: center; }
+        .logo svg { width: 32px; height: 32px; color: var(--primary-color); }
+        .logo h1 { font-size: 1.8rem; color: var(--heading-color); font-weight: 800; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; padding: 8px 16px; border-radius: 8px; transition: background-color var(--transition-speed); }
+        .main-nav a:hover { background-color: var(--border-color); }
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-color); }
+        .btn { display: inline-block; padding: 14px 32px; border-radius: 50px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn:disabled { background: #dcdcdc; color: #999; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); }
+        .btn-primary:not(:disabled):hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(52, 199, 89, 0.3); }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border: 2px solid var(--border-color); }
+        .btn-secondary:hover { background-color: var(--alt-bg-color); }
+        .listing-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 2.5rem; align-items: flex-start; }
+        .input-card, .output-card { height: 100%; }
+        .input-card h4 { font-size: 1.6rem; color: var(--heading-color); margin-bottom: 1.5rem; text-align: center; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.6rem; font-size: 0.95rem; color: var(--heading-color); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 1px solid var(--border-color); border-radius: 10px; font-family: inherit; font-size: 1rem; transition: border-color var(--transition-speed), box-shadow var(--transition-speed); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.1); }
+        textarea { resize: vertical; min-height: 150px; }
+        .form-actions { display: flex; justify-content: flex-end; margin-top: 2.5rem; }
+        .listing-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; color: var(--light-text); }
+        .listing-placeholder .icon { color: var(--primary-color); margin-bottom: 1rem; }
+        .loader-container { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 1rem; font-weight: 600; color: var(--heading-color); }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .output-content h4 { font-size: 1.6rem; margin-bottom: 1rem; color: var(--heading-color); }
+        .output-content h5 { font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.8rem; color: var(--secondary-color); }
+        .output-content p { white-space: pre-wrap; margin-bottom: 1.5rem; }
+        .output-content .price-display { font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 2rem; }
+        @media (max-width: 900px) { .listing-layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    
+    <header class="app-header">
+       <div class="container">
+            <a href="index.html" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-leaf"><path d="M14.8 6.2a2.8 2.8 0 0 0-4.6 0L4.2 12.8a2.8 2.8 0 0 0 .6 3.8l5.2 5.2c1.2 1.2 3.1 1.2 4.3 0l5.2-5.2a2.8 2.8 0 0 0 .6-3.8z"></path><path d="M12 17.5a.5.5 0 0 1-.5-.5V6.5a.5.5 0 0 1 1 0v10.5a.5.5 0 0 1-.5.5z"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav"><a href="#">AI Tools</a></nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>AI Listing Assistant</h3>
+                    <p>Use AI to suggest the best price and write a compelling, professional description when you sell your crops.</p>
+                </div>
+
+                <div class="listing-layout">
+                    <div class="card input-card">
+                        <h4>Listing Details</h4>
+                        <div class="form-group">
+                            <label for="crop-input">Crop Type</label>
+                            <input type="text" id="crop-input" placeholder="e.g., Organic Tomatoes, Wheat" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location-input">Your Location</label>
+                            <input type="text" id="location-input" placeholder="e.g., Punjab, Maharashtra, Chennai" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity-input">Quantity (in kg)</label>
+                            <input type="number" id="quantity-input" placeholder="e.g., 500, 1000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quality-input">Quality/Grade</label>
+                            <input type="text" id="quality-input" placeholder="e.g., Fresh, Grade A, Organic, Hand-picked">
+                        </div>
+                        <div class="form-group">
+                            <label for="description-input">Additional Notes (Optional)</label>
+                            <textarea id="description-input" placeholder="e.g., Harvested last week, no pesticides used, excellent for sauces"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button id="generate-listing-btn" class="btn btn-primary">Generate Listing</button>
+                        </div>
+                    </div>
+
+                    <div class="card output-card">
+                        <div id="listing-placeholder" class="listing-placeholder">
+                            <i data-feather="tag" class="icon" style="width: 60px; height: 60px;"></i>
+                            <h4>Your AI-Generated Listing</h4>
+                            <p>Enter your crop details to generate a price estimate and a professional description for selling.</p>
+                        </div>
+                        <div id="loader-container" class="loader-container">
+                            <div class="loader"></div>
+                            <p id="loader-message">AI is crafting your listing...</p>
+                        </div>
+                        <div id="listing-content" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+            const API_KEY = "AIzaSyCeil1RRuySImAxPOO6bxh31VDRXms4JSc";
+            const genAI = new GoogleGenerativeAI(API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+            const listingApp = {
+                elements: {
+                    cropInput: document.getElementById('crop-input'),
+                    locationInput: document.getElementById('location-input'),
+                    quantityInput: document.getElementById('quantity-input'),
+                    qualityInput: document.getElementById('quality-input'),
+                    descriptionInput: document.getElementById('description-input'),
+                    generateBtn: document.getElementById('generate-listing-btn'),
+                    listingPlaceholder: document.getElementById('listing-placeholder'),
+                    loader: document.getElementById('loader-container'),
+                    loaderMessage: document.getElementById('loader-message'),
+                    listingContent: document.getElementById('listing-content'),
+                },
+                
+                init() {
+                    this.bindEvents();
+                    const messages = ["Analyzing market data...", "Writing a catchy description...", "Finalizing your listing..."];
+                    let messageIndex = 0;
+                    setInterval(() => {
+                        if (this.elements.loader.style.display === 'flex') {
+                            this.elements.loaderMessage.textContent = messages[messageIndex];
+                            messageIndex = (messageIndex + 1) % messages.length;
+                        }
+                    }, 3000);
+                },
+
+                bindEvents() {
+                    this.elements.generateBtn.addEventListener('click', this.generateListing.bind(this));
+                },
+
+                showView(viewToShow) {
+                    const views = ['listingPlaceholder', 'loader', 'listingContent'];
+                    views.forEach(view => {
+                        this.elements[view].style.display = (view === viewToShow) ? (view === 'listingContent' ? 'block' : 'flex') : 'none';
+                    });
+                },
+
+                async generateListing() {
+                    const crop = this.elements.cropInput.value.trim();
+                    const location = this.elements.locationInput.value.trim();
+                    const quantity = this.elements.quantityInput.value.trim();
+                    const quality = this.elements.qualityInput.value.trim();
+                    const notes = this.elements.descriptionInput.value.trim();
+
+                    if (!crop || !location || !quantity) {
+                        alert("Please enter crop type, location, and quantity to get a listing.");
+                        return;
+                    }
+
+                    this.showView('loader');
+
+                    const prompt = `
+                        As an expert market analyst and copywriter for a farming platform in India, generate a professional and compelling listing for a farmer's crop.
+                        Provide two main sections:
+                        1. A **Suggested Price Range** (in INR per kg) based on the crop, location, and quality. This should be a single line.
+                        2. A **Professional Description** to attract buyers. This should be a compelling, formatted description.
+                        
+                        **Listing Details:**
+                        - **Crop:** ${crop}
+                        - **Quantity:** ${quantity} kg
+                        - **Location:** ${location}
+                        ${quality ? `- **Quality/Grade:** ${quality}` : ''}
+                        ${notes ? `- **Additional Notes:** ${notes}` : ''}
+
+                        **Instructions:**
+                        - The suggested price should be a reasonable range (e.g., ₹XX - ₹YY per kg), considering the crop and region.
+                        - The description should be engaging, highlight key features (e.g., organic, fresh, quality), and include a strong call-to-action for buyers.
+                        - Use clear and professional language.
+                        - Format the response using markdown headings.
+                        - Example output format:
+                        
+                        ## Suggested Price
+                        ₹XX - ₹YY per kg
+
+                        ## Description
+                        [Your compelling, professionally written description here, using paragraphs and bold text for emphasis.]
+                    `;
+
+                    try {
+                        const result = await model.generateContent(prompt);
+                        const response = await result.response;
+                        const text = response.text();
+                        
+                        this.displayListing(text);
+                    } catch (error) {
+                        console.error("API Error:", error);
+                        this.elements.listingContent.innerHTML = `<p style="color:var(--danger-color);"><strong>Listing Generation Failed!</strong><br>Could not get a response from the AI. Please check your API key or try again later.</p>`;
+                        this.showView('listingContent');
+                    }
+                },
+
+                displayListing(markdownText) {
+                    const htmlContent = this.markedParse(markdownText);
+                    this.elements.listingContent.innerHTML = htmlContent;
+                    this.showView('listingContent');
+                    feather.replace();
+                },
+
+                markedParse(text) {
+                    let html = text.replace(/^#+\s*Suggested Price$/gm, '<h4>Suggested Price</h4>');
+                    html = html.replace(/^#+\s*Description$/gm, '<h4>Description</h4>');
+                    html = html.replace(/^\*\s*(.*)$/gm, '<li>$1</li>');
+                    html = html.replace(/^(<li>.*<\/li>)+/gm, '<ul>$&</ul>');
+                    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    return html;
+                }
+            };
+            
+            listingApp.init();
+        });
+    </script>
+</body>
+</html>

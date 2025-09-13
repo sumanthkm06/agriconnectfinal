@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent Agricultural Tools - AgriConnect</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2ECC71; --primary-hover: #27ae60; --secondary-color: #16A085;
+            --heading-color: #2c3e50; --text-color: #34495e; --light-text: #7f8c8d;
+            --bg-color: #ffffff; --alt-bg-color: #f4f7f6; --border-color: #e0e0e0;
+            --white-color: #ffffff; --danger-color: #e74c3c;
+            --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 30px rgba(46, 204, 113, 0.15);
+            --font-family: 'Inter', sans-serif; --transition-speed: 0.3s; --border-radius: 12px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); color: var(--text-color); background-color: var(--alt-bg-color); line-height: 1.7; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .app-section { padding: 80px 0; }
+        .app-header { background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); padding: 1rem 0; border-bottom: 1px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+        .app-header .container, .logo, .main-nav { display: flex; align-items: center; }
+        .app-header .container { justify-content: space-between; }
+        .logo { gap: 12px; text-decoration: none; }
+        .logo h1 { font-size: 1.6rem; color: var(--heading-color); }
+        .main-nav { gap: 2rem; }
+        .main-nav a { text-decoration: none; color: var(--text-color); font-weight: 600; }
+        .card { background: var(--bg-color); border-radius: var(--border-radius); padding: 2rem; box-shadow: var(--card-shadow); }
+        .btn { display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 12px 28px; border-radius: 50px; font-size: 0.95rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: all var(--transition-speed) ease; }
+        .btn-primary { background-image: var(--primary-gradient); color: var(--white-color); border: none; }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(46, 204, 113, 0.3); }
+        .btn-secondary { background-color: transparent; color: var(--text-color); border: 2px solid var(--border-color); }
+        .btn-secondary:hover { background-color: var(--alt-bg-color); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2); }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h3 { font-size: 2.8rem; color: var(--heading-color); }
+        .section-header p { font-size: 1.15rem; color: var(--light-text); max-width: 700px; margin: auto; }
+        .grid-layout { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+        
+        /* Tool Listing Styles */
+        .filter-bar { padding: 1.5rem; margin-bottom: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end; }
+        .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .tool-card { padding: 0; display: flex; flex-direction: column; transition: all var(--transition-speed); overflow: hidden;}
+        .tool-card:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+        .tool-card-image { width: 100%; height: 200px; object-fit: cover; }
+        .tool-card-content { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+        .tool-card h4 { margin: 0 0 0.5rem 0; font-size: 1.4rem; color: var(--heading-color); }
+        .tool-card .location { font-size: 0.9rem; color: var(--light-text); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .tool-card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: auto; }
+        .tool-card .price { font-weight: 800; color: var(--primary-color); font-size: 1.5rem; }
+        .tool-card .price span { font-size: 0.9rem; font-weight: 500; color: var(--light-text); }
+
+        /* Registration Form Styles */
+        .registration-section { background: linear-gradient(135deg, #e0f2f1, #e8f5e9); padding: 3rem 2rem; border-radius: var(--border-radius); }
+        .registration-section h3 { text-align: center; font-size: 2.2rem; }
+        .registration-form-container { max-width: 700px; margin: auto; background: var(--bg-color); padding: 2.5rem; border-radius: var(--border-radius); box-shadow: var(--card-shadow); }
+        .image-preview-box { width: 150px; height: 150px; border: 2px dashed var(--border-color); border-radius: 8px; margin-top: 0.5rem; display: flex; align-items: center; justify-content: center; background-color: var(--alt-bg-color); overflow: hidden; }
+        .image-preview-box img { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24"><path d="M21.58 9.55c-1.84-3.53-5.02-6.11-8.8-6.53-2.2-.25-4.44.2-6.39 1.28-1.95 1.08-3.51 2.76-4.48 4.79-.31.65-.21 1.41.24 1.95.45.54 1.2.75 1.86.54.66-.21 1.11-.82.9-1.48C4.7 9.1 5.97 7.74 7.56 6.9c1.59-.84 3.42-1.16 5.25-.9 3.03.43 5.61 2.5 6.96 5.11.39.75 1.22 1.13 2 .85s1.25-1.08.97-1.85zM2.42 14.45c1.84 3.53 5.02 6.11 8.8 6.53 2.2.25 4.44-.2 6.39-1.28 1.95-1.08 3.51-2.76 4.48-4.79.31-.65-.21 1.41-.24-1.95-.45-.54-1.2-.75-1.86-.54s-1.11.82-.9 1.48c-.79 1.67-2.06 3.03-3.65 3.87-1.59-.84-3.42-1.16-5.25-.9-3.03-.43-5.61-2.5-6.96-5.11-.39-.75-1.22-1.13-2-.85s-1.25 1.08-.97 1.85z" fill="#2ECC71"></path></svg>
+                <h1>AgriConnect</h1>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="rent-tools.html" class="active">Rent Tools</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="app-section">
+            <div class="container">
+                <div class="grid-layout">
+                    <div>
+                        <div class="section-header">
+                            <h3>Available Tools for Rent</h3>
+                            <p>Find the right equipment for your farm. Contact owners directly via WhatsApp.</p>
+                        </div>
+                        <div class="card filter-bar">
+                            <div class="form-group"><label>Filter by Category</label><select id="filter-category"><option value="all">All Tools</option></select></div>
+                            <div class="form-group"><label>Filter by Location</label><input type="text" id="filter-location" placeholder="Enter city or state"></div>
+                        </div>
+                        <div id="tool-grid" class="tool-grid"></div>
+                        <p id="no-tools-message" class="card" style="text-align: center; display: none;">No tools found matching your criteria.</p>
+                    </div>
+
+                    <div class="registration-section">
+                        <div class="registration-form-container">
+                            <h3>List Your Tool for Rent</h3>
+                            <form id="list-tool-form">
+                                <div class="form-group"><label for="owner-name">Your Name*</label><input type="text" id="owner-name" required></div>
+                                <div class="form-group"><label for="whatsapp-number">Your WhatsApp Number* (with country code)</label><input type="tel" id="whatsapp-number" placeholder="e.g., 919876543210" required></div>
+                                <div class="form-group"><label for="tool-name">Tool Name*</label><input type="text" id="tool-name" placeholder="e.g., Power Tiller" required></div>
+                                <div class="form-group"><label for="tool-category">Tool Category*</label><select id="tool-category" required><option value="Tractor">Tractor</option><option value="Tiller">Tiller</option><option value="Harvester">Harvester</option><option value="Sprayer">Sprayer</option><option value="Other">Other</option></select></div>
+                                <div class="form-group"><label for="price-per-day">Price per Day (₹)*</label><input type="number" id="price-per-day" required></div>
+                                <div class="form-group"><label for="tool-location">Your Location* (City, State)</label><input type="text" id="tool-location" placeholder="e.g., Hassan, Karnataka" required></div>
+                                <div class="form-group"><label for="tool-image">Tool Photo*</label><input type="file" id="tool-image" accept="image/*" required><div class="image-preview-box"><img id="image-preview" src="" alt="Preview"></div></div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">List My Tool</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            const rentalApp = {
+                elements: {
+                    toolGrid: document.getElementById('tool-grid'),
+                    noToolsMessage: document.getElementById('no-tools-message'),
+                    listToolForm: document.getElementById('list-tool-form'),
+                    imageInput: document.getElementById('tool-image'),
+                    imagePreview: document.getElementById('image-preview'),
+                    filterCategory: document.getElementById('filter-category'),
+                    filterLocation: document.getElementById('filter-location'),
+                },
+                state: {
+                    tools: [],
+                    imageBase64: null,
+                },
+
+                init() {
+                    this.loadTools();
+                    this.populateFilters();
+                    this.renderTools();
+                    this.bindEvents();
+                },
+
+                loadTools() {
+                    const defaultTools = [
+                        { id: 1, ownerName: "Suresh G.", whatsapp: "919988776655", toolName: "Mahindra Power Tiller", category: "Tiller", price: 1500, location: "Hassan, Karnataka", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNfr4qYvwbd8RjbAf2aoB91kJ5C1Vygl8JeA&s" },
+                        { id: 2, name: "Anil Kumar", whatsapp: "919876543210", toolName: "John Deere Tractor 5050D", category: "Tractor", price: 3000, location: "Mandya, Karnataka", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCv3xEBMq_OfLD1JfOldgTXuE6INchNxAg0g&s" },
+                        { id: 3, name: "Priya Rao", whatsapp: "919001122334", toolName: "Battery Powered Sprayer", category: "Sprayer", price: 500, location: "Bengaluru, Karnataka", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIvphKz4hGDgIHv_Jm5oIbyuLMbKi8bg8XkQ&s" },
+                    ];
+                    this.state.tools = JSON.parse(localStorage.getItem('agriToolsForRent')) || defaultTools;
+                },
+
+                saveTool() {
+                    localStorage.setItem('agriToolsForRent', JSON.stringify(this.state.tools));
+                },
+
+                bindEvents() {
+                    this.elements.listToolForm.addEventListener('submit', this.handleFormSubmit.bind(this));
+                    this.elements.imageInput.addEventListener('change', this.handleImagePreview.bind(this));
+                    this.elements.filterCategory.addEventListener('change', () => this.renderTools());
+                    this.elements.filterLocation.addEventListener('input', () => this.renderTools());
+                    this.elements.toolGrid.addEventListener('click', this.handleRentClick.bind(this));
+                },
+
+                populateFilters() {
+                    const categories = [...new Set(this.state.tools.map(tool => tool.category))];
+                    this.elements.filterCategory.innerHTML = '<option value="all">All Tools</option>';
+                    categories.forEach(cat => {
+                        this.elements.filterCategory.innerHTML += `<option value="${cat}">${cat}</option>`;
+                    });
+                },
+                
+                renderTools() {
+                    this.elements.toolGrid.innerHTML = '';
+                    const categoryFilter = this.elements.filterCategory.value;
+                    const locationFilter = this.elements.filterLocation.value.toLowerCase();
+                    
+                    const filteredTools = this.state.tools.filter(tool => 
+                        (categoryFilter === 'all' || tool.category === categoryFilter) &&
+                        (tool.location.toLowerCase().includes(locationFilter))
+                    );
+
+                    this.elements.noToolsMessage.style.display = filteredTools.length === 0 ? 'block' : 'none';
+
+                    filteredTools.forEach(tool => {
+                        this.elements.toolGrid.innerHTML += `
+                            <div class="card tool-card">
+                                <img src="${tool.image}" alt="${tool.toolName}" class="tool-card-image">
+                                <div class="tool-card-content">
+                                    <h4>${tool.toolName}</h4>
+                                    <p class="location"><i data-feather="map-pin"></i>${tool.location}</p>
+                                    <div class="tool-card-footer">
+                                        <div class="price">₹${tool.price}<span>/day</span></div>
+                                        <button class="btn btn-primary rent-btn" 
+                                            data-owner="${tool.ownerName}" 
+                                            data-tool="${tool.toolName}" 
+                                            data-price="${tool.price}" 
+                                            data-number="${tool.whatsapp}">
+                                            Rent on WhatsApp
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    feather.replace();
+                },
+
+                handleImagePreview(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        this.elements.imagePreview.src = event.target.result;
+                        this.state.imageBase64 = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                },
+
+                handleFormSubmit(e) {
+                    e.preventDefault();
+                    const newTool = {
+                        id: Date.now(),
+                        ownerName: document.getElementById('owner-name').value,
+                        whatsapp: document.getElementById('whatsapp-number').value,
+                        toolName: document.getElementById('tool-name').value,
+                        category: document.getElementById('tool-category').value,
+                        price: parseInt(document.getElementById('price-per-day').value),
+                        location: document.getElementById('tool-location').value,
+                        image: this.state.imageBase64,
+                    };
+                    
+                    this.state.tools.unshift(newTool); // Add new tool to the top
+                    this.saveTool();
+                    this.populateFilters();
+                    this.renderTools();
+                    alert('Your tool has been listed successfully!');
+                    this.elements.listToolForm.reset();
+                    this.elements.imagePreview.src = '';
+                },
+
+                handleRentClick(e) {
+                    if (!e.target.classList.contains('rent-btn')) return;
+
+                    const button = e.target;
+                    const owner = button.dataset.owner;
+                    const tool = button.dataset.tool;
+                    const price = button.dataset.price;
+                    const number = button.dataset.number;
+
+                    const message = `Hello ${owner}, I am interested in renting your ${tool} listed on AgriConnect for ₹${price}/day. Is it available?`;
+                    const encodedMessage = encodeURIComponent(message);
+                    const whatsappUrl = `https://wa.me/${number}?text=${encodedMessage}`;
+                    
+                    window.open(whatsappUrl, '_blank');
+                }
+            };
+
+            rentalApp.init();
+        });
+    </script>
+
+</body>
+</html>
